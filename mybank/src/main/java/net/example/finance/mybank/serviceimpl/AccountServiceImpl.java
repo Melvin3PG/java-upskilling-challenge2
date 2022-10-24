@@ -2,12 +2,14 @@ package net.example.finance.mybank.serviceimpl;
 
 import net.example.finance.mybank.dao.AccountDao;
 import net.example.finance.mybank.model.entity.Account;
-import net.example.finance.mybank.service.AccountService;
+import net.example.finance.mybank.service.IAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-public class AccountServiceImpl implements AccountService {
+@Service
+public class AccountServiceImpl implements IAccountService {
 
 
     @Autowired
