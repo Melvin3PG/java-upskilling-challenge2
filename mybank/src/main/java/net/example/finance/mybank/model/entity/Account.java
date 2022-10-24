@@ -1,11 +1,7 @@
 package net.example.finance.mybank.model.entity;
 import net.example.finance.mybank.model.enums.AccountType;
-import org.checkerframework.checker.units.qual.Length;
-
 import javax.persistence.*;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
-import java.io.Serial;
 import java.io.Serializable;
 
 @Entity
@@ -29,6 +25,20 @@ public class Account implements Serializable {
 
     @NotNull
     private Float overdraft;
+
+    protected Account() {}
+
+    public Account(String accountNumber,
+                   AccountType accountType,
+                   Float balance,
+                   Boolean overdrafts,
+                   Float overdraft){
+        this.accountNumber = accountNumber;
+        this.accountType = accountType;
+        this.balance = balance;
+        this.overdrafts = overdrafts;
+        this.overdraft = overdraft;
+    }
 
     public Long getId() {
         return id;
