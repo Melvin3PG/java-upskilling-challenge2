@@ -3,8 +3,22 @@ server:
   port : ${PORT:7080}
 
 #management:
-#   security:
 #      enabled: false
+#   security:
 #   endpoint:
 #      health:
 #        show-details: always
+
+spring:
+  datasource:
+    #url: jdbc:h2:file:/data/demo
+    url: jdbc:h2:mem:test
+    username: sa
+    password: password
+    driverClassName: org.h2.Driver
+  jpa:
+    spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
+    defer-datasource-initialization: true
+  h2:
+    console.enabled: true
+

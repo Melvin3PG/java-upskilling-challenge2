@@ -3,6 +3,10 @@ import net.example.finance.mybank.model.enums.AccountType;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import lombok.Getter;
+import lombok.Setter;
+import org.checkerframework.common.aliasing.qual.Unique;
+
 
 @Entity
 @Table(name= "accounts")
@@ -10,21 +14,25 @@ public class Account implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private @Getter @Setter Long id;
     @NotNull
-    @Column(length = 16)
-    private String accountNumber;
+    @Column(name = "account_number", unique = true)
+    private @Getter @Setter String accountNumber;
 
     @Enumerated(EnumType.STRING)
-    private AccountType accountType;
+    @Column(name = "account_type")
+    private @Getter @Setter AccountType accountType;
 
     @NotNull
-    private Float balance;
+    @Column(name = "balance")
+    private @Getter @Setter Float balance;
 
-    private Boolean overdrafts;
+    @Column(name = "overdrafts")
+    private @Getter @Setter Boolean overdrafts;
 
     @NotNull
-    private Float overdraft;
+    @Column(name = "overdraft")
+    private @Getter @Setter Float overdraft;
 
     protected Account() {}
 
@@ -37,54 +45,6 @@ public class Account implements Serializable {
         this.accountType = accountType;
         this.balance = balance;
         this.overdrafts = overdrafts;
-        this.overdraft = overdraft;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getAccountNumber() {
-        return accountNumber;
-    }
-
-    public void setAccountNumber(String accountNumber) {
-        this.accountNumber = accountNumber;
-    }
-
-    public AccountType getAccountType() {
-        return accountType;
-    }
-
-    public void setAccountType(AccountType accountType) {
-        this.accountType = accountType;
-    }
-
-    public Float getBalance() {
-        return balance;
-    }
-
-    public void setBalance(Float balance) {
-        this.balance = balance;
-    }
-
-    public Boolean getOverdrafts() {
-        return overdrafts;
-    }
-
-    public void setOverdrafts(Boolean overdrafts) {
-        this.overdrafts = overdrafts;
-    }
-
-    public Float getOverdraft() {
-        return overdraft;
-    }
-
-    public void setOverdraft(Float overdraft) {
         this.overdraft = overdraft;
     }
 }

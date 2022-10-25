@@ -5,8 +5,9 @@ import net.example.finance.mybank.model.entity.Account;
 import java.util.List;
 
 public interface IAccountService {
-    public Account create(Account account);
-    public List<Account> findAll();
-    public Account findById(long id);
-    public void deleteById(long id);
+    Account create(Account account);
+    void update(Long id, Account account);
+    List<Account> findAll();
+    Account findById(long id);
+    void deleteById(long id);
 }
