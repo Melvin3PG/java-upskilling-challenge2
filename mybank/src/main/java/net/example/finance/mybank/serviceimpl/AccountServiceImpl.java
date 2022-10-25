@@ -19,20 +19,13 @@ public class AccountServiceImpl implements IAccountService {
 
     @Override
     public Account create(Account account) throws AlreadyExistsException {
-        if(alreadyExistsByAccountNumber(account.getAccountNumber())) {
-            throw new AlreadyExistsException(String.format("The account number: %s . Already exists.", account.getAccountNumber()));
-        }
-
+        accountAlreadyExists(account.getAccountNumber());
         return accountDao.save(account);
     }
 
     @Override
     public void update(Long id, Account account) throws NotFoundException {
-        Account accountResponse = accountDao.findById(id).orElse(null);
-
-        if(accountResponse == null) {
-            throw new NotFoundException("Not found account");
-        }
+        Account accountResponse = findAccountById(id);
 
         accountResponse.setAccountNumber(account.getAccountNumber());
         accountResponse.setAccountType(account.getAccountType());
@@ -56,22 +49,30 @@ public class AccountServiceImpl implements IAccountService {
 
     @Override
     public Account findById(long id) throws NotFoundException {
-        Account account = accountDao.findById(id).orElse(null);
-
-        if(account == null) {
-            throw new NotFoundException(String.format("Not found with the %s:", id));
-        }
-
-        return account;
+        return findAccountById(id);
     }
 
     @Override
     public void deleteById(long id) {
-        accountDao.deleteById(id);
+        Account account = findAccountById(id);
+        accountDao.delete(account);
     }
 
-    public boolean alreadyExistsByAccountNumber(String accountNumber){
+    private void accountAlreadyExists(String accountNumber){
         Account account = accountDao.findByAccountNumber(accountNumber);
-        return account != null;
+
+        if(account != null){
+            throw new AlreadyExistsException(String.format("The account number: %s . Already exists.", accountNumber));
+        }
+    }
+
+    private Account findAccountById(Long id){
+        Account account = accountDao.findById(id).orElse(null);
+
+        if(account == null) {
+            throw new AlreadyExistsException(String.format("The account does not exists."));
+        }
+
+        return account;
     }
 }

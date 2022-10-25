@@ -36,7 +36,21 @@ public class AccountController {
     public ResponseEntity<Object> update(@PathVariable("id") Long id, @RequestBody Account account) {
         try{
             service.update(id, account);
-            return ResponseEntity.ok(account);
+            return ResponseEntity.ok(true);
+        }
+        catch (NotFoundException nfe){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(nfe.getMessage());
+        }
+        catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
+        }
+    }
+
+    @DeleteMapping(path = "/accounts/{id}")
+    public ResponseEntity<Object> delete(@PathVariable("id") Long id) {
+        try {
+            service.deleteById(id);
+            return ResponseEntity.ok(true   );
         }
         catch (NotFoundException nfe){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(nfe.getMessage());
