@@ -1,0 +1,242 @@
+{
+	"info": {
+		"_postman_id": "e18afedf-1f09-4c08-bda6-680cfda65550",
+		"name": "Account Resources",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23562561"
+	},
+	"item": [
+		{
+			"name": "Create Account - 201",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"accountType\": \"SAVING\",\r\n    \"balance\": 2005.65,\r\n    \"overdraft\": 1,\r\n    \"overdraftAmount\": 285.36\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:7080/accounts",
+					"host": [
+						"localhost"
+					],
+					"port": "7080",
+					"path": [
+						"accounts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Account - 500",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:7080/accounts",
+					"host": [
+						"localhost"
+					],
+					"port": "7080",
+					"path": [
+						"accounts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Accounts - 200",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:7080/accounts",
+					"host": [
+						"localhost"
+					],
+					"port": "7080",
+					"path": [
+						"accounts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Account By ID - 200",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:7080/accounts/1000000001",
+					"host": [
+						"localhost"
+					],
+					"port": "7080",
+					"path": [
+						"accounts",
+						"1000000001"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Account By ID - 404",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:7080/accounts/10000000",
+					"host": [
+						"localhost"
+					],
+					"port": "7080",
+					"path": [
+						"accounts",
+						"10000000"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Account - 200",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"accountType\": \"CHECKING\",\r\n    \"balance\": 8505.65,\r\n    \"overdraft\": 0,\r\n    \"overdraftAmount\": 0.0\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:7080/accounts/1000000001",
+					"host": [
+						"localhost"
+					],
+					"port": "7080",
+					"path": [
+						"accounts",
+						"1000000001"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Account - 404",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"accountType\": \"CHECKING\",\r\n    \"balance\": 8505.65,\r\n    \"overdraft\": 0,\r\n    \"overdraftAmount\": 0.0\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:7080/accounts/1000000",
+					"host": [
+						"localhost"
+					],
+					"port": "7080",
+					"path": [
+						"accounts",
+						"1000000"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Account - 500",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:7080/accounts/1000000001",
+					"host": [
+						"localhost"
+					],
+					"port": "7080",
+					"path": [
+						"accounts",
+						"1000000001"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Account - 200",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:7080/accounts/1000000001",
+					"host": [
+						"localhost"
+					],
+					"port": "7080",
+					"path": [
+						"accounts",
+						"1000000001"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Account - 404",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:7080/accounts/100000",
+					"host": [
+						"localhost"
+					],
+					"port": "7080",
+					"path": [
+						"accounts",
+						"100000"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
