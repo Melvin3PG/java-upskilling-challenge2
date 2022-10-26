@@ -1,0 +1,159 @@
+{
+	"info": {
+		"_postman_id": "ff5ba4de-7ae1-4c06-9f25-9ba12e451969",
+		"name": "bank",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Account",
+			"item": [
+				{
+					"name": "create account",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"accountNum\": \"CR5652365265\",\r\n  \"accountType\": \"SAVE\",\r\n  \"balance\": 3654.5,\r\n  \"overdrafts\": true,\r\n  \"overdraftAmt\": 9822.65\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:7080/account",
+							"host": [
+								"localhost"
+							],
+							"port": "7080",
+							"path": [
+								"account"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List account",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:7080/account/",
+							"host": [
+								"localhost"
+							],
+							"port": "7080",
+							"path": [
+								"account",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "account by id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:7080/account/CR58888885265",
+							"host": [
+								"localhost"
+							],
+							"port": "7080",
+							"path": [
+								"account",
+								"CR58888885265"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update account",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"accountNum\": \"CR58888885265\",\r\n    \"accountType\": \"CHEKING\",\r\n    \"balance\": 9653.5,\r\n    \"overdrafts\": true,\r\n    \"overdraftAmt\": 3658.65\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:7080/account/CR58888885265",
+							"host": [
+								"localhost"
+							],
+							"port": "7080",
+							"path": [
+								"account",
+								"CR58888885265"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete account",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:7080/account/CR58888885265",
+							"host": [
+								"localhost"
+							],
+							"port": "7080",
+							"path": [
+								"account",
+								"CR58888885265"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
