@@ -4,27 +4,41 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import java.io.Serializable;
+
+import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-public class Account implements Serializable {
+public class Account {
+    @GeneratedValue(strategy = IDENTITY)
     private @Id Long id; // will be set when persisting
-    private String accountNumber;
-    private String accountType; // set enum
+    @Column(nullable = false)
+    private String number;
+    @Column(nullable = false)
+    private AccountType type;
+    @Column(nullable = false)
     private float balance;
-    private boolean isOverdraft;
-    private float overdraftAmount;
+    @Column(nullable = false)
+    private boolean overdraft;
+    @Column(nullable = false)
+    private float amount;
 
-    public Account(String accountNumber, String accountType, float balance, boolean isOverdraft, float overdraftAmount) {
-        this.accountNumber = accountNumber;
-        this.accountType = accountType;
+    public enum AccountType {
+        SAVING,
+        CHECKING;
+    }
+
+    public Account(String accountNumber, AccountType accountType, float balance, boolean isOverdraft, float overdraftAmount) {
+        this.number = accountNumber;
+        this.type = accountType;
         this.balance = balance;
-        this.isOverdraft = isOverdraft;
-        this.overdraftAmount = overdraftAmount;
+        this.overdraft = isOverdraft;
+        this.amount = overdraftAmount;
     }
 }
