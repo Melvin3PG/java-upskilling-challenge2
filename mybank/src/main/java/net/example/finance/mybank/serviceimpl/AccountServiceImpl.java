@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class AccountServiceImpl implements IAccountService {
@@ -20,6 +21,19 @@ public class AccountServiceImpl implements IAccountService {
 
     @Override
     public Account findById(Long id) {
-        return accountRepository.findById(id).get();
+        Account tmpAccount;
+        tmpAccount = accountRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Account not available for Id : "+id));
+        return tmpAccount;
+    }
+
+    @Override
+    public Account createAccount(String accountNumber, Account.AccountType accountType, float balance, boolean isOverdraft, float overdraftAmount) {
+        Account account = new Account();
+        account.setNumber(accountNumber);
+        account.setType(accountType);
+        account.setBalance(balance);
+        account.setOverdraft(isOverdraft);
+        account.setAmount(overdraftAmount);
+        return accountRepository.save(account);
     }
 }

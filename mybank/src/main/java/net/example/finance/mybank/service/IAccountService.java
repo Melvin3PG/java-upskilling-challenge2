@@ -7,4 +7,6 @@ public interface IAccountService {
     List<Account> findAll();
 
     Account findById(Long id);
+
+    Account createAccount(String accountNumber, Account.AccountType accountType, float balance, boolean isOverdraft, float overdraftAmount);
 }
