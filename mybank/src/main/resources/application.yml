@@ -5,11 +5,12 @@ server:
 
 spring:
   datasource:
-    url: jdbc:h2:mem:mybankdb
+    url: jdbc:h2:file:./mybankdb
     username: sa
     password: password
     driverClassName: org.h2.Driver
   jpa:
+    hibernate:      ddl-auto: update
     spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
    
 #management:

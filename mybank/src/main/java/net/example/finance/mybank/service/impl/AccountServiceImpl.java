@@ -62,7 +62,8 @@ public class AccountServiceImpl implements AccountService {
 		//retrieve account by account number
 		Account account = repository.findByNumber(accountNumber).orElseThrow(() -> new ResourceNotFoundException("", ""));
 		
-		account.setBalance(account.getBalance());
+		account.setType(accountDto.getType());
+		account.setBalance(accountDto.getBalance());
 		account.setOverdraft(accountDto.isOverdraft());
 		account.setOverdraftAmount(accountDto.getOverdraftAmount());
 		

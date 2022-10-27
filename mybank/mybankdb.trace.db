@@ -1,0 +1,12 @@
+2022-10-27 12:10:06 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "ACCOUNTS" not found (this database is empty); SQL statement:
+select account0_.id as id1_0_, account0_.balance as balance2_0_, account0_.customer_id as customer7_0_, account0_.is_overdraft as is_overd3_0_, account0_.account_number as account_4_0_, account0_.overdraft_amount as overdraf5_0_, account0_.type as type6_0_ from accounts account0_ order by account0_.id desc limit ? offset ? [42104-214]
+2022-10-27 12:10:12 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "ACCOUNTS" not found (this database is empty); SQL statement:
+insert into accounts (id, balance, customer_id, is_overdraft, account_number, overdraft_amount, type) values (default, ?, ?, ?, ?, ?, ?) [42104-214]
+2022-10-27 12:14:47 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "ACCOUNTS" not found (this database is empty); SQL statement:
+insert into accounts (id, balance, customer_id, is_overdraft, account_number, overdraft_amount, type) values (default, ?, ?, ?, ?, ?, ?) [42104-214]
+2022-10-27 12:51:49 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "ACCOUNTS" not found (this database is empty); SQL statement:
+select account0_.id as id1_0_, account0_.balance as balance2_0_, account0_.customer_id as customer7_0_, account0_.is_overdraft as is_overd3_0_, account0_.account_number as account_4_0_, account0_.overdraft_amount as overdraf5_0_, account0_.type as type6_0_ from accounts account0_ order by account0_.id desc limit ? offset ? [42104-214]
