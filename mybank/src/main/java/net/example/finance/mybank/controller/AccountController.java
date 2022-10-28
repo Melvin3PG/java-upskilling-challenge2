@@ -18,7 +18,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import net.example.finance.mybank.constants.PaginationConstants;
+import net.example.finance.mybank.constants.TransactionCodes;
+import net.example.finance.mybank.exceptions.ResourceNotFoundException;
 import net.example.finance.mybank.model.dto.AccountDto;
+import net.example.finance.mybank.model.dto.BaseResponseDto;
 import net.example.finance.mybank.model.dto.PaginatedDataDto;
 import net.example.finance.mybank.service.AccountService;
 
@@ -66,13 +69,19 @@ public class AccountController {
 	 * @return				Response Entity object with result code, message and object account created
 	 */
 	@PutMapping("{accountNumber}")
-	public ResponseEntity<AccountDto> updateAccount(@PathVariable("accountNumber") String accountNumber,
+	public ResponseEntity<BaseResponseDto> updateAccount(@PathVariable("accountNumber") String accountNumber,
 									@Valid @RequestBody AccountDto accountDto){
 		log.debug(String.format("Start updating account : ", accountDto.toString()));
+		BaseResponseDto baseResponse = new BaseResponseDto();
 		
 		AccountDto accountUpdated = service.updateAccount(accountNumber, accountDto);
 		
-		return ResponseEntity.ok(accountUpdated);
+		if(null != accountUpdated) {
+			baseResponse.setCode(TransactionCodes.SUCCESSFUL.getCode());
+			baseResponse.setData(accountUpdated);
+		}
+		
+		return ResponseEntity.ok(baseResponse);
 	}
 	
 	/**
@@ -81,17 +90,22 @@ public class AccountController {
 	 * @return		Response Entity object with all accounts
 	 */
 	@GetMapping
-	public ResponseEntity<PaginatedDataDto<AccountDto>> getAllAccounts(
+	public ResponseEntity<BaseResponseDto> getAllAccounts(
 				@RequestParam(value = "pageNo", defaultValue = PaginationConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
 				@RequestParam(value = "pageSize", defaultValue = PaginationConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
 				@RequestParam(value = "sortBy", defaultValue = PaginationConstants.DEFAULT_SORT_BY, required = false) String sortBy,
 				@RequestParam(value = "sortDir", defaultValue = PaginationConstants.DEFAULT_SORT_DIRECTION, required = false) String sortDir
 				){
 		log.debug("Start retrieving accounts.");
+		BaseResponseDto baseResponse = new BaseResponseDto();
 		
 		PaginatedDataDto<AccountDto> data = service.getAll(pageNo, pageSize, sortBy, sortDir);
+		if(null != data) {
+			baseResponse.setCode(TransactionCodes.SUCCESSFUL.getCode());
+			baseResponse.setData(data);
+		}
 		
-		return ResponseEntity.ok(data);
+		return ResponseEntity.ok(baseResponse);
 	}
 	
 	
@@ -103,12 +117,17 @@ public class AccountController {
 	 * @return					Response Entity with account object
 	 */
 	@GetMapping("{accountNumber}")
-	public ResponseEntity<AccountDto> getAccountByNumber(@PathVariable("accountNumber") String accountNumber){
+	public ResponseEntity<BaseResponseDto> getAccountByNumber(@PathVariable("accountNumber") String accountNumber){
 		log.debug(String.format("Start retrieving account - Account Number : %s.", accountNumber));
+		BaseResponseDto baseResponse = new BaseResponseDto();
 		
 		AccountDto account = service.getAccountByNumber(accountNumber);
+		if(null != account) {
+			baseResponse.setCode(TransactionCodes.SUCCESSFUL.getCode());
+			baseResponse.setData(account);
+		}
 		
-		return ResponseEntity.ok(account);
+		return ResponseEntity.ok(baseResponse);
 	}
 	
 	/**
@@ -119,11 +138,14 @@ public class AccountController {
 	 * @return					Response Entity with result
 	 */
 	@DeleteMapping("{accountId}")
-	public ResponseEntity<String> deleteAccount(@PathVariable("accountId") long accountId){
+	public ResponseEntity<BaseResponseDto> deleteAccount(@PathVariable("accountId") long accountId){
 		log.debug(String.format("Start delete account - Account ID : %s.", accountId));
+		BaseResponseDto baseResponse = new BaseResponseDto();
 		
 		service.deleteAccount(accountId);
+		baseResponse.setCode(TransactionCodes.SUCCESSFUL.getCode());
+		baseResponse.setMessage("Account deleted successfully!!");
 		
-		return ResponseEntity.ok("Account deleted successfully!!");
+		return ResponseEntity.ok(baseResponse);
 	}
 }

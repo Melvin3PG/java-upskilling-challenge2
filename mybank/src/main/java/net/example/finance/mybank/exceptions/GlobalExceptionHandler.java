@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import net.example.finance.mybank.constants.TransactionCodes;
 import net.example.finance.mybank.model.dto.BaseResponseDto;
 
 /**
@@ -39,7 +40,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 													WebRequest webRequest){
 		
 		BaseResponseDto response = new BaseResponseDto(webRequest.getHeader("TRX-ID"), 
-										HttpStatus.INTERNAL_SERVER_ERROR.name(),
+										//HttpStatus.INTERNAL_SERVER_ERROR.name(),
+										TransactionCodes.ERROR.getCode(),
 										exception.getMessage(), null);
 		
 		return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -61,8 +63,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		});
 		
 		BaseResponseDto response = new BaseResponseDto(webRequest.getHeader("TRX-ID"), 
-				HttpStatus.BAD_REQUEST.name(),
-				exception.getMessage(), errors);
+										//HttpStatus.BAD_REQUEST.name(),
+										TransactionCodes.NOT_VALID.getCode(),
+										exception.getMessage(), errors);
 		
 		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 	}
@@ -81,7 +84,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 	public ResponseEntity<BaseResponseDto> handleResourceNotFoundException(ResourceNotFoundException exception,
 												WebRequest webRequest){
 		BaseResponseDto response = new BaseResponseDto(webRequest.getHeader("TRX-ID"), 
-										HttpStatus.NOT_FOUND.name(),
+										//HttpStatus.NOT_FOUND.name(),
+										TransactionCodes.NOT_VALID.getCode(),
 										exception.getMessage(), null);
 		
 		return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
