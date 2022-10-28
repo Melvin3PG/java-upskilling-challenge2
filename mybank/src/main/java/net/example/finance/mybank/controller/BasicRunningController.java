@@ -24,13 +24,24 @@ public class BasicRunningController {
 	}
 
 	@GetMapping("/{id}")
-	public Account getById(@PathVariable(value = "id") Long accountNumber) {
-		return accountService.findById(accountNumber);
+	public Account getById(@PathVariable(value = "id") Long id) {
+		return accountService.findById(id);
 	}
 
 	@PostMapping("/")
 	public Account createAccount(@RequestBody Account account) {
 		return accountService.createAccount(account.getNumber(), account.getType(), account.getBalance(), account.isOverdraft(), account.getAmount());
 	}
-}
+
+	@PutMapping("/{id}")
+	public Account getById(@PathVariable(value = "id") Long id, @RequestBody Account account) {
+		return accountService.updateAccount(id, account);
+	}
+
+	@DeleteMapping("/{id}")
+	public void deleteUser(@PathVariable(value = "id") Long id)
+	{
+		accountService.deleteAccount(id);
+	}
+	}
 

@@ -9,4 +9,8 @@ public interface IAccountService {
     Account findById(Long id);
 
     Account createAccount(String accountNumber, Account.AccountType accountType, float balance, boolean isOverdraft, float overdraftAmount);
+
+    Account updateAccount(Long id, Account accDetails);
+
+    void deleteAccount(Long id);
 }

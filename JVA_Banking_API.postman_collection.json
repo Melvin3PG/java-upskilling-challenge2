@@ -11,13 +11,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:7080/",
+					"raw": "http://localhost:7080/accounts/",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "7080",
 					"path": [
+						"accounts",
 						""
 					]
 				}
@@ -30,14 +31,15 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:7080/accounts",
+					"raw": "http://localhost:7080/accounts/all",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "7080",
 					"path": [
-						"accounts"
+						"accounts",
+						"all"
 					]
 				}
 			},
@@ -47,6 +49,84 @@
 			"name": "findById",
 			"request": {
 				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:7080/accounts/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7080",
+					"path": [
+						"accounts",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "createAccount",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"number\":\"7575\",\n    \"type\": 1,\n    \"balance\": 250.5,\n    \"overdraft\": true,\n    \"amount\": 850.5\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:7080/accounts/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7080",
+					"path": [
+						"accounts",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updateAccount",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"number\":\"1919\",\n    \"type\": 1,\n    \"balance\": 999.5,\n    \"overdraft\": true,\n    \"amount\": 999.5\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:7080/accounts/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7080",
+					"path": [
+						"accounts",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteAccount",
+			"request": {
+				"method": "DELETE",
 				"header": [],
 				"url": {
 					"raw": "http://localhost:7080/accounts/1",

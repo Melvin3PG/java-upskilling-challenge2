@@ -36,4 +36,22 @@ public class AccountServiceImpl implements IAccountService {
         account.setAmount(overdraftAmount);
         return accountRepository.save(account);
     }
+
+    // UPDATE
+    @Override
+    public Account updateAccount(Long id, Account accDetails) {
+        Account account = accountRepository.findById(id).get();
+        account.setNumber(accDetails.getNumber());
+        account.setType(accDetails.getType());
+        account.setBalance(accDetails.getBalance());
+        account.setOverdraft(accDetails.isOverdraft());
+        account.setAmount(accDetails.getAmount());
+
+        return accountRepository.save(account);
+    }
+
+    @Override
+    public void deleteAccount(Long id){
+        accountRepository.deleteById(id);
+    }
 }
