@@ -1,6 +1,9 @@
 package net.example.finance.mybank.model.dto;
 
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+
 import lombok.Data;
 import net.example.finance.mybank.model.enums.AccountType;
 
@@ -21,11 +24,14 @@ public class AccountDto {
 	/**
 	 * Account number
 	 */
+	@NotEmpty(message = "Account number should not be empty.")
+	@Size(min = 10, message = "Account number must be minimum 10 charactes=")
 	private String number;
 	
 	/**
 	 * Account type
 	 */
+	@NotEmpty(message = "Account type should not be empty.")
 	private AccountType type;
 	
 	/**

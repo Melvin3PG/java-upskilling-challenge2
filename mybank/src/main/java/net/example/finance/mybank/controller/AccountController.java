@@ -2,6 +2,8 @@ package net.example.finance.mybank.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -46,7 +48,7 @@ public class AccountController {
 	 * @return 				Response Entity object with result code, message and object account created
 	 */
 	@PostMapping
-	public ResponseEntity<AccountDto> createAccount(@RequestBody AccountDto accountDto){
+	public ResponseEntity<AccountDto> createAccount(@Valid @RequestBody AccountDto accountDto){
 		log.debug(String.format("Start creating account : ", accountDto.toString()));
 		
 		AccountDto newAccount = service.createAccount(accountDto);
@@ -65,7 +67,7 @@ public class AccountController {
 	 */
 	@PutMapping("{accountNumber}")
 	public ResponseEntity<AccountDto> updateAccount(@PathVariable("accountNumber") String accountNumber,
-									@RequestBody AccountDto accountDto){
+									@Valid @RequestBody AccountDto accountDto){
 		log.debug(String.format("Start updating account : ", accountDto.toString()));
 		
 		AccountDto accountUpdated = service.updateAccount(accountNumber, accountDto);

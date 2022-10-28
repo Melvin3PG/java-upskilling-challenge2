@@ -42,10 +42,16 @@ public class AccountServiceImpl implements AccountService {
 	public AccountDto createAccount(AccountDto accountDto) {
 		log.debug(String.format("Service creating account in database : %s", accountDto.toString()));
 		
-		
+		Account newAccount = null;
 		Account account = mapToEntity(accountDto);
-		
-		Account newAccount = repository.save(account);
+		try {
+			
+		 repository.save(account);
+		 
+		}catch(Exception ex) {
+			log.error(String.format("Error creating new account. Account: %s \n %s", accountDto.toString(), ex.getMessage()));
+			throw ex;
+		}
 		
 		return mapToDTO(newAccount);
 	}
@@ -58,17 +64,25 @@ public class AccountServiceImpl implements AccountService {
 		log.debug(String.format("Service updating account in database : %s - %s",
 									accountNumber,
 									accountDto.toString()));
-
-		//retrieve account by account number
-		Account account = repository.findByNumber(accountNumber).orElseThrow(() -> new ResourceNotFoundException("", ""));
+		Account accountUpdated = null;
 		
+		//retrieve account by account number
+		Account account = repository.findByNumber(accountNumber)
+								.orElseThrow(() -> new ResourceNotFoundException("Account", 
+															"account number", accountNumber));
+		
+		try {
 		account.setType(accountDto.getType());
 		account.setBalance(accountDto.getBalance());
 		account.setOverdraft(accountDto.isOverdraft());
 		account.setOverdraftAmount(accountDto.getOverdraftAmount());
 		
-		Account accountUpdated = repository.save(account);
-		
+		accountUpdated = repository.save(account);
+		}catch(Exception ex) {
+			log.error(String.format("Error updating the account with account number: %s. \n Error: %s", 
+													accountNumber, ex.getMessage()));
+			throw ex;
+		}
 		return mapToDTO(accountUpdated);
 	}
 
@@ -80,7 +94,8 @@ public class AccountServiceImpl implements AccountService {
 		
 		//retrieve account by account number
 		Account account = repository.findByNumber(accountNumber)
-				.orElseThrow(() -> new ResourceNotFoundException("", ""));
+				.orElseThrow(() -> new ResourceNotFoundException("Account", 
+											"account number", accountNumber));
 				
 		return mapToDTO(account);
 	}
@@ -91,36 +106,52 @@ public class AccountServiceImpl implements AccountService {
      noRollbackFor = ResourceNotFoundException.class)
 	public void deleteAccount(long id) {
 		//retrieve account by id
-		Account account = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("", ""));
-		repository.delete(account);
+		Account account = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Account", 
+									"id", String.valueOf(id)));
+		try {
+			repository.delete(account);
+		}catch(Exception ex) {
+			log.error(String.format("Error deleting the account with account id: %s. \n Error: %s", 
+					String.valueOf(id), ex.getMessage()));
+			throw ex;
+		}
 	}
 	
 	@Override
 	@Transactional(readOnly = true)
 	public PaginatedDataDto<AccountDto> getAll(int pageNo, int pageSize, String sortBy, String sortDir) {
-		//create sort object with direction
-		Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
-						: Sort.by(sortBy).descending();
+		PaginatedDataDto<AccountDto> dataPaginated = null;
 		
-		//create pageable object for pagination
-		Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
-		Page<Account> pageOfAccounts = repository.findAll(pageable);
-		
-		//Get content from page object
-		List<Account> accounts = pageOfAccounts.getContent();
-		
-		//Create response object with all details of pagination and data
-		PaginatedDataDto<AccountDto> dataPaginated = new PaginatedDataDto<>();
-		dataPaginated.setPageNo(pageOfAccounts.getNumber());
-		dataPaginated.setPageSize(pageOfAccounts.getSize());
-		dataPaginated.setTotalElements(pageOfAccounts.getTotalElements());
-		dataPaginated.setTotalPages(pageOfAccounts.getTotalPages());
-		
-		//Set list accounts to paginated object in dto objects
-		dataPaginated.setData(accounts.stream()
-								  .map(account -> mapToDTO(account))
-								  .collect(Collectors.toList())
-							  );
+		try {
+			
+			//create sort object with direction
+			Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
+							: Sort.by(sortBy).descending();
+			
+			//create pageable object for pagination
+			Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
+			Page<Account> pageOfAccounts = repository.findAll(pageable);
+			
+			//Get content from page object
+			List<Account> accounts = pageOfAccounts.getContent();
+			
+			//Create response object with all details of pagination and data
+			dataPaginated = new PaginatedDataDto<>();
+			dataPaginated.setPageNo(pageOfAccounts.getNumber());
+			dataPaginated.setPageSize(pageOfAccounts.getSize());
+			dataPaginated.setTotalElements(pageOfAccounts.getTotalElements());
+			dataPaginated.setTotalPages(pageOfAccounts.getTotalPages());
+			
+			//Set list accounts to paginated object in dto objects
+			dataPaginated.setData(accounts.stream()
+									  .map(account -> mapToDTO(account))
+									  .collect(Collectors.toList())
+								  );
+			
+		}catch(Exception ex) {
+			log.error("Error retrieving the accounts from database. \n Error: %s", ex.getMessage());
+			throw ex;
+		}
 		
 		return dataPaginated;
 	}
