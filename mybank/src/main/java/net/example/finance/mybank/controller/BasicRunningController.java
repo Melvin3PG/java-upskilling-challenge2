@@ -10,7 +10,7 @@ public class BasicRunningController {
 	
 	@GetMapping("/")
 	public String runningTest() {
-		return "Running...";
+		return "Running Testing...xD!!!";
 	}
 	
 }
