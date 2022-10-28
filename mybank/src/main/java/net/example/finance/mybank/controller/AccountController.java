@@ -1,5 +1,6 @@
 package net.example.finance.mybank.controller;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -51,12 +52,18 @@ public class AccountController {
 	 * @return 				Response Entity object with result code, message and object account created
 	 */
 	@PostMapping
-	public ResponseEntity<AccountDto> createAccount(@Valid @RequestBody AccountDto accountDto){
+	public ResponseEntity<BaseResponseDto> createAccount(@Valid @RequestBody AccountDto accountDto){
 		log.debug(String.format("Start creating account : ", accountDto.toString()));
+		BaseResponseDto baseResponse = new BaseResponseDto();
 		
 		AccountDto newAccount = service.createAccount(accountDto);
+		if(null != newAccount) {
+			baseResponse.setTimeStamp(LocalDateTime.now());
+			baseResponse.setCode(TransactionCodes.SUCCESSFUL.getCode());
+			baseResponse.setData(newAccount);
+		}
 		
-		return ResponseEntity.ok(newAccount);
+		return ResponseEntity.ok(baseResponse);
 	}
 	
 	/**
@@ -77,6 +84,7 @@ public class AccountController {
 		AccountDto accountUpdated = service.updateAccount(accountNumber, accountDto);
 		
 		if(null != accountUpdated) {
+			baseResponse.setTimeStamp(LocalDateTime.now());
 			baseResponse.setCode(TransactionCodes.SUCCESSFUL.getCode());
 			baseResponse.setData(accountUpdated);
 		}
@@ -101,6 +109,7 @@ public class AccountController {
 		
 		PaginatedDataDto<AccountDto> data = service.getAll(pageNo, pageSize, sortBy, sortDir);
 		if(null != data) {
+			baseResponse.setTimeStamp(LocalDateTime.now());
 			baseResponse.setCode(TransactionCodes.SUCCESSFUL.getCode());
 			baseResponse.setData(data);
 		}
@@ -123,6 +132,7 @@ public class AccountController {
 		
 		AccountDto account = service.getAccountByNumber(accountNumber);
 		if(null != account) {
+			baseResponse.setTimeStamp(LocalDateTime.now());
 			baseResponse.setCode(TransactionCodes.SUCCESSFUL.getCode());
 			baseResponse.setData(account);
 		}
@@ -143,6 +153,8 @@ public class AccountController {
 		BaseResponseDto baseResponse = new BaseResponseDto();
 		
 		service.deleteAccount(accountId);
+		
+		baseResponse.setTimeStamp(LocalDateTime.now());
 		baseResponse.setCode(TransactionCodes.SUCCESSFUL.getCode());
 		baseResponse.setMessage("Account deleted successfully!!");
 		

@@ -1,5 +1,6 @@
 package net.example.finance.mybank.exceptions;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,7 +40,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 	public ResponseEntity<BaseResponseDto> handleGlobalException(Exception exception,
 													WebRequest webRequest){
 		
-		BaseResponseDto response = new BaseResponseDto(webRequest.getHeader("TRX-ID"), 
+		BaseResponseDto response = new BaseResponseDto(LocalDateTime.now(),
+										webRequest.getHeader("TRX-ID"), 
 										//HttpStatus.INTERNAL_SERVER_ERROR.name(),
 										TransactionCodes.ERROR.getCode(),
 										exception.getMessage(), null);
@@ -62,7 +64,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 			errors.put(fieldName, message);
 		});
 		
-		BaseResponseDto response = new BaseResponseDto(webRequest.getHeader("TRX-ID"), 
+		BaseResponseDto response = new BaseResponseDto(LocalDateTime.now(),
+										webRequest.getHeader("TRX-ID"), 
 										//HttpStatus.BAD_REQUEST.name(),
 										TransactionCodes.NOT_VALID.getCode(),
 										exception.getMessage(), errors);
@@ -83,7 +86,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 	@ExceptionHandler(ResourceNotFoundException.class)
 	public ResponseEntity<BaseResponseDto> handleResourceNotFoundException(ResourceNotFoundException exception,
 												WebRequest webRequest){
-		BaseResponseDto response = new BaseResponseDto(webRequest.getHeader("TRX-ID"), 
+		BaseResponseDto response = new BaseResponseDto(LocalDateTime.now(),
+										webRequest.getHeader("TRX-ID"), 
 										//HttpStatus.NOT_FOUND.name(),
 										TransactionCodes.NOT_VALID.getCode(),
 										exception.getMessage(), null);

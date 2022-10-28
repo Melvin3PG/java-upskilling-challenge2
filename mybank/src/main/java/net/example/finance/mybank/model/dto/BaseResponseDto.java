@@ -1,5 +1,8 @@
 package net.example.finance.mybank.model.dto;
 
+import java.time.LocalDateTime;
+import java.util.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,6 +18,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BaseResponseDto {
+	
+	private LocalDateTime timeStamp;
 
 	//Transaction ID to track in logs the request in complete flow process.
 	private String TransactionId;
