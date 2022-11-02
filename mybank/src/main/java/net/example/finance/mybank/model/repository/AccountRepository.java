@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import net.example.finance.mybank.model.entity.Account;
 
 @Repository
-public interface AccountRepository extends JpaRepository<Account,String>{
+public interface AccountRepository extends JpaRepository<Account,Long>{
     
 }

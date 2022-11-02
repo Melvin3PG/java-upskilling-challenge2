@@ -1,10 +1,14 @@
 package net.example.finance.mybank.serviceimpl;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.example.mvnprg.openapi.model.AccountObject;
 
 import net.example.finance.mybank.model.entity.Account;
 import net.example.finance.mybank.model.repository.AccountRepository;
@@ -15,33 +19,74 @@ public class AccountServiceImpl implements AccountService{
 
     @Autowired
     private AccountRepository accountRepository;
+    private ModelMapper modelMapper = new ModelMapper();
 
     @Override
-    public Account saveAccount(Account account) {
-        return accountRepository.save(account);
+    public AccountObject saveAccount(AccountObject accountObject) {
+        Account account = accountRepository.save(modelMapper.map(accountObject, Account.class));
+		return modelMapper.map(account, AccountObject.class);
     }
 
     @Override
-    public List<Account> fetchAccountList() {
-        return (List<Account>) accountRepository.findAll();
+    public List<AccountObject> fetchAccountList() {
+        List<Account> list = accountRepository.findAll();
+        return Arrays.asList(modelMapper.map(list, AccountObject[].class));
     }
 
     @Override
-    public Account updataAccount(Account account, String accNum) {
+    public AccountObject updateAccount(AccountObject accountObject, Long accountId) {
         Account accDB
-            = accountRepository.findById(accNum)
+            = accountRepository.findById(accountId)
                   .get();
+        Account account = modelMapper.map(accountObject, Account.class);
   
-        if (Objects.nonNull(account.getAccountNum())
-            && !"".equalsIgnoreCase(
-                account.getAccountNum())) {
-            accDB.setAccountNum(
-                account.getAccountNum());
+        account = accountRepository.save(updateFields(accDB,account));
+		return modelMapper.map(account, AccountObject.class);
+    }
+
+    @Override
+    public AccountObject deleteAccountById(Long accountId) {
+        Account account = accountRepository.findById(accountId).get();
+        
+        if (Objects.nonNull(account.getAccountNumber())
+            && account.getAccountNumber().equals(accountId)) 
+        {
+            accountRepository.deleteById(accountId);
+        }  
+        
+        return modelMapper.map(account, AccountObject.class);
+    }
+
+    @Override
+    public AccountObject fetchById(Long accountId) {
+        Account account = accountRepository.findById(accountId).get();
+        return modelMapper.map(account, AccountObject.class);
+    }
+
+    @Override
+    public AccountObject partialUpdateAccount(AccountObject accountObject, Long accountId) {
+        Account accDB
+            = accountRepository.findById(accountId)
+                  .get();
+        Account account = modelMapper.map(accountObject, Account.class);
+
+        account = accountRepository.save(updateFields(accDB,account));
+		return modelMapper.map(account, AccountObject.class);
+    }
+
+    private Account updateFields(Account accDB, Account account)
+    {
+        if (Objects.nonNull(account.getAccountNumber())
+            && accDB.getAccountNumber() != 
+            account.getAccountNumber()
+            && account.getAccountNumber() != 0) {
+            accDB.setAccountNumber(
+                account.getAccountNumber());
         }
   
         if (Objects.nonNull(
                 account.getAccountType())
-            && !"".equalsIgnoreCase(
+            && !"".equals(
                 account.getAccountType())) {
             accDB.setAccountType(
                 account.getAccountType());
@@ -55,32 +100,21 @@ public class AccountServiceImpl implements AccountService{
                 account.getBalance());
         }
 
-        if (Objects.nonNull(account.getOverdraftAmt())
-            && accDB.getOverdraftAmt() !=
-                account.getOverdraftAmt()
-                && account.getOverdraftAmt() != 0) {
-            accDB.setOverdraftAmt(
-                account.getOverdraftAmt());
+        if (Objects.nonNull(account.getOverdraftAmount())
+            && accDB.getOverdraftAmount() !=
+                account.getOverdraftAmount()
+                && account.getOverdraftAmount() != 0) {
+            accDB.setOverdraftAmount(
+                account.getOverdraftAmount());
         }
 
-        if (!(accDB.getOverdrafts().equals(account.getOverdrafts()))) 
+        if (!(accDB.getOverdraftAllowed().equals(account.getOverdraftAllowed()))) 
         {
-            accDB.setOverdrafts(
-                account.getOverdrafts());
+            accDB.setOverdraftAllowed(
+                account.getOverdraftAllowed());
         }
-  
-        return accountRepository.save(accDB);
-    }
 
-    @Override
-    public void deleteDepartmentById(String accNum) {
-        accountRepository.deleteById(accNum);
-        
-    }
-
-    @Override
-    public Account fetchById(String accNum) {
-        return accountRepository.findById(accNum).get();
+        return accDB;
     }
     
 }

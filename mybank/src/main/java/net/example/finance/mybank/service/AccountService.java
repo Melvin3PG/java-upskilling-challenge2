@@ -2,12 +2,18 @@ package net.example.finance.mybank.service;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
+import com.example.mvnprg.openapi.model.AccountObject;
+
 import net.example.finance.mybank.model.entity.Account;
 
+@Service
 public interface AccountService {
-    Account saveAccount(Account account);
-    List<Account> fetchAccountList();
-    Account updataAccount(Account account, String accNum);
-    void deleteDepartmentById(String accNum);
-    Account fetchById(String accNum);
+    AccountObject saveAccount(AccountObject account);
+    List<AccountObject> fetchAccountList();
+    AccountObject updateAccount(AccountObject account, Long accNum);
+    AccountObject deleteAccountById(Long accNum);
+    AccountObject fetchById(Long accNum);
+    AccountObject partialUpdateAccount(AccountObject account, Long accNum);
 }

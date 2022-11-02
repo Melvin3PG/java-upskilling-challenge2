@@ -3,6 +3,8 @@ package net.example.finance.mybank.model.entity;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+import com.example.mvnprg.openapi.model.AccountObject.AccountTypeEnum;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,9 +17,9 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Account {
     @Id
-    private String accountNum;
-    private String accountType;
-    private float balance;
-    private Boolean overdrafts;
-    private float overdraftAmt;
+    private Long accountNumber;
+    private AccountTypeEnum accountType;
+    private Float balance;
+    private Boolean overdraftAllowed;
+    private Float overdraftAmount;
 }
