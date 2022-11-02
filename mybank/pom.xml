@@ -103,6 +103,12 @@
 			<artifactId>jackson-databind-nullable</artifactId>
 			<version>0.1.0</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-ui</artifactId>
+			<version>1.6.4</version>
+		</dependency>
 
 	</dependencies>
 
