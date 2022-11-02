@@ -21,7 +21,7 @@
 	<properties>
 		<java.version>1.8</java.version>
 		<spring-boot-starter-web.version>2.2.1.RELEASE</spring-boot-starter-web.version>
-		<openapi-generator-maven-plugin-version>6.0.0</openapi-generator-maven-plugin-version>
+		<openapi-generator-maven-plugin-version>6.2.0</openapi-generator-maven-plugin-version>
 		<springfox-version>2.8.0</springfox-version>
 		<swagger-annotations-version>1.5.8</swagger-annotations-version>
 	</properties>
@@ -79,6 +79,12 @@
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-ui</artifactId>
+			<version>1.6.4</version>
 		</dependency>
 
 	</dependencies>

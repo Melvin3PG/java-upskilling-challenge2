@@ -1,799 +1,969 @@
 openapi: 3.0.3
 info:
-  title: Swagger Petstore - OpenAPI 3.0
+  title: Banking REST API
   description: |-
-    This is a sample Pet Store Server based on the OpenAPI 3.0 specification.  You can find out more about
-    Swagger at [https://swagger.io](https://swagger.io). In the third iteration of the pet store, we've switched to the design first approach!
-    You can now help us improve the API whether it's by making changes to the definition itself or to the code.
-    That way, with time, we can improve the API in general, and expose some of the new features in OAS3.
-
-    _If you're looking for the Swagger 2.0/OAS 2.0 version of Petstore, then click [here](https://editor.swagger.io/?url=https://petstore.swagger.io/v2/swagger.yaml). Alternatively, you can load via the `Edit > Load Petstore OAS 2.0` menu option!_
-    
-    Some useful links:
-    - [The Pet Store repository](https://github.com/swagger-api/swagger-petstore)
-    - [The source API definition for the Pet Store](https://github.com/swagger-api/swagger-petstore/blob/master/src/main/resources/openapi.yaml)
+    This is a **Banking REST API**. This API includes three domains, Security Domain, Customer Domain and Account Domain.
+    Its design it's based on the Open Api Specification 3.0.
   termsOfService: http://swagger.io/terms/
   contact:
     email: apiteam@swagger.io
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
-  version: 1.0.11
+  version: 1.0.0
 externalDocs:
   description: Find out more about Swagger
   url: http://swagger.io
 servers:
-  - url: https://petstore3.swagger.io/api/v3
+  - url: https://banking.example.net
 tags:
-  - name: pet
-    description: Everything about your Pets
+  - name: Banking REST API
+    description: Operations related to bankins systems
     externalDocs:
       description: Find out more
       url: http://swagger.io
-  - name: store
-    description: Access to Petstore orders
-    externalDocs:
-      description: Find out more about our store
-      url: http://swagger.io
-  - name: user
-    description: Operations about user
 paths:
-  /pet:
-    put:
+  ### Security domain ###
+  # Authentication service validation for username and password
+  /authentication/login:
+    post:
       tags:
-        - pet
-      summary: Update an existing pet
-      description: Update an existing pet by Id
-      operationId: updatePet
+        - Security Domain
+      summary: Authentication service validation for username and password
+      description: Login service with user and password
+      operationId: login
+      parameters:
+        #- $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/ChannelId'
+        - $ref: '#/components/parameters/CountryCode'
+        - $ref: '#/components/parameters/ApplicationCode'
+        - $ref: '#/components/parameters/SpanId'
+        - $ref: '#/components/parameters/TraceId'
+        - $ref: '#/components/parameters/UserContext'
+        - $ref: '#/components/parameters/ApiVersion'
+        #- $ref: '#/components/parameters/SubChannelId'
       requestBody:
-        description: Update an existent pet in the store
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Pet'
-          application/xml:
+              $ref: '#/components/schemas/LoginObject'
+      responses:
+        '200':
+          description:  Successful Authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDetailResponse'
+        '400':
+          $ref: '#/components/responses/400BadRequest'
+        '401':
+          $ref: '#/components/responses/401Unauthorized'
+        '500':
+          $ref: '#/components/responses/500InternalServerError'
+  ### Account domain ###
+  # Create new account
+  /accounts:
+    post:
+      tags:
+        - Account Domain
+      summary: Operation for a new banking account creation
+      description: Add a new banking account
+      operationId: createAccount
+      parameters:
+        #- $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/ChannelId'
+        - $ref: '#/components/parameters/CountryCode'
+        - $ref: '#/components/parameters/ApplicationCode'
+        - $ref: '#/components/parameters/SpanId'
+        - $ref: '#/components/parameters/TraceId'
+        - $ref: '#/components/parameters/UserContext'
+        - $ref: '#/components/parameters/ApiVersion'
+        #- $ref: '#/components/parameters/SubChannelId'
+      requestBody:
+        description: Create a new banking account
+        content:
+          application/json:
             schema:
-              $ref: '#/components/schemas/Pet'
-          application/x-www-form-urlencoded:
+              $ref: '#/components/schemas/AccountObject'
+        required: true
+      responses:
+        '201':
+          description: Account was created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountDetailResponse'
+        '400':
+          $ref: '#/components/responses/400BadRequest'
+        '401':
+          $ref: '#/components/responses/401Unauthorized'
+        '500':
+          $ref: '#/components/responses/500InternalServerError'
+    # Retreives all account elemnents list
+    get:
+      tags:
+        - Account Domain
+      summary: Resource that retrieves an account by account number
+      description: Find account by account number
+      operationId: getAllAccounts
+      parameters:
+        #- $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/ChannelId'
+        - $ref: '#/components/parameters/CountryCode'
+        - $ref: '#/components/parameters/ApplicationCode'
+        - $ref: '#/components/parameters/SpanId'
+        - $ref: '#/components/parameters/TraceId'
+        - $ref: '#/components/parameters/UserContext'
+        - $ref: '#/components/parameters/ApiVersion'
+        #- $ref: '#/components/parameters/SubChannelId'
+      responses:
+        '200':
+          description: Account was successfully retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountListResponse'
+        '400':
+          $ref: '#/components/responses/400BadRequest'
+        '401':
+          $ref: '#/components/responses/401Unauthorized'
+        '500':
+          $ref: '#/components/responses/500InternalServerError'
+  # Retreives an account by aacount number
+  /accounts/{account-id}:
+    get:
+      tags:
+        - Account Domain
+      summary: Resource that retrieves an account by account number
+      description: Find account by account number
+      operationId: getAccountByAccountNumber
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+        #- $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/ChannelId'
+        - $ref: '#/components/parameters/CountryCode'
+        - $ref: '#/components/parameters/ApplicationCode'
+        - $ref: '#/components/parameters/SpanId'
+        - $ref: '#/components/parameters/TraceId'
+        - $ref: '#/components/parameters/UserContext'
+        - $ref: '#/components/parameters/ApiVersion'
+        #- $ref: '#/components/parameters/SubChannelId'
+      responses:
+        '200':
+          description: Account was successfully retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountDetailResponse'
+        '400':
+          $ref: '#/components/responses/400BadRequest'
+        '401':
+          $ref: '#/components/responses/401Unauthorized'
+        '500':
+          $ref: '#/components/responses/500InternalServerError'
+    # Modify an account
+    put:
+      tags:
+        - Account Domain
+      summary: Resource that modifies account data
+      description: Update account details
+      operationId: updateAccount
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+      requestBody:
+        content:
+          application/json:
             schema:
-              $ref: '#/components/schemas/Pet'
+              $ref: '#/components/schemas/AccountObject'
         required: true
       responses:
         '200':
-          description: Successful operation
+          description: Account was updated successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Pet'          
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/Pet'
+                $ref: '#/components/schemas/AccountDetailResponse'
         '400':
-          description: Invalid ID supplied
-        '404':
-          description: Pet not found
-        '405':
-          description: Validation exception
-      security:
-        - petstore_auth:
-            - write:pets
-            - read:pets
-    post:
+          $ref: '#/components/responses/400BadRequest'
+        '401':
+          $ref: '#/components/responses/401Unauthorized'
+        '500':
+          $ref: '#/components/responses/500InternalServerError'
+    # Modify partially an account
+    patch:
       tags:
-        - pet
-      summary: Add a new pet to the store
-      description: Add a new pet to the store
-      operationId: addPet
+        - Account Domain
+      summary: Resource that modifies partially some attributes of account data
+      description: Update partial account details
+      operationId: partialUpdateAccount
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
       requestBody:
-        description: Create a new pet in the store
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Pet'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/Pet'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/Pet'
+              $ref: '#/components/schemas/AccountObject'
         required: true
       responses:
         '200':
-          description: Successful operation
+          description: Account was updated successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Pet'          
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/Pet'
-        '405':
-          description: Invalid input
-      security:
-        - petstore_auth:
-            - write:pets
-            - read:pets
-  /pet/findByStatus:
-    get:
-      tags:
-        - pet
-      summary: Finds Pets by status
-      description: Multiple status values can be provided with comma separated strings
-      operationId: findPetsByStatus
-      parameters:
-        - name: status
-          in: query
-          description: Status values that need to be considered for filter
-          required: false
-          explode: true
-          schema:
-            type: string
-            default: available
-            enum:
-              - available
-              - pending
-              - sold
-      responses:
-        '200':
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Pet'          
-            application/xml:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Pet'
+                $ref: '#/components/schemas/AccountDetailResponse'
         '400':
-          description: Invalid status value
-      security:
-        - petstore_auth:
-            - write:pets
-            - read:pets
-  /pet/findByTags:
-    get:
-      tags:
-        - pet
-      summary: Finds Pets by tags
-      description: Multiple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.
-      operationId: findPetsByTags
-      parameters:
-        - name: tags
-          in: query
-          description: Tags to filter by
-          required: false
-          explode: true
-          schema:
-            type: array
-            items:
-              type: string
-      responses:
-        '200':
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Pet'          
-            application/xml:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Pet'
-        '400':
-          description: Invalid tag value
-      security:
-        - petstore_auth:
-            - write:pets
-            - read:pets
-  /pet/{petId}:
-    get:
-      tags:
-        - pet
-      summary: Find pet by ID
-      description: Returns a single pet
-      operationId: getPetById
-      parameters:
-        - name: petId
-          in: path
-          description: ID of pet to return
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        '200':
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Pet'
-        '400':
-          description: Invalid ID supplied
-        '404':
-          description: Pet not found
-      security:
-        - api_key: []
-        - petstore_auth:
-            - write:pets
-            - read:pets
-    post:
-      tags:
-        - pet
-      summary: Updates a pet in the store with form data
-      description: ''
-      operationId: updatePetWithForm
-      parameters:
-        - name: petId
-          in: path
-          description: ID of pet that needs to be updated
-          required: true
-          schema:
-            type: integer
-            format: int64
-        - name: name
-          in: query
-          description: Name of pet that needs to be updated
-          schema:
-            type: string
-        - name: status
-          in: query
-          description: Status of pet that needs to be updated
-          schema:
-            type: string
-      responses:
-        '405':
-          description: Invalid input
-      security:
-        - petstore_auth:
-            - write:pets
-            - read:pets
+          $ref: '#/components/responses/400BadRequest'
+        '401':
+          $ref: '#/components/responses/401Unauthorized'
+        '500':
+          $ref: '#/components/responses/500InternalServerError'
+    # Delete an account by account number
     delete:
       tags:
-        - pet
-      summary: Deletes a pet
-      description: delete a pet
-      operationId: deletePet
+        - Account Domain
+      summary: Resource that delete account by account number
+      description: Delete account by account number
+      operationId: deleteAccount
       parameters:
-        - name: api_key
-          in: header
-          description: ''
-          required: false
-          schema:
-            type: string
-        - name: petId
-          in: path
-          description: Pet id to delete
-          required: true
-          schema:
-            type: integer
-            format: int64
+        - $ref: '#/components/parameters/AccountId'
       responses:
+        '200':
+          description: Account was updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountDetailResponse'
         '400':
-          description: Invalid pet value
-      security:
-        - petstore_auth:
-            - write:pets
-            - read:pets
-  /pet/{petId}/uploadImage:
+          $ref: '#/components/responses/400BadRequest'
+        '401':
+          $ref: '#/components/responses/401Unauthorized'
+        '500':
+          $ref: '#/components/responses/500InternalServerError'
+  ### Customer domain ###
+  # Create new customer
+  /customers:
     post:
       tags:
-        - pet
-      summary: uploads an image
-      description: ''
-      operationId: uploadFile
+        - Customer Domain
+      summary: Operation for a new banking customer creation
+      description: Add a new banking customer
+      operationId: createCustomer
       parameters:
-        - name: petId
-          in: path
-          description: ID of pet to update
-          required: true
-          schema:
-            type: integer
-            format: int64
-        - name: additionalMetadata
-          in: query
-          description: Additional Metadata
-          required: false
-          schema:
-            type: string
+        #- $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/ChannelId'
+        - $ref: '#/components/parameters/CountryCode'
+        - $ref: '#/components/parameters/ApplicationCode'
+        - $ref: '#/components/parameters/SpanId'
+        - $ref: '#/components/parameters/TraceId'
+        - $ref: '#/components/parameters/UserContext'
+        - $ref: '#/components/parameters/ApiVersion'
+        #- $ref: '#/components/parameters/SubChannelId'
       requestBody:
-        content:
-          application/octet-stream:
-            schema:
-              type: string
-              format: binary
-      responses:
-        '200':
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponse'
-      security:
-        - petstore_auth:
-            - write:pets
-            - read:pets
-  /store/inventory:
-    get:
-      tags:
-        - store
-      summary: Returns pet inventories by status
-      description: Returns a map of status codes to quantities
-      operationId: getInventory
-      responses:
-        '200':
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                additionalProperties:
-                  type: integer
-                  format: int32
-      security:
-        - api_key: []
-  /store/order:
-    post:
-      tags:
-        - store
-      summary: Place an order for a pet
-      description: Place a new order in the store
-      operationId: placeOrder
-      requestBody:
+        description: Create a new banking customer
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Order'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/Order'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/Order'
+              $ref: '#/components/schemas/CustomerObject'
+        required: true
       responses:
-        '200':
-          description: successful operation
+        '201':
+          description: Customer was created successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Order'
-        '405':
-          description: Invalid input
-  /store/order/{orderId}:
+                $ref: '#/components/schemas/CustomerDetailResponse'
+        '400':
+          $ref: '#/components/responses/400BadRequest'
+        '401':
+          $ref: '#/components/responses/401Unauthorized'
+        '500':
+          $ref: '#/components/responses/500InternalServerError'
+    # Retreives all customer elemnents list
     get:
       tags:
-        - store
-      summary: Find purchase order by ID
-      description: For valid response try integer IDs with value <= 5 or > 10. Other values will generate exceptions.
-      operationId: getOrderById
+        - Customer Domain
+      summary: Resource that retrieves an customer by customer number
+      description: Find customer by customer number
+      operationId: getAllCustomers
       parameters:
-        - name: orderId
-          in: path
-          description: ID of order that needs to be fetched
-          required: true
-          schema:
-            type: integer
-            format: int64
+        #- $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/ChannelId'
+        - $ref: '#/components/parameters/CountryCode'
+        - $ref: '#/components/parameters/ApplicationCode'
+        - $ref: '#/components/parameters/SpanId'
+        - $ref: '#/components/parameters/TraceId'
+        - $ref: '#/components/parameters/UserContext'
+        - $ref: '#/components/parameters/ApiVersion'
+        #- $ref: '#/components/parameters/SubChannelId'
       responses:
         '200':
-          description: successful operation
+          description: Customer was successfully retrieved
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Order'          
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/Order'
+                $ref: '#/components/schemas/CustomerListResponse'
         '400':
-          description: Invalid ID supplied
-        '404':
-          description: Order not found
-    delete:
-      tags:
-        - store
-      summary: Delete purchase order by ID
-      description: For valid response try integer IDs with value < 1000. Anything above 1000 or nonintegers will generate API errors
-      operationId: deleteOrder
-      parameters:
-        - name: orderId
-          in: path
-          description: ID of the order that needs to be deleted
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        '400':
-          description: Invalid ID supplied
-        '404':
-          description: Order not found
-  /user:
-    post:
-      tags:
-        - user
-      summary: Create user
-      description: This can only be done by the logged in user.
-      operationId: createUser
-      requestBody:
-        description: Created user object
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/User'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/User'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/User'
-      responses:
-        default:
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/User'
-  /user/createWithList:
-    post:
-      tags:
-        - user
-      summary: Creates list of users with given input array
-      description: Creates list of users with given input array
-      operationId: createUsersWithListInput
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/User'
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'          
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/User'
-        default:
-          description: successful operation
-  /user/login:
+          $ref: '#/components/responses/400BadRequest'
+        '401':
+          $ref: '#/components/responses/401Unauthorized'
+        '500':
+          $ref: '#/components/responses/500InternalServerError'
+  # Retreives an customer by customer id
+  /customers/{customer-id}:
     get:
       tags:
-        - user
-      summary: Logs user into the system
-      description: ''
-      operationId: loginUser
+        - Customer Domain
+      summary: Resource that retrieves an customer by customer number
+      description: Find customer by customer number
+      operationId: getCustomerByCustomerNumber
       parameters:
-        - name: username
-          in: query
-          description: The user name for login
-          required: false
-          schema:
-            type: string
-        - name: password
-          in: query
-          description: The password for login in clear text
-          required: false
-          schema:
-            type: string
+        - $ref: '#/components/parameters/CustomerId'
+        #- $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/ChannelId'
+        - $ref: '#/components/parameters/CountryCode'
+        - $ref: '#/components/parameters/ApplicationCode'
+        - $ref: '#/components/parameters/SpanId'
+        - $ref: '#/components/parameters/TraceId'
+        - $ref: '#/components/parameters/UserContext'
+        - $ref: '#/components/parameters/ApiVersion'
+        #- $ref: '#/components/parameters/SubChannelId'
       responses:
         '200':
-          description: successful operation
-          headers:
-            X-Rate-Limit:
-              description: calls per hour allowed by the user
-              schema:
-                type: integer
-                format: int32
-            X-Expires-After:
-              description: date in UTC when token expires
-              schema:
-                type: string
-                format: date-time
-          content:
-            application/xml:
-              schema:
-                type: string
-            application/json:
-              schema:
-                type: string
-        '400':
-          description: Invalid username/password supplied
-  /user/logout:
-    get:
-      tags:
-        - user
-      summary: Logs out current logged in user session
-      description: ''
-      operationId: logoutUser
-      parameters: []
-      responses:
-        default:
-          description: successful operation
-  /user/{username}:
-    get:
-      tags:
-        - user
-      summary: Get user by user name
-      description: ''
-      operationId: getUserByName
-      parameters:
-        - name: username
-          in: path
-          description: 'The name that needs to be fetched. Use user1 for testing. '
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: successful operation
+          description: Customer was successfully retrieved
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'          
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/CustomerDetailResponse'
         '400':
-          description: Invalid username supplied
-        '404':
-          description: User not found
+          $ref: '#/components/responses/400BadRequest'
+        '401':
+          $ref: '#/components/responses/401Unauthorized'
+        '500':
+          $ref: '#/components/responses/500InternalServerError'
+    # Modify an customer
     put:
       tags:
-        - user
-      summary: Update user
-      description: This can only be done by the logged in user.
-      operationId: updateUser
+        - Customer Domain
+      summary: Resource that modifies customer data
+      description: Update customer details
+      operationId: updateCustomer
       parameters:
-        - name: username
-          in: path
-          description: name that need to be deleted
-          required: true
-          schema:
-            type: string
+        - $ref: '#/components/parameters/CustomerId'
       requestBody:
-        description: Update an existent user in the store
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/User'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/CustomerObject'
+        required: true
       responses:
-        default:
-          description: successful operation
+        '200':
+          description: Customer was updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerDetailResponse'
+        '400':
+          $ref: '#/components/responses/400BadRequest'
+        '401':
+          $ref: '#/components/responses/401Unauthorized'
+        '500':
+          $ref: '#/components/responses/500InternalServerError'
+    # Modify partially an customer
+    patch:
+      tags:
+        - Customer Domain
+      summary: Resource that modifies partially some attributes of customer data
+      description: Update partial customer details
+      operationId: partialUpdateCustomer
+      parameters:
+        - $ref: '#/components/parameters/CustomerId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerObject'
+        required: true
+      responses:
+        '200':
+          description: Customer was updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerDetailResponse'
+        '400':
+          $ref: '#/components/responses/400BadRequest'
+        '401':
+          $ref: '#/components/responses/401Unauthorized'
+        '500':
+          $ref: '#/components/responses/500InternalServerError'
+    # Delete an customer by customer number
     delete:
       tags:
-        - user
-      summary: Delete user
-      description: This can only be done by the logged in user.
-      operationId: deleteUser
+        - Customer Domain
+      summary: Resource that delete customer by customer number
+      description: Delete customer by customer number
+      operationId: deleteCustomer
       parameters:
-        - name: username
-          in: path
-          description: The name that needs to be deleted
-          required: true
-          schema:
-            type: string
+        - $ref: '#/components/parameters/CustomerId'
       responses:
+        '200':
+          description: Customer was updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerDetailResponse'
         '400':
-          description: Invalid username supplied
-        '404':
-          description: User not found
+          $ref: '#/components/responses/400BadRequest'
+        '401':
+          $ref: '#/components/responses/401Unauthorized'
+        '500':
+          $ref: '#/components/responses/500InternalServerError'
+  # Retreives accounts of customer
+  /customers/{customer-id}/accounts:
+    # Retreives all account elemnents list
+    get:
+      tags:
+        - Customer Domain
+      summary: Resource that retrieves an account by account number
+      description: Find account by account number
+      operationId: getAllAccountsOfCustomer
+      parameters:
+        - $ref: '#/components/parameters/CustomerId'
+        #- $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/ChannelId'
+        - $ref: '#/components/parameters/CountryCode'
+        - $ref: '#/components/parameters/ApplicationCode'
+        - $ref: '#/components/parameters/SpanId'
+        - $ref: '#/components/parameters/TraceId'
+        - $ref: '#/components/parameters/UserContext'
+        - $ref: '#/components/parameters/ApiVersion'
+        #- $ref: '#/components/parameters/SubChannelId'
+      responses:
+        '200':
+          description: Account was successfully retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountListResponse'
+        '400':
+          $ref: '#/components/responses/400BadRequest'
+        '401':
+          $ref: '#/components/responses/401Unauthorized'
+        '500':
+          $ref: '#/components/responses/500InternalServerError'
+  # Retreives an account by aacount number
+  /customers/{customer-id}/accounts/{account-id}:
+    get:
+      tags:
+        - Customer Domain
+      summary: Resource that retrieves an account by account number
+      description: Find account by account number
+      operationId: getAccountByCustomerAndAccountNumber
+      parameters:
+        - $ref: '#/components/parameters/CustomerId'
+        - $ref: '#/components/parameters/AccountId'
+        #- $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/ChannelId'
+        - $ref: '#/components/parameters/CountryCode'
+        - $ref: '#/components/parameters/ApplicationCode'
+        - $ref: '#/components/parameters/SpanId'
+        - $ref: '#/components/parameters/TraceId'
+        - $ref: '#/components/parameters/UserContext'
+        - $ref: '#/components/parameters/ApiVersion'
+        #- $ref: '#/components/parameters/SubChannelId'
+      responses:
+        '200':
+          description: Account was successfully retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountDetailResponse'
+        '400':
+          $ref: '#/components/responses/400BadRequest'
+        '401':
+          $ref: '#/components/responses/401Unauthorized'
+        '500':
+          $ref: '#/components/responses/500InternalServerError'
+    # Modify an account
+    put:
+      tags:
+        - Customer Domain
+      summary: Resource that modifies account data
+      description: Update account details
+      operationId: updateAccountOfCustomer
+      parameters:
+        - $ref: '#/components/parameters/CustomerId'
+        - $ref: '#/components/parameters/AccountId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountObject'
+        required: true
+      responses:
+        '200':
+          description: Account was updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountDetailResponse'
+        '400':
+          $ref: '#/components/responses/400BadRequest'
+        '401':
+          $ref: '#/components/responses/401Unauthorized'
+        '500':
+          $ref: '#/components/responses/500InternalServerError'
+    # Modify partially an account
+    patch:
+      tags:
+        - Customer Domain
+      summary: Resource that modifies partially some attributes of account data
+      description: Update partial account details
+      operationId: partialUpdateAccountOfCustomer
+      parameters:
+        - $ref: '#/components/parameters/CustomerId'
+        - $ref: '#/components/parameters/AccountId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountObject'
+        required: true
+      responses:
+        '200':
+          description: Account was updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountDetailResponse'
+        '400':
+          $ref: '#/components/responses/400BadRequest'
+        '401':
+          $ref: '#/components/responses/401Unauthorized'
+        '500':
+          $ref: '#/components/responses/500InternalServerError'
+    # Delete an account by account number
+    delete:
+      tags:
+        - Customer Domain
+      summary: Resource that delete account by account number
+      description: Delete account by account number
+      operationId: deleteAccountOfCustomer
+      parameters:
+        - $ref: '#/components/parameters/CustomerId'
+        - $ref: '#/components/parameters/AccountId'
+      responses:
+        '200':
+          description: Account was updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountDetailResponse'
+        '400':
+          $ref: '#/components/responses/400BadRequest'
+        '401':
+          $ref: '#/components/responses/401Unauthorized'
+        '500':
+          $ref: '#/components/responses/500InternalServerError'
 components:
+  parameters:
+    Authorization:
+      name: Authorization
+      in: header
+      required: true
+      description: |
+        An API must require Authorization header in http request as a JSON Web Token (JWT) issued by Enterprise approved Oauth2 Authorization Server for service authentication.
+        The API client must use OAuth 2.0 Client Credentials Grant Type to request an Access Token as JWT from Enterprise approved Oauth2 Authorization Server and pass as Authorization header (please refer to OAuth2 - Client Credentials Flow).
+          For any API Header details, please refer:
+      example: "eyJ0eXAiO...."
+      schema:
+        type: string
+
+    TraceId:
+      name: x-b3-traceid
+      in: header
+      required: false
+      description: |
+        Also known as a Correlation ID, is a unique identifier value that is attached to requests and messages that allow reference to a particular business transaction or event chain across multiple integration tiers.
+        x-b3-traceid header is automatically generated/passed through when Spring Cloud Sleuth is included as a dependency. Sleuth may be a transitive dependency of other library.
+        If project team needs to create trace id  their own , it has to be 16 digit hexadecimal number(64 bit, since digit in hexadecimal represents 4 bits) e.g. 71200de3d3f82a83.
+      example: "41200de3d3e82a81"
+      schema:
+        type: string
+        minLength: 16
+        maxLength: 26
+
+    ChannelId:
+      name: x-channel-id
+      in: header
+      required: true
+      description: |
+        This is to identify the Channel which is making this request. Originating application is responsible for sending x-channel-id.
+        For example, if  application 1 makes call to application 2 and then application 2 makes a call to application 3, application 1 will populate and send the x-channel-id to application 2 and application 2 will propagate the same x-channel-id to application 3.
+      example: "Mobile"
+      schema:
+        type: string
+        enum: ["Mobile", "Online", "Web", "Batch"]
+        minLength: 1
+        maxLength: 15
+
+    SubChannelId:
+      name: sub-channel-id
+      in: header
+      required: false
+      description: |
+        This is to identify the Sub Channel which is making this request. Originating application is responsible for sending x-channel-id.
+        For example, if  application 1 makes call to application 2 and then application 2 makes a call to application 3, application 1 will populate and send the sub-channel-id to application 2 and application 2 will propagate the same x-channel-id to application 3.
+      example: "MobileBankinApp"
+      schema:
+        type: string
+
+    CountryCode:
+      name: x-country-code
+      in: header
+      required: true
+      description: |
+        This header represents the country code of API client which is making the request.
+        ISO 3166 Alpha 2 Code (https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) is enforced.
+      example: "CR"
+      schema:
+        type: string
+        minLength: 2
+        maxLength: 2
+
+    ApplicationCode:
+      name: x-appl-code
+      in: header
+      required: true
+      description: |
+        This is to identify the source Application code which is making this request.
+        Originating application is responsible for sending x-appl-code. For example, if  application 1 makes call to application 2 and then application 2 makes a call to application 3, application 1 will populate and send the x-appl-code to application 2 and application 2 will propagate the same x-appl-code to application 3.
+      example: "APP-Adroid-001"
+      schema:
+        type: string
+        minLength: 4
+        maxLength: 5
+
+    ApiVersion:
+      name: x-api-version
+      in: header
+      required: false
+      description: |
+        This is the runtime minor and path version of the API.
+        If major version of the API is released, then this major version digits need to be reconciled.
+      example: "x.1"
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 40
+
+    UserContext:
+      name: x-user-context
+      in: header
+      required: false
+      description: |
+        When there is requirement to pass additional user context attributes as optional headers when a service api is called. x-user-context is needed to be utilized to pass optional header attributes. This header must be a Base64 encoded JSON object for API Spec defined in OAS2 since OAS2 does not allow header parameter type as object. The below country specific optional headers will be accommodated here as JSON Object as shown below.
+        Object structure example of x-user-context -  { "sub-channel" : "Mobile IOS", "officer-id" : "456", "transit-id" : "556", teller-id" : "7464", "language" : "EN", " originating-ip-address":"122.122.12.11"} .
+        The below base64 encoded string for the above sample data, and the encoded string needs to be passed as x-user-context header instead of the JSON object:
+        eyAic3ViLWNoYW5uZWwiIDogIk1vYmlsZSBJT1MiLCAib2ZmaWNlci1pZCIgOiAiNDU2IiwgInRyYW5zaXQtaWQiIDogIjU1NiIsIHRlbGxlci1pZCIgOiAiNzQ2NCIsICJsYW5ndWFnZSIgOiAiRU4iLCAiIG9yaWdpbmF0aW5nLWlwLWFkZHJlc3MiOiIxMjIuMTIyLjEyLjExIn0=
+        OAS3 supports header parameter type as object, therefore x-user-context object should be passed directly as header without base64 encoding.
+      example: { "sub-channel" : "Mobile IOS", "officer-id" : "456", "transit-id" : "556", teller-id" : "7464", "language" : "EN", " originating-ip-address":"122.122.12.11"}
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 300
+
+    SpanId:
+      name: x-b3-spanid
+      in: header
+      required: false
+      description: |
+        This header represents root span id. The span represents a basic unit of work.  Span is the primary building block of a distributed trace, representing an individual unit of work done in a distributed system. Spans will contain “References” to other spans, which allows multiple Spans to be assembled into one complete Trace - a visualization of the life of a request as it moves through a distributed system.
+        The trace id (x-b3-traceid) contains a set of span ids, forming a tree-like structure. The trace id will remain the same as one micro service calls the next. Spans have parent-child relationships. This span id creates parent-child relationship with the child spans to generate a trace tree out of all the spans for a request. If project team needs to create span id their own, it has to be 16 digit hexadecimal number(64 bit, since digit in hexadecimal represents 4 bits) e.g. 71200de3d3f82a83.
+      example: "41200de3d3e82a81"
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 40
+    # user name parameter for login
+    username:
+      name: username
+      in: query
+      description: User name for login
+      required: true
+      schema:
+        type: string
+        minLength: 10
+        example: A45TR67YZ0
+    # Login password
+    password:
+      name: password
+      in: query
+      description: Password needed for login
+      required: true
+      schema:
+        type: string
+        format: password
+        minLength: 10
+        example: #CDfr546#@
+    # Account number
+    AccountId:
+      name: account-id
+      in: path
+      description: Account identifier
+      required: true
+      schema:
+        type: integer
+        format: int64
+    # Customer identifier
+    CustomerId:
+      name: customer-id
+      in: path
+      description: Customer identifier
+      required: true
+      schema:
+        type: integer
+        format: int64
   schemas:
-    Order:
+    # Login object
+    LoginObject:
       type: object
       properties:
-        id:
-          type: integer
-          format: int64
-          example: 10
-        petId:
-          type: integer
-          format: int64
-          example: 198772
-        quantity:
-          type: integer
-          format: int32
-          example: 7
-        shipDate:
-          type: string
-          format: date-time
-        status:
-          type: string
-          description: Order Status
-          example: approved
-          enum:
-            - placed
-            - approved
-            - delivered
-        complete:
-          type: boolean
-      xml:
-        name: order
-    Customer:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-          example: 100000
         username:
           type: string
-          example: fehguy
-        address:
-          type: array
-          xml:
-            name: addresses
-            wrapped: true
-          items:
-            $ref: '#/components/schemas/Address'
-      xml:
-        name: customer
-    Address:
-      type: object
-      properties:
-        street:
-          type: string
-          example: 437 Lytton
-        city:
-          type: string
-          example: Palo Alto
-        state:
-          type: string
-          example: CA
-        zip:
-          type: string
-          example: '94301'
-      xml:
-        name: address
-    Category:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-          example: 1
-        name:
-          type: string
-          example: Dogs
-      xml:
-        name: category
-    User:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-          example: 10
-        username:
-          type: string
-          example: theUser
-        firstName:
-          type: string
-          example: John
-        lastName:
-          type: string
-          example: James
-        email:
-          type: string
-          example: john@email.com
+          description: Username for login
+          minLength: 10
+          example: mfallas
         password:
           type: string
-          example: '12345'
-        phone:
+          description: Password needed for login
+          format: password
+          minLength: 10
+          example: w#CDfr546#@
+    UserObject:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        username:
           type: string
-          example: '12345'
-        userStatus:
+          example: mfallas
+        full_name:
+          type: string
+          example: Melvin Fallas C
+        email:
+          type: string
+          example: melvin.fallas@3pillarglobal.com
+        status:
           type: integer
           description: User Status
           format: int32
           example: 1
-      xml:
-        name: user
-    Tag:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-        name:
-          type: string
-      xml:
-        name: tag
-    Pet:
+    UserDetailResponse:
+      description: Contains a object storarage detail response
       required:
-        - name
-        - photoUrls
+        - data
+        - notifications
       type: object
       properties:
-        id:
+        data:
+          $ref: '#/components/schemas/UserObject'
+        notifications:
+          type: array
+          items:
+            $ref: '#/components/schemas/Notification'
+    AccountDetailResponse:
+      description: Contains a object storarage detail response
+      required:
+        - data
+        - notifications
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/AccountObject'
+        notifications:
+          type: array
+          items:
+            $ref: '#/components/schemas/Notification'
+    AccountListResponse:
+      description: Contains a object storarage detail response
+      required:
+        - data
+        - notifications
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountObject'
+        notifications:
+          type: array
+          items:
+            $ref: '#/components/schemas/Notification'
+    AccountObject:
+      type: object
+      properties:
+        account_number:
           type: integer
           format: int64
-          example: 10
-        name:
+          example: 2546132012563
+        account_type:
           type: string
-          example: doggie
-        category:
-          $ref: '#/components/schemas/Category'
-        photoUrls:
-          type: array
-          xml:
-            wrapped: true
-          items:
-            type: string
-            xml:
-              name: photoUrl
-        tags:
-          type: array
-          xml:
-            wrapped: true
-          items:
-            $ref: '#/components/schemas/Tag'
-        status:
-          type: string
-          description: pet status in the store
+          description: Account type (two options)
+          example: Saving
           enum:
-            - available
-            - pending
-            - sold
-      xml:
-        name: pet
-    ApiResponse:
+            - saving
+            - checking
+        balance:
+          type: number
+          format: float
+          example: 15300.25
+        overdraft_allowed:
+          type: boolean
+          description: Flag to show if account allows overdrafts
+          example: true
+        overdraft_amount:
+          type: number
+          format: float
+          example: 5633.99
+    CustomerDetailResponse:
+      description: Contains a object storarage detail response
+      required:
+        - data
+        - notifications
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/CustomerObject'
+        notifications:
+          type: array
+          items:
+            $ref: '#/components/schemas/Notification'
+    CustomerListResponse:
+      description: Contains a object storarage detail response
+      required:
+        - data
+        - notifications
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerObject'
+        notifications:
+          type: array
+          items:
+            $ref: '#/components/schemas/Notification'
+    CustomerObject:
+      type: object
+      properties:
+        customer_number:
+          type: integer
+          format: int64
+          example: 2546132012563
+        customer_type:
+          type: string
+          description: Customer type
+          example: RETAIL
+          enum:
+            - RETAIL
+            - CORPORATE
+        active:
+          type: boolean
+          description: Flag to show if customer is active
+          example: true
+        at_date:
+          type: boolean
+          description: Flag to show if customer is at date with its debts
+          example: true
+        accounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountObject'
+    Notification:
+      required:
+        - code
+        - message
       type: object
       properties:
         code:
-          type: integer
-          format: int32
-        type:
+          description: Notification code. First character indicates severity (E,W,I).
           type: string
+          example: E400ERROR001
         message:
+          description: >-
+            Description of the error or information notification. Where the
+            response is 2xx, it's a notification with informational details about
+            this response.
           type: string
-      xml:
-        name: '##default'
-  requestBodies:
-    Pet:
-      description: Pet object that needs to be added to the store
+          example: Something is invalid
+        field_name:
+          description: Field name in request this notification is related to.
+          type: string
+        uuid:
+          description: Unique identifier for this notification
+          type: string
+          example: aadde-ddddee-eeeedd-eeeedd
+        timestamp:
+          description: Timestamp of the notification.
+          type: string
+          format: date-time
+          example: 2017-10-12T20:38:45.408Z
+        severity:
+          description: Severity of the notification (ERROR, WARNING, INFO, UNSPECIFIED)
+          type: string
+    EmptyDataResponse:
+      required:
+        - notifications
+      type: object
+      properties:
+        data:
+          type: string
+          example: null
+        notifications:
+          type: array
+          items:
+            $ref: '#/components/schemas/Notification'
+  responses:
+    400BadRequest:
+      description: Indicates that the server could not understand the request. This is
+        not the same as 422 which indicates a validation error
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Pet'
-        application/xml:
-          schema:
-            $ref: '#/components/schemas/Pet'
-    UserArray:
-      description: List of user object
+            $ref: "#/components/schemas/EmptyDataResponse"
+    401Unauthorized:
+      description: Unauthorized.  This will be returned when no authentication
+        information is provided.
       content:
         application/json:
           schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/User'
-  securitySchemes:
-    petstore_auth:
-      type: oauth2
-      flows:
-        implicit:
-          authorizationUrl: https://petstore3.swagger.io/oauth/authorize
-          scopes:
-            write:pets: modify pets in your account
-            read:pets: read your pets
-    api_key:
-      type: apiKey
-      name: api_key
-      in: header
+            $ref: "#/components/schemas/EmptyDataResponse"
+    403Forbidden:
+      description: The principal associated with the request does not have sufficient
+        rights to preform this operation on the requested resource.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/EmptyDataResponse"
+    404NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/EmptyDataResponse"
+    422UnprocessableEntity:
+      description: The request was syntactically correct but was not semantically
+        correct. Usually indicating a validation problem.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/EmptyDataResponse"
+    500InternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/EmptyDataResponse"
