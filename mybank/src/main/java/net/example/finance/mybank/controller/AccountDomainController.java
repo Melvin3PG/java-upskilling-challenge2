@@ -1,24 +1,21 @@
 package net.example.finance.mybank.controller;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+//import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import net.example.finance.mybank.model.entity.AccountDomain;
 import net.example.finance.mybank.service.AccountDomainService;
-import net.example.finance.mybank.service.AccountDomainServiceImpl;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 @RestController
+//@RequestMapping("/accounts")
 public class AccountDomainController {
     @Autowired
     private AccountDomainService accountDomainService;
 
     @PostMapping("/accounts")
     public AccountDomain saveAccountDomain(@RequestBody AccountDomain accountDomain){
-
         return accountDomainService.saveAccountDomain(accountDomain);
     }
 
