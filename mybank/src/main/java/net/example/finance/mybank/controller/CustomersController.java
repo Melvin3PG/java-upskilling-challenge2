@@ -2,6 +2,8 @@ package net.example.finance.mybank.controller;
 
 import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,53 +15,60 @@ import com.example.mvnprg.openapi.model.CustomerDetailResponse;
 import com.example.mvnprg.openapi.model.CustomerListResponse;
 import com.example.mvnprg.openapi.model.CustomerObject;
 
+import net.example.finance.mybank.service.CustomerService;
+
 @RestController
 public class CustomersController implements CustomersApi{
+    @Autowired
+    private CustomerService customerService;
 
     @Override
     public ResponseEntity<CustomerDetailResponse> createCustomer(String xChannelId, String xCountryCode,
             String xApplCode, @Valid CustomerObject customerObject, String xB3Spanid, String xB3Traceid,
             String xUserContext, String xApiVersion) {
-        // TODO Auto-generated method stub
-        return CustomersApi.super.createCustomer(xChannelId, xCountryCode, xApplCode, customerObject, xB3Spanid, xB3Traceid,
-                xUserContext, xApiVersion);
+        CustomerDetailResponse response = new CustomerDetailResponse();
+        response.setData(customerService.saveCustomer(customerObject));
+        return new ResponseEntity<>(response,HttpStatus.CREATED);
     }
 
     @Override
     public ResponseEntity<CustomerDetailResponse> deleteCustomer(Long customerId) {
-        // TODO Auto-generated method stub
-        return CustomersApi.super.deleteCustomer(customerId);
+        CustomerDetailResponse response = new CustomerDetailResponse();
+		response.setData(customerService.deleteCustomerById(customerId));
+		return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<CustomerListResponse> getAllCustomers(String xChannelId, String xCountryCode,
             String xApplCode, String xB3Spanid, String xB3Traceid, String xUserContext, String xApiVersion) {
-        // TODO Auto-generated method stub
-        return CustomersApi.super.getAllCustomers(xChannelId, xCountryCode, xApplCode, xB3Spanid, xB3Traceid, xUserContext,
-                xApiVersion);
+        CustomerListResponse response = new CustomerListResponse();	
+        response.setData(customerService.fetchCustomerList());
+        return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<CustomerDetailResponse> getCustomerByCustomerNumber(Long customerId, String xChannelId,
             String xCountryCode, String xApplCode, String xB3Spanid, String xB3Traceid, String xUserContext,
             String xApiVersion) {
-        // TODO Auto-generated method stub
-        return CustomersApi.super.getCustomerByCustomerNumber(customerId, xChannelId, xCountryCode, xApplCode, xB3Spanid,
-                xB3Traceid, xUserContext, xApiVersion);
+        CustomerDetailResponse response = new CustomerDetailResponse();		
+        response.setData(customerService.fetchCustomerById(customerId));
+        return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<CustomerDetailResponse> partialUpdateCustomer(Long customerId,
             @Valid CustomerObject customerObject) {
-        // TODO Auto-generated method stub
-        return CustomersApi.super.partialUpdateCustomer(customerId, customerObject);
+        CustomerDetailResponse response = new CustomerDetailResponse();
+        response.setData(customerService.partialUpdateCustomer(customerObject, customerId));
+        return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<CustomerDetailResponse> updateCustomer(Long customerId,
             @Valid CustomerObject customerObject) {
-        // TODO Auto-generated method stub
-        return CustomersApi.super.updateCustomer(customerId, customerObject);
+        CustomerDetailResponse response = new CustomerDetailResponse();
+        response.setData(customerService.updateCustomer(customerObject, customerId));
+        return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
     @Override

@@ -6,6 +6,7 @@ import java.util.Objects;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.example.mvnprg.openapi.model.AccountObject;
@@ -58,7 +59,7 @@ public class AccountServiceImpl implements AccountService{
     }
 
     @Override
-    public AccountObject fetchById(Long accountId) {
+    public AccountObject fetchAccountById(Long accountId) {
         Account account = accountRepository.findById(accountId).get();
         return modelMapper.map(account, AccountObject.class);
     }

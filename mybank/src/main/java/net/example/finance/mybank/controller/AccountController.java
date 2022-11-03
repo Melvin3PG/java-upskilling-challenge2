@@ -25,7 +25,7 @@ public class AccountController implements AccountsApi {
 	public ResponseEntity<AccountDetailResponse> createAccount(String xChannelId, String xCountryCode, String xApplCode,
 			@Valid AccountObject accountObject, String xB3Spanid, String xB3Traceid, String xUserContext,
 			String xApiVersion) {
-			AccountDetailResponse response = new AccountDetailResponse();
+		AccountDetailResponse response = new AccountDetailResponse();
 		response.setData(accountService.saveAccount(accountObject));
 		return new ResponseEntity<>(response,HttpStatus.CREATED);
 	}
@@ -42,7 +42,7 @@ public class AccountController implements AccountsApi {
 			String xCountryCode, String xApplCode, String xB3Spanid, String xB3Traceid, String xUserContext,
 			String xApiVersion) {
 		AccountDetailResponse response = new AccountDetailResponse();		
-		response.setData(accountService.fetchById(accountId));
+		response.setData(accountService.fetchAccountById(accountId));
 		return new ResponseEntity<>(response,HttpStatus.OK);
 	}
 

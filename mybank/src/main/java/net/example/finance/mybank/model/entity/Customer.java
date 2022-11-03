@@ -5,9 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.springframework.context.annotation.Primary;
-
 import com.example.mvnprg.openapi.model.AccountObject.AccountTypeEnum;
+import com.example.mvnprg.openapi.model.CustomerObject.CustomerTypeEnum;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,12 +18,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name="Accounts")
-public class Account {
+@Table(name="Customers")
+public class Customer {
     @Id
-    private Long accountNumber;
-    private AccountTypeEnum accountType;
-    private Float balance;
-    private Boolean overdraftAllowed;
-    private Float overdraftAmount;
+    private Long customerNumber;
+    private CustomerTypeEnum customerType;
+    private Boolean active;
+    private Boolean atDate;
 }
