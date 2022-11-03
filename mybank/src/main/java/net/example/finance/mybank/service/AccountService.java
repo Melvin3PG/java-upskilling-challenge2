@@ -6,8 +6,6 @@ import org.springframework.stereotype.Service;
 
 import com.example.mvnprg.openapi.model.AccountObject;
 
-import net.example.finance.mybank.model.entity.Account;
-
 @Service
 public interface AccountService {
     AccountObject saveAccount(AccountObject account);
