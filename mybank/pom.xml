@@ -83,6 +83,11 @@
 		  <artifactId>modelmapper</artifactId>
 		  <version>3.0.0</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-ui</artifactId>
+			<version>1.6.4</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -106,13 +111,18 @@
 						<configuration>
 							<inputSpec>${project.basedir}/src/main/resources/openapi/api.yaml</inputSpec>
 							<generatorName>spring</generatorName>
+							<modelNameSuffix>Dto</modelNameSuffix>
+			                <generateApiTests>false</generateApiTests>
+			                <generateModelTests>false</generateModelTests>
 							<configOptions>
 								<documentationProvider>springfox</documentationProvider>
 								<serializableModel>true</serializableModel>
 								<snapshotVersion>true</snapshotVersion>
 								<sourceFolder>src/main/generated</sourceFolder>
-								<apiPackage>com.example.mvnprg.openapi.api</apiPackage>
-								<modelPackage>com.example.mvnprg.openapi.model</modelPackage>
+								<apiPackage>net.example.finance.mybank.openapi.api</apiPackage>
+								<modelPackage>net.example.finance.mybank.openapi.model</modelPackage>
+			              	    <interfaceOnly>true</interfaceOnly>
+			              	    <java8>true</java8>
 							</configOptions>
 						</configuration>
 					</execution>

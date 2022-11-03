@@ -1,0 +1,6 @@
+[INFO ] 2022-10-28 12:56:05.539 [restartedMain] MybankApplication - Starting MybankApplication using Java 15.0.2 on hmo-lap-018 with PID 16712 (C:\Upskilling\Repositories\java-upskilling-challenge2\mybank\target\classes started by jesus.quintero in C:\Upskilling\Repositories\java-upskilling-challenge2\mybank)
+[DEBUG] 2022-10-28 12:56:05.542 [restartedMain] MybankApplication - Running with Spring Boot v2.7.4, Spring v5.3.23
+[INFO ] 2022-10-28 12:56:05.543 [restartedMain] MybankApplication - No active profile set, falling back to 1 default profile: "default"
+[INFO ] 2022-10-28 12:58:11.445 [restartedMain] MybankApplication - Starting MybankApplication using Java 15.0.2 on hmo-lap-018 with PID 24436 (C:\Upskilling\Repositories\java-upskilling-challenge2\mybank\target\classes started by jesus.quintero in C:\Upskilling\Repositories\java-upskilling-challenge2\mybank)
+[DEBUG] 2022-10-28 12:58:11.447 [restartedMain] MybankApplication - Running with Spring Boot v2.7.4, Spring v5.3.23
+[INFO ] 2022-10-28 12:58:11.448 [restartedMain] MybankApplication - No active profile set, falling back to 1 default profile: "default"

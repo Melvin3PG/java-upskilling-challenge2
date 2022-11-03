@@ -13,17 +13,19 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import lombok.extern.log4j.Log4j2;
 import net.example.finance.mybank.exceptions.ResourceNotFoundException;
-import net.example.finance.mybank.model.dto.AccountDto;
 import net.example.finance.mybank.model.dto.PaginatedDataDto;
 import net.example.finance.mybank.model.entity.Account;
+import net.example.finance.mybank.model.enums.AccountTypeEnum;
+import net.example.finance.mybank.openapi.model.AccountObjectDto;
 import net.example.finance.mybank.repository.AccountRepository;
 import net.example.finance.mybank.service.AccountService;
 
+
 @Service
+@Log4j2
 public class AccountServiceImpl implements AccountService {
-	
-	private Logger log = LoggerFactory.getLogger(AccountServiceImpl.class);
 	
 	AccountRepository repository;
 	ModelMapper modelMapper;
@@ -39,14 +41,14 @@ public class AccountServiceImpl implements AccountService {
 	@Transactional
     (rollbackFor = Exception.class, 
      noRollbackFor = ResourceNotFoundException.class)
-	public AccountDto createAccount(AccountDto accountDto) {
+	public AccountObjectDto createAccount(AccountObjectDto accountDto) {
 		log.debug(String.format("Service creating account in database : %s", accountDto.toString()));
 		
 		Account newAccount = null;
 		Account account = mapToEntity(accountDto);
 		try {
 			
-		 repository.save(account);
+			newAccount = repository.save(account);
 		 
 		}catch(Exception ex) {
 			log.error(String.format("Error creating new account. Account: %s \n %s", accountDto.toString(), ex.getMessage()));
@@ -60,21 +62,21 @@ public class AccountServiceImpl implements AccountService {
 	@Transactional
     (rollbackFor = Exception.class, 
      noRollbackFor = ResourceNotFoundException.class)
-	public AccountDto updateAccount(String accountNumber, AccountDto accountDto) {
+	public AccountObjectDto updateAccount(long accountNumber, AccountObjectDto accountDto) {
 		log.debug(String.format("Service updating account in database : %s - %s",
 									accountNumber,
 									accountDto.toString()));
 		Account accountUpdated = null;
 		
 		//retrieve account by account number
-		Account account = repository.findByNumber(accountNumber)
+		Account account = repository.findByAccountNumber(accountNumber)
 								.orElseThrow(() -> new ResourceNotFoundException("Account", 
-															"account number", accountNumber));
+															"account number", String.valueOf(accountNumber)));
 		
 		try {
-		account.setType(accountDto.getType());
+		account.setAccountType(AccountTypeEnum.valueOf(accountDto.getAccountType().getValue()));
 		account.setBalance(accountDto.getBalance());
-		account.setOverdraft(accountDto.isOverdraft());
+		account.setOverdraftAllowed(accountDto.getOverdraftAllowed());
 		account.setOverdraftAmount(accountDto.getOverdraftAmount());
 		
 		accountUpdated = repository.save(account);
@@ -88,14 +90,14 @@ public class AccountServiceImpl implements AccountService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public AccountDto getAccountByNumber(String accountNumber) {
+	public AccountObjectDto getAccountByNumber(long accountNumber) {
 		log.debug(String.format("Service retrieve account from database : %s",
 				accountNumber));
 		
 		//retrieve account by account number
-		Account account = repository.findByNumber(accountNumber)
+		Account account = repository.findByAccountNumber(accountNumber)
 				.orElseThrow(() -> new ResourceNotFoundException("Account", 
-											"account number", accountNumber));
+											"account number", String.valueOf(accountNumber)));
 				
 		return mapToDTO(account);
 	}
@@ -119,8 +121,8 @@ public class AccountServiceImpl implements AccountService {
 	
 	@Override
 	@Transactional(readOnly = true)
-	public PaginatedDataDto<AccountDto> getAll(int pageNo, int pageSize, String sortBy, String sortDir) {
-		PaginatedDataDto<AccountDto> dataPaginated = null;
+	public PaginatedDataDto<AccountObjectDto> getAll(int pageNo, int pageSize, String sortBy, String sortDir) {
+		PaginatedDataDto<AccountObjectDto> dataPaginated = null;
 		
 		try {
 			
@@ -163,8 +165,15 @@ public class AccountServiceImpl implements AccountService {
 	 * 
 	 * @return
 	 */
-	private AccountDto mapToDTO(Account account) {
-		return modelMapper.map(account, AccountDto.class);
+	private AccountObjectDto mapToDTO(Account account) {
+		AccountObjectDto accountDto = new AccountObjectDto();
+		accountDto.setAccountNumber(account.getAccountNumber());
+		accountDto.setAccountType(net.example.finance.mybank.openapi.model.AccountObjectDto.AccountTypeEnum.valueOf(account.getAccountType().name()));
+		accountDto.setBalance(account.getBalance());
+		accountDto.setOverdraftAllowed(account.isOverdraftAllowed());
+		accountDto.setOverdraftAmount(account.getOverdraftAmount());
+		//return modelMapper.map(account, AccountObjectDto.class);
+		return accountDto;
 	}
 	
 	/**
@@ -174,8 +183,16 @@ public class AccountServiceImpl implements AccountService {
 	 * 
 	 * @return
 	 */
-	private Account mapToEntity(AccountDto accountDto) {
-		return modelMapper.map(accountDto, Account.class);
+	private Account mapToEntity(AccountObjectDto accountDto) {
+		Account account = new Account();
+		account.setAccountNumber(accountDto.getAccountNumber());
+		account.setAccountType(AccountTypeEnum.valueOf(accountDto.getAccountType().getValue()));
+		account.setBalance(accountDto.getBalance());
+		account.setOverdraftAllowed(accountDto.getOverdraftAllowed());
+		account.setOverdraftAmount(accountDto.getOverdraftAmount());
+		//return modelMapper.map(accountDto, Account.class);
+		
+		return account;
 	}
 
 	

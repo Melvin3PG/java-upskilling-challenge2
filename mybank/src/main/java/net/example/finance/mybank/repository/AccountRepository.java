@@ -9,5 +9,5 @@ import net.example.finance.mybank.model.entity.Account;
 
 public interface AccountRepository extends JpaRepository<Account,Long> {
 
-	Optional<Account> findByNumber(String number) throws ResourceNotFoundException;
+	Optional<Account> findByAccountNumber(long number) throws ResourceNotFoundException;
 }

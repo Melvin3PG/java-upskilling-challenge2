@@ -1,7 +1,8 @@
 package net.example.finance.mybank.service;
 
-import net.example.finance.mybank.model.dto.AccountDto;
+
 import net.example.finance.mybank.model.dto.PaginatedDataDto;
+import net.example.finance.mybank.openapi.model.AccountObjectDto;
 
 public interface AccountService {
 	
@@ -10,9 +11,9 @@ public interface AccountService {
 	 * 
 	 * @param accountDto		DTO Object for account
 	 * 
-	 * @return	{@code AccountDto}	DTO Object with new account saved	
+	 * @return	{@code AccountObjectDto}	DTO Object with new account saved	
 	 */
-	AccountDto createAccount(AccountDto accountDto);
+	AccountObjectDto createAccount(AccountObjectDto accountDto);
 	
 	/**
 	 * Update an existing account in database
@@ -21,18 +22,18 @@ public interface AccountService {
 	 * 
 	 * @param accountDto		DTO Object with information to update			
 	 * 
-	 * @return {@code AccountDto}	DTO Object with account updated
+	 * @return {@code AccountObjectDto}	DTO Object with account updated
 	 */
-	AccountDto updateAccount(String accountNumber, AccountDto accountDto);
+	AccountObjectDto updateAccount(long accountNumber, AccountObjectDto accountDto);
 	
 	/**
 	 * Returns the account given an account number.
 	 * 
 	 * @param accountNumber		Account number.
 	 * 
-	 * @return	{@code AccountDto}	DTO Object with account information
+	 * @return	{@code AccountObjectDto}	DTO Object with account information
 	 */
-	AccountDto getAccountByNumber(String accountNumber);
+	AccountObjectDto getAccountByNumber(long accountNumber);
 	
 	/**
 	 * Delete an account
@@ -44,9 +45,9 @@ public interface AccountService {
 	/**
 	 * Returns all accounts
 	 * 
-	 * @return {@code List<AccountDto>}	 List of DTO objects with all accounts
+	 * @return {@code List<AccountObjectDto>}	 List of DTO objects with all accounts
 	 */
-	PaginatedDataDto<AccountDto> getAll(int pageNo, int pageSize, String sortBy, String sortDir);
+	PaginatedDataDto<AccountObjectDto> getAll(int pageNo, int pageSize, String sortBy, String sortDir);
 	
 	
 }

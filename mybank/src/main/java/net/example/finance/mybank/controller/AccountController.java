@@ -2,6 +2,7 @@ package net.example.finance.mybank.controller;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -18,12 +19,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import lombok.extern.log4j.Log4j2;
 import net.example.finance.mybank.constants.PaginationConstants;
 import net.example.finance.mybank.constants.TransactionCodes;
 import net.example.finance.mybank.exceptions.ResourceNotFoundException;
-import net.example.finance.mybank.model.dto.AccountDto;
 import net.example.finance.mybank.model.dto.BaseResponseDto;
 import net.example.finance.mybank.model.dto.PaginatedDataDto;
+import net.example.finance.mybank.openapi.api.AccountsApi;
+import net.example.finance.mybank.openapi.model.AccountDetailResponseDto;
+import net.example.finance.mybank.openapi.model.AccountObjectDto;
+import net.example.finance.mybank.openapi.model.AccountListResponseDto;
 import net.example.finance.mybank.service.AccountService;
 
 /**
@@ -33,15 +38,59 @@ import net.example.finance.mybank.service.AccountService;
  *
  */
 @RestController
-@RequestMapping("/accounts")
-public class AccountController {
-	
-	private Logger log = LoggerFactory.getLogger(AccountController.class);
+@Log4j2
+public class AccountController implements AccountsApi {
 	
 	AccountService service;
 	
 	public AccountController(AccountService service) {
 		this.service = service;
+	}
+	
+	/**
+	 * Return all accounts
+	 * 
+	 * @return		Response Entity object with all accounts
+	 */
+	@Override
+	public ResponseEntity<AccountListResponseDto> getAllAccounts(String xChannelId, String xCountryCode,
+			String xApplCode, String xB3Spanid, String xB3Traceid, String xUserContext, String xApiVersion) {
+		log.debug("Start retrieving accounts.");
+		
+		AccountListResponseDto accountsResponse = null;
+		
+		PaginatedDataDto<AccountObjectDto> data = service.getAll(0, 10, "accountNumber", "asc");
+		if(null != data) {
+			accountsResponse = new AccountListResponseDto();
+			accountsResponse.setData(data.getData());
+		}
+				
+		return ResponseEntity.ok(accountsResponse);
+	}
+	
+	/**
+	 * Return an account filtering by account number
+	 * 
+	 * @param accountNumber		Account number
+	 * 
+	 * @return					Response Entity with account object
+	 */
+	@Override
+	public ResponseEntity<AccountDetailResponseDto> getAccountByAccountNumber(Long accountNumber, String xChannelId,
+			String xCountryCode, String xApplCode, String xB3Spanid, String xB3Traceid, String xUserContext,
+			String xApiVersion) {
+		log.debug(String.format("Start retrieving account - Account Number : %s.", accountNumber));
+		
+		AccountDetailResponseDto accountDetailResponse = null;
+		
+		AccountObjectDto account = service.getAccountByNumber(accountNumber);
+		
+		if(null != account) {
+			accountDetailResponse = new AccountDetailResponseDto();
+			accountDetailResponse.setData(account);
+		}
+		
+		return ResponseEntity.ok(accountDetailResponse);
 	}
 	
 	/**
@@ -51,19 +100,21 @@ public class AccountController {
 	 * 
 	 * @return 				Response Entity object with result code, message and object account created
 	 */
-	@PostMapping
-	public ResponseEntity<BaseResponseDto> createAccount(@Valid @RequestBody AccountDto accountDto){
+	@Override
+	public ResponseEntity<AccountDetailResponseDto> createAccount(String xChannelId, String xCountryCode,
+			String xApplCode, AccountObjectDto accountDto, String xB3Spanid, String xB3Traceid,
+			String xUserContext, String xApiVersion) {
 		log.debug(String.format("Start creating account : ", accountDto.toString()));
-		BaseResponseDto baseResponse = new BaseResponseDto();
 		
-		AccountDto newAccount = service.createAccount(accountDto);
+		AccountDetailResponseDto accountDetailResponse = null;
+		
+		AccountObjectDto newAccount = service.createAccount(accountDto);
 		if(null != newAccount) {
-			baseResponse.setTimeStamp(LocalDateTime.now());
-			baseResponse.setCode(TransactionCodes.SUCCESSFUL.getCode());
-			baseResponse.setData(newAccount);
+			accountDetailResponse = new AccountDetailResponseDto();
+			accountDetailResponse.data(newAccount);
 		}
 		
-		return ResponseEntity.ok(baseResponse);
+		return ResponseEntity.ok(accountDetailResponse);
 	}
 	
 	/**
@@ -75,70 +126,30 @@ public class AccountController {
 	 * 
 	 * @return				Response Entity object with result code, message and object account created
 	 */
-	@PutMapping("{accountNumber}")
-	public ResponseEntity<BaseResponseDto> updateAccount(@PathVariable("accountNumber") String accountNumber,
-									@Valid @RequestBody AccountDto accountDto){
+	@Override
+	public ResponseEntity<AccountDetailResponseDto> updateAccount(Long accountId, AccountObjectDto accountDto) {
 		log.debug(String.format("Start updating account : ", accountDto.toString()));
-		BaseResponseDto baseResponse = new BaseResponseDto();
 		
-		AccountDto accountUpdated = service.updateAccount(accountNumber, accountDto);
+		AccountDetailResponseDto accountDetailResponse = null;
+		
+		AccountObjectDto accountUpdated = service.updateAccount(accountId, accountDto);
 		
 		if(null != accountUpdated) {
-			baseResponse.setTimeStamp(LocalDateTime.now());
-			baseResponse.setCode(TransactionCodes.SUCCESSFUL.getCode());
-			baseResponse.setData(accountUpdated);
+			accountDetailResponse = new AccountDetailResponseDto();
+			accountDetailResponse.setData(accountUpdated);
 		}
 		
-		return ResponseEntity.ok(baseResponse);
-	}
-	
-	/**
-	 * Return all accounts
-	 * 
-	 * @return		Response Entity object with all accounts
-	 */
-	@GetMapping
-	public ResponseEntity<BaseResponseDto> getAllAccounts(
-				@RequestParam(value = "pageNo", defaultValue = PaginationConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
-				@RequestParam(value = "pageSize", defaultValue = PaginationConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
-				@RequestParam(value = "sortBy", defaultValue = PaginationConstants.DEFAULT_SORT_BY, required = false) String sortBy,
-				@RequestParam(value = "sortDir", defaultValue = PaginationConstants.DEFAULT_SORT_DIRECTION, required = false) String sortDir
-				){
-		log.debug("Start retrieving accounts.");
-		BaseResponseDto baseResponse = new BaseResponseDto();
-		
-		PaginatedDataDto<AccountDto> data = service.getAll(pageNo, pageSize, sortBy, sortDir);
-		if(null != data) {
-			baseResponse.setTimeStamp(LocalDateTime.now());
-			baseResponse.setCode(TransactionCodes.SUCCESSFUL.getCode());
-			baseResponse.setData(data);
-		}
-		
-		return ResponseEntity.ok(baseResponse);
+		return ResponseEntity.ok(accountDetailResponse);
 	}
 	
 	
-	/**
-	 * Return an account filtering by account number
-	 * 
-	 * @param accountNumber		Account number
-	 * 
-	 * @return					Response Entity with account object
-	 */
-	@GetMapping("{accountNumber}")
-	public ResponseEntity<BaseResponseDto> getAccountByNumber(@PathVariable("accountNumber") String accountNumber){
-		log.debug(String.format("Start retrieving account - Account Number : %s.", accountNumber));
-		BaseResponseDto baseResponse = new BaseResponseDto();
-		
-		AccountDto account = service.getAccountByNumber(accountNumber);
-		if(null != account) {
-			baseResponse.setTimeStamp(LocalDateTime.now());
-			baseResponse.setCode(TransactionCodes.SUCCESSFUL.getCode());
-			baseResponse.setData(account);
-		}
-		
-		return ResponseEntity.ok(baseResponse);
+	@Override
+	public ResponseEntity<AccountDetailResponseDto> partialUpdateAccount(Long accountId,
+			AccountObjectDto accountObjectDto) {
+		System.out.println("Entro a partialUpdateAccount");
+		return null;
 	}
+	
 	
 	/**
 	 * Delete an account
@@ -147,17 +158,16 @@ public class AccountController {
 	 * 
 	 * @return					Response Entity with result
 	 */
-	@DeleteMapping("{accountId}")
-	public ResponseEntity<BaseResponseDto> deleteAccount(@PathVariable("accountId") long accountId){
+	@Override
+	public ResponseEntity<AccountDetailResponseDto> deleteAccount(Long accountId) {
 		log.debug(String.format("Start delete account - Account ID : %s.", accountId));
-		BaseResponseDto baseResponse = new BaseResponseDto();
 		
+		AccountDetailResponseDto accountDetailResponse = new AccountDetailResponseDto();
+				
 		service.deleteAccount(accountId);
 		
-		baseResponse.setTimeStamp(LocalDateTime.now());
-		baseResponse.setCode(TransactionCodes.SUCCESSFUL.getCode());
-		baseResponse.setMessage("Account deleted successfully!!");
+		accountDetailResponse.setData(null);
 		
-		return ResponseEntity.ok(baseResponse);
+		return ResponseEntity.ok(accountDetailResponse);
 	}
 }

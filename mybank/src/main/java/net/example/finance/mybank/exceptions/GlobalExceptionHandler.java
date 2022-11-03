@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +16,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import lombok.extern.log4j.Log4j2;
 import net.example.finance.mybank.constants.TransactionCodes;
+import net.example.finance.mybank.controller.AccountController;
 import net.example.finance.mybank.model.dto.BaseResponseDto;
 
 /**
@@ -24,6 +28,7 @@ import net.example.finance.mybank.model.dto.BaseResponseDto;
  *
  */
 @ControllerAdvice
+@Log4j2
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 	
 	//handling  global exception
@@ -45,7 +50,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 										//HttpStatus.INTERNAL_SERVER_ERROR.name(),
 										TransactionCodes.ERROR.getCode(),
 										exception.getMessage(), null);
-		
+		log.error(String.format("Error occurring during transaction. Error: %s.", exception.getMessage()));
 		return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
@@ -70,6 +75,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 										TransactionCodes.NOT_VALID.getCode(),
 										exception.getMessage(), errors);
 		
+		log.error(String.format("Error occurring during transaction. Error: %s.", exception.getMessage()));
 		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 	}
 	
@@ -92,6 +98,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 										TransactionCodes.NOT_VALID.getCode(),
 										exception.getMessage(), null);
 		
+		log.error(String.format("Error occurring during transaction. Error: %s.", exception.getMessage()));
 		return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 	}
 }

@@ -13,7 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import net.example.finance.mybank.model.enums.AccountType;
+import net.example.finance.mybank.model.enums.AccountTypeEnum;
 
 
 /**
@@ -31,41 +31,36 @@ import net.example.finance.mybank.model.enums.AccountType;
 public class Account {
 
 	/**
-	 * Primary key for account
+	 * Account number
 	 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
-	
-	/**
-	 * Account number
-	 */
 	@Column(name = "account_number", unique = true)
-	private String number;
+	private Long accountNumber;
 	
 	/**
 	 * Account Type -> SAVING, CHECKING 
 	 */
-	@Column(name = "type", nullable = false)
-	private AccountType type;
+	@Column(name = "account_type", nullable = false)
+	private AccountTypeEnum accountType;
 	
 	/**
 	 * Balance account
 	 */
 	@Column(name = "balance", nullable = false)
-	private double balance;
+	private float balance;
 	
 	/**
 	 * Indicates is overdraft
 	 */
-	@Column(name = "is_overdraft")
-	private boolean isOverdraft;
+	@Column(name = "overdraft_allowed")
+	private boolean overdraftAllowed;
 	
 	/**
 	 * Overdraft amount
 	 */
 	@Column(name = "overdraft_amount")
-	private double	overdraftAmount;
+	private float	overdraftAmount;
 	
 	/**
 	 * Foreign key relation with customer
