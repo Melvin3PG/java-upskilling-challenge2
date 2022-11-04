@@ -33,7 +33,12 @@ public class AccountController implements AccountsApi {
 	@Override
 	public ResponseEntity<AccountDetailResponse> deleteAccount(Long accountId) {
 		AccountDetailResponse response = new AccountDetailResponse();
-		response.setData(accountService.deleteAccountById(accountId));
+		AccountObject account = accountService.deleteAccountById(accountId);
+
+		if(account == null)
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+		response.setData(account);
 		return new ResponseEntity<>(response,HttpStatus.OK);
 	}
 
@@ -41,8 +46,13 @@ public class AccountController implements AccountsApi {
 	public ResponseEntity<AccountDetailResponse> getAccountByAccountNumber(Long accountId, String xChannelId,
 			String xCountryCode, String xApplCode, String xB3Spanid, String xB3Traceid, String xUserContext,
 			String xApiVersion) {
-		AccountDetailResponse response = new AccountDetailResponse();		
-		response.setData(accountService.fetchAccountById(accountId));
+		AccountDetailResponse response = new AccountDetailResponse();	
+		AccountObject account = accountService.fetchAccountById(accountId);
+
+		if(account == null)
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+		response.setData(account);
 		return new ResponseEntity<>(response,HttpStatus.OK);
 	}
 
@@ -58,14 +68,26 @@ public class AccountController implements AccountsApi {
 	public ResponseEntity<AccountDetailResponse> partialUpdateAccount(Long accountId,
 			@Valid AccountObject accountObject) {
 		AccountDetailResponse response = new AccountDetailResponse();
-		response.setData(accountService.partialUpdateAccount(accountObject, accountId));
+		AccountObject account = accountService.partialUpdateAccount(accountObject, accountId);
+
+		if(account == null)
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+		response.setData(account);
 		return new ResponseEntity<>(response,HttpStatus.OK);
 	}
 
 	@Override
 	public ResponseEntity<AccountDetailResponse> updateAccount(Long accountId, @Valid AccountObject accountObject) {
 		AccountDetailResponse response = new AccountDetailResponse();
-		response.setData(accountService.updateAccount(accountObject, accountId));
+		AccountObject account = accountService.updateAccount(accountObject, accountId);
+
+		if(account == null)
+		{
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		
+		response.setData(account);
 		return new ResponseEntity<>(response,HttpStatus.OK);
 	}
 	

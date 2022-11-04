@@ -26,6 +26,7 @@ public class AuthenticationController implements AuthenticationApi {
 
         UserDetailResponse response = new UserDetailResponse();
         UserObject userObject = userService.postLogin(loginObject);
+        
         if(userObject == null)
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             

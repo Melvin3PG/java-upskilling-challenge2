@@ -36,9 +36,11 @@ public class AccountServiceImpl implements AccountService{
 
     @Override
     public AccountObject updateAccount(AccountObject accountObject, Long accountId) {
-        Account accDB
-            = accountRepository.findById(accountId)
-                  .get();
+        Account accDB = accountRepository.findById(accountId).get();
+
+        if(accDB == null)
+            return null;
+
         Account account = modelMapper.map(accountObject, Account.class);
   
         account = accountRepository.save(updateFields(accDB,account));
@@ -48,6 +50,9 @@ public class AccountServiceImpl implements AccountService{
     @Override
     public AccountObject deleteAccountById(Long accountId) {
         Account account = accountRepository.findById(accountId).get();
+
+        if(account == null)
+            return null;
         
         if (Objects.nonNull(account.getAccountNumber())
             && account.getAccountNumber().equals(accountId)) 
@@ -61,14 +66,20 @@ public class AccountServiceImpl implements AccountService{
     @Override
     public AccountObject fetchAccountById(Long accountId) {
         Account account = accountRepository.findById(accountId).get();
+
+        if(account == null)
+            return null;
+
         return modelMapper.map(account, AccountObject.class);
     }
 
     @Override
     public AccountObject partialUpdateAccount(AccountObject accountObject, Long accountId) {
-        Account accDB
-            = accountRepository.findById(accountId)
-                  .get();
+        Account accDB = accountRepository.findById(accountId).get();
+
+        if(accDB == null)
+            return null;
+
         Account account = modelMapper.map(accountObject, Account.class);
 
         account = accountRepository.save(updateFields(accDB,account));
@@ -109,10 +120,29 @@ public class AccountServiceImpl implements AccountService{
                 account.getOverdraftAmount());
         }
 
-        if (!(accDB.getOverdraftAllowed().equals(account.getOverdraftAllowed()))) 
+        if (Objects.nonNull(
+            account.getOverdraftAllowed()) 
+            && !(accDB.getOverdraftAllowed().equals(account.getOverdraftAllowed())) 
+            ) 
         {
             accDB.setOverdraftAllowed(
                 account.getOverdraftAllowed());
+        }
+
+        if (Objects.nonNull(account.getCustomerId())
+        && accDB.getCustomerId() != 
+        account.getCustomerId()
+        && account.getCustomerId() != 0) {
+        accDB.setCustomerId(
+            account.getCustomerId());   
+        }
+
+        if (Objects.nonNull(account.getUserId())
+        && accDB.getUserId() != 
+        account.getUserId()
+        && account.getUserId() != 0) {
+            accDB.setUserId(
+                account.getUserId());
         }
 
         return accDB;
