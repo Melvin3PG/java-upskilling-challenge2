@@ -3,7 +3,6 @@ package net.example.finance.mybank.service;
 import java.util.List;
 
 import net.example.finance.mybank.exception.AccountException;
-import net.example.finance.mybank.exception.AccountNotFoundException;
 import net.example.finance.mybank.model.entity.Account;
 
 /**
@@ -57,6 +56,47 @@ public interface AccountService {
 	 */
 	public List<Account> getAll() throws AccountException;
 	
+	/**
+	 * This method applies partial modifications
+	 * @param account model with the account information
+	 * @param accountNumber the account number
+	 * @return The updated account
+	 * @throws AccountException if the account parameter is null or if something goes wrong.
+	 */
+	public Account partialUpdateAccount(Account account, Long accountNumber) throws AccountException;
 	
+	/**
+	 * This method deletes an account by customer ID and account ID
+	 * @param customerNumber customer identifier
+	 * @param accountId account identifier
+	 * @throws AccountException if the account parameter is null or if something goes wrong.
+	 */
+	public void deleteByAccountIdAndCustomerId(Long customerNumber, Long accountNumber)  throws AccountException;
 	
+	/**
+	 * Method that update an account by customer ID and account ID
+	 * @param account customer identifier
+	 * @param customerNumber customer identifier
+	 * @param accountNumber account identifier
+	 * @return The updated account
+	 * @throws AccountException if the account parameter is null or if something goes wrong.
+	 */
+	public Account updateByAccountIdAndCustomerId(Account account, Long customerNumber, Long accountNumber)  throws AccountException;
+	
+	/**
+	 * Method that get all Accounts by customer ID and account ID
+	 * @param customerNumber customer identifier
+	 * @return All accounts
+	 * @throws AccountException if the account parameter is null or if something goes wrong.
+	 */
+	public List<Account> getAllAccountsByCustomerId(Long customerNumber)  throws AccountException;
+	
+	/**
+	 * Method that gets the account related to the customer and account IDs provided. 
+	 * @param customerNumber customer identifier
+	 * @param accountNumber account identifier
+	 * @return Account object
+	 * @throws AccountException if the account parameter is null or if something goes wrong.
+	 */
+	public Account getByAccountIdAndCustomerId(Long customerNumber, Long accountNumber)  throws AccountException;
 }

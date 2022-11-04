@@ -8,10 +8,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -50,9 +48,12 @@ public class Account implements Serializable {
 	private Float balance;
 	
 	/** Indicates if the account is overdraft */
-	private Boolean overdraft;
+	private Boolean overdraftAllowed;
 	
 	/** Total overdraft amount*/
 	private Float overdraftAmount;
 	
+	/** Customer related to the account*/
+	@JsonIgnore
+	private Long customerId;
 }
