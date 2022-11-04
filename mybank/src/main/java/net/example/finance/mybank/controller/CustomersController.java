@@ -34,7 +34,13 @@ public class CustomersController implements CustomersApi{
     @Override
     public ResponseEntity<CustomerDetailResponse> deleteCustomer(Long customerId) {
         CustomerDetailResponse response = new CustomerDetailResponse();
-		response.setData(customerService.deleteCustomerById(customerId));
+        CustomerObject customer = customerService.deleteCustomerById(customerId);
+        
+        if(customer == null)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        
+        response.setData(customer);
+		
 		return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
@@ -50,8 +56,13 @@ public class CustomersController implements CustomersApi{
     public ResponseEntity<CustomerDetailResponse> getCustomerByCustomerNumber(Long customerId, String xChannelId,
             String xCountryCode, String xApplCode, String xB3Spanid, String xB3Traceid, String xUserContext,
             String xApiVersion) {
-        CustomerDetailResponse response = new CustomerDetailResponse();		
-        response.setData(customerService.fetchCustomerById(customerId));
+        CustomerDetailResponse response = new CustomerDetailResponse();	
+        CustomerObject customer = customerService.fetchCustomerById(customerId);
+        
+        if(customer == null)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+        response.setData(customer);
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
@@ -59,7 +70,12 @@ public class CustomersController implements CustomersApi{
     public ResponseEntity<CustomerDetailResponse> partialUpdateCustomer(Long customerId,
             @Valid CustomerObject customerObject) {
         CustomerDetailResponse response = new CustomerDetailResponse();
-        response.setData(customerService.partialUpdateCustomer(customerObject, customerId));
+        CustomerObject customer = customerService.partialUpdateCustomer(customerObject, customerId);
+
+        if(customer == null)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+        response.setData(customer);
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
@@ -67,7 +83,12 @@ public class CustomersController implements CustomersApi{
     public ResponseEntity<CustomerDetailResponse> updateCustomer(Long customerId,
             @Valid CustomerObject customerObject) {
         CustomerDetailResponse response = new CustomerDetailResponse();
-        response.setData(customerService.updateCustomer(customerObject, customerId));
+        CustomerObject customer = customerService.updateCustomer(customerObject, customerId);
+
+        if(customer == null)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+        response.setData(customer);
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
