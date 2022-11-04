@@ -2,9 +2,14 @@ package net.example.finance.mybank.controller;
 
 import com.example.mvnprg.openapi.api.AccountsApi;
 import com.example.mvnprg.openapi.model.AccountDetailResponse;
+import com.example.mvnprg.openapi.model.AccountListResponse;
+import com.example.mvnprg.openapi.model.AccountObject;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @RestController
@@ -15,12 +20,11 @@ public class AccountController  implements AccountsApi {
                                                                            String xCountryCode, String xApplCode, String xB3Spanid, String xB3Traceid, String xUserContext,
                                                                            String xApiVersion) {
 		AccountDetailResponse account = new AccountDetailResponse();
-		//TODO: Implement service calls
 		return ResponseEntity.ok(account);
 	}
 
 
-	/*@Override
+	@Override
 	public ResponseEntity<AccountListResponse> getAllAccounts() {
 		AccountDetailResponse account = new AccountDetailResponse();
 		AccountObject obj = new AccountObject();
@@ -36,6 +40,6 @@ public class AccountController  implements AccountsApi {
 		AccountListResponse jio = new AccountListResponse();
 		jio.addDataItem(obj);
 		return ResponseEntity.ok(jio);
-	}*/
+	}
 	
 }
