@@ -214,6 +214,7 @@
 								<sourceFolder>src/main/generated</sourceFolder>
 								<apiPackage>com.example.mvnprg.openapi.api</apiPackage>
 								<modelPackage>com.example.mvnprg.openapi.model</modelPackage>
+								<interfaceOnly>true</interfaceOnly>
 							</configOptions>
 						</configuration>
 					</execution>
