@@ -1,5 +1,7 @@
 package net.example.finance.mybank.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +16,7 @@ import com.example.mvnprg.openapi.model.AccountObject;
 import com.example.mvnprg.openapi.model.CustomerDetailResponse;
 import com.example.mvnprg.openapi.model.CustomerListResponse;
 import com.example.mvnprg.openapi.model.CustomerObject;
-
+import net.example.finance.mybank.service.AccountService;
 import net.example.finance.mybank.service.CustomerService;
 
 @RestController
@@ -27,106 +29,176 @@ public class CustomersController implements CustomersApi{
             String xApplCode, @Valid CustomerObject customerObject, String xB3Spanid, String xB3Traceid,
             String xUserContext, String xApiVersion) {
         CustomerDetailResponse response = new CustomerDetailResponse();
-        response.setData(customerService.saveCustomer(customerObject));
-        return new ResponseEntity<>(response,HttpStatus.CREATED);
+        try
+        {
+            response.setData(customerService.saveCustomer(customerObject));
+            return new ResponseEntity<>(response,HttpStatus.CREATED);
+        }
+        catch(Exception ex)
+        {        
+            return new ResponseEntity<>(ControllerUtil.CatchCustomerNotification(ex, response),HttpStatus.BAD_REQUEST);
+        } 
     }
 
     @Override
     public ResponseEntity<CustomerDetailResponse> deleteCustomer(Long customerId) {
         CustomerDetailResponse response = new CustomerDetailResponse();
-        CustomerObject customer = customerService.deleteCustomerById(customerId);
-        
-        if(customer == null)
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        
-        response.setData(customer);
-		
-		return new ResponseEntity<>(response,HttpStatus.OK);
+        try
+        {
+            CustomerObject customer = customerService.deleteCustomerById(customerId);
+            
+            if(customer == null)
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            
+            response.setData(customer);
+            
+            return new ResponseEntity<>(response,HttpStatus.OK);
+        }
+        catch(Exception ex)
+        {        
+            return new ResponseEntity<>(ControllerUtil.CatchCustomerNotification(ex, response),HttpStatus.BAD_REQUEST);
+        } 
     }
 
     @Override
     public ResponseEntity<CustomerListResponse> getAllCustomers(String xChannelId, String xCountryCode,
             String xApplCode, String xB3Spanid, String xB3Traceid, String xUserContext, String xApiVersion) {
         CustomerListResponse response = new CustomerListResponse();	
-        response.setData(customerService.fetchCustomerList());
-        return new ResponseEntity<>(response,HttpStatus.OK);
+        try
+        {
+            response.setData(customerService.fetchCustomerList());
+            return new ResponseEntity<>(response,HttpStatus.OK);
+        }
+        catch(Exception ex)
+        {        
+            return new ResponseEntity<>(ControllerUtil.CatchCustomerListNofication(ex, response),HttpStatus.BAD_REQUEST);
+        } 
     }
 
     @Override
     public ResponseEntity<CustomerDetailResponse> getCustomerByCustomerNumber(Long customerId, String xChannelId,
             String xCountryCode, String xApplCode, String xB3Spanid, String xB3Traceid, String xUserContext,
             String xApiVersion) {
-        CustomerDetailResponse response = new CustomerDetailResponse();	
-        CustomerObject customer = customerService.fetchCustomerById(customerId);
-        
-        if(customer == null)
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        CustomerDetailResponse response = new CustomerDetailResponse();
+        try
+        {  	
+            CustomerObject customer = customerService.fetchCustomerById(customerId);
+            
+            if(customer == null)
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
-        response.setData(customer);
-        return new ResponseEntity<>(response,HttpStatus.OK);
+            response.setData(customer);
+            return new ResponseEntity<>(response,HttpStatus.OK);
+        }
+        catch(Exception ex)
+        {        
+            return new ResponseEntity<>(ControllerUtil.CatchCustomerNotification(ex, response),HttpStatus.BAD_REQUEST);
+        }   
     }
 
     @Override
     public ResponseEntity<CustomerDetailResponse> partialUpdateCustomer(Long customerId,
             @Valid CustomerObject customerObject) {
         CustomerDetailResponse response = new CustomerDetailResponse();
-        CustomerObject customer = customerService.partialUpdateCustomer(customerObject, customerId);
-
-        if(customer == null)
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-
-        response.setData(customer);
-        return new ResponseEntity<>(response,HttpStatus.OK);
+        try
+        {  
+            response.setData(customerService.partialUpdateCustomer(customerObject, customerId));
+            return new ResponseEntity<>(response,HttpStatus.OK);
+        }
+        catch(Exception ex)
+        {        
+            return new ResponseEntity<>(ControllerUtil.CatchCustomerNotification(ex, response),HttpStatus.BAD_REQUEST);
+        }  
     }
 
     @Override
     public ResponseEntity<CustomerDetailResponse> updateCustomer(Long customerId,
             @Valid CustomerObject customerObject) {
         CustomerDetailResponse response = new CustomerDetailResponse();
-        CustomerObject customer = customerService.updateCustomer(customerObject, customerId);
-
-        if(customer == null)
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-
-        response.setData(customer);
-        return new ResponseEntity<>(response,HttpStatus.OK);
+        try 
+        {
+            response.setData(customerService.updateCustomer(customerObject, customerId));
+            return new ResponseEntity<>(response,HttpStatus.OK);
+        }
+        catch(Exception ex)
+        {        
+            return new ResponseEntity<>(ControllerUtil.CatchCustomerNotification(ex, response),HttpStatus.BAD_REQUEST);
+        } 
     }
 
     @Override
     public ResponseEntity<AccountDetailResponse> deleteAccountOfCustomer(Long customerId, Long accountId) {
-        // TODO Auto-generated method stub
-        return CustomersApi.super.deleteAccountOfCustomer(customerId, accountId);
+        AccountDetailResponse response = new AccountDetailResponse();
+        try
+        {            
+            response.setData(customerService.customerDeleteAccountById(customerId,accountId));
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }
+        catch(Exception ex)
+        {        
+            return new ResponseEntity<>(ControllerUtil.CatchAccountNotification(ex, response),HttpStatus.BAD_REQUEST);
+        } 
     }
 
     @Override
     public ResponseEntity<AccountDetailResponse> getAccountByCustomerAndAccountNumber(Long customerId, Long accountId,
             String xChannelId, String xCountryCode, String xApplCode, String xB3Spanid, String xB3Traceid,
             String xUserContext, String xApiVersion) {
-        // TODO Auto-generated method stub
-        return CustomersApi.super.getAccountByCustomerAndAccountNumber(customerId, accountId, xChannelId, xCountryCode,
-                xApplCode, xB3Spanid, xB3Traceid, xUserContext, xApiVersion);
+        AccountDetailResponse response = new AccountDetailResponse();
+        try
+        {         
+            response.setData(customerService.customerFetchAccountById(customerId, accountId));
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }
+        catch(Exception ex)
+            {        
+                return new ResponseEntity<>(ControllerUtil.CatchAccountNotification(ex, response),HttpStatus.BAD_REQUEST);
+            } 
     }
 
     @Override
     public ResponseEntity<AccountListResponse> getAllAccountsOfCustomer(Long customerId, String xChannelId,
             String xCountryCode, String xApplCode, String xB3Spanid, String xB3Traceid, String xUserContext,
             String xApiVersion) {
-        // TODO Auto-generated method stub
-        return CustomersApi.super.getAllAccountsOfCustomer(customerId, xChannelId, xCountryCode, xApplCode, xB3Spanid,
-                xB3Traceid, xUserContext, xApiVersion);
+        AccountListResponse response = new AccountListResponse();
+        try
+        {       
+            response.setData(customerService.customerFetchAccountList(customerId));
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }
+        catch(Exception ex)
+        {        
+            return new ResponseEntity<>(ControllerUtil.CatchAccountListNofication(ex, response),HttpStatus.BAD_REQUEST);
+        } 
     }
 
     @Override
     public ResponseEntity<AccountDetailResponse> partialUpdateAccountOfCustomer(Long customerId, Long accountId,
             @Valid AccountObject accountObject) {
-        // TODO Auto-generated method stub
-        return CustomersApi.super.partialUpdateAccountOfCustomer(customerId, accountId, accountObject);
+        AccountDetailResponse response = new AccountDetailResponse();
+        try
+        {
+            response.setData(customerService.customerUpdateAccount(customerId, accountId, accountObject));
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }
+        catch(Exception ex)
+        {        
+            return new ResponseEntity<>(ControllerUtil.CatchAccountNotification(ex, response),HttpStatus.BAD_REQUEST);
+        } 
     }
 
     @Override
     public ResponseEntity<AccountDetailResponse> updateAccountOfCustomer(Long customerId, Long accountId,
             @Valid AccountObject accountObject) {
-        // TODO Auto-generated method stub
-        return CustomersApi.super.updateAccountOfCustomer(customerId, accountId, accountObject);
+        AccountDetailResponse response = new AccountDetailResponse();
+        try
+        {
+            response.setData(customerService.customerUpdateAccount(customerId, accountId, accountObject));
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }
+        catch(Exception ex)
+        {        
+            return new ResponseEntity<>(ControllerUtil.CatchAccountNotification(ex, response),HttpStatus.BAD_REQUEST);
+        } 
     }
 }

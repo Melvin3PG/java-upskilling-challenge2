@@ -1,6 +1,5 @@
 package net.example.finance.mybank.serviceimpl;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -94,7 +93,7 @@ public class CustomerServiceImpl implements CustomerService {
             return null;
 
         Customer customer = modelMapper.map(customerObject, Customer.class);
-        Customer customerAux = customerRepository.save(updateFields(customerDB,customer));
+        Customer customerAux = customerRepository.save(ServiceUtil.updateCustomerFields(customerDB,customer));
 
         List<Account> accounts = accountRepository.findByCustomerId(customerNumber);
 
@@ -132,7 +131,7 @@ public class CustomerServiceImpl implements CustomerService {
             return null;
 
         Customer customer = modelMapper.map(customerObject, Customer.class);
-        Customer customerAux = customerRepository.save(updateFields(customerDB,customer));
+        Customer customerAux = customerRepository.save(ServiceUtil.updateCustomerFields(customerDB,customer));
 
         List<Account> accounts = accountRepository.findByCustomerId(customerNumber);
 
@@ -147,43 +146,93 @@ public class CustomerServiceImpl implements CustomerService {
 		return customerObject;  
     }
 
-    private Customer updateFields(Customer customerDB, Customer customer)
-    {
-        if (Objects.nonNull(customer.getCustomerNumber())
-            && customerDB.getCustomerNumber() != 
-            customer.getCustomerNumber()
-            && customer.getCustomerNumber() != 0) {
-                customerDB.setCustomerNumber(
-                customer.getCustomerNumber());
-        }
-  
-        if (Objects.nonNull(
-            customer.getCustomerType())
-            && !"".equals(
-                customer.getCustomerType())) {
-                    customerDB.setCustomerType(
-                customer.getCustomerType());
-        }
-  
-        if (Objects.nonNull(
-            customer.getActive()) 
-            && !(customerDB.getActive().equals(customer.getActive())) 
-            ) 
-        {
-            customerDB.setActive(
-                customer.getActive());
-        }
-
-        if (Objects.nonNull(
-            customer.getAtDate()) 
-            && !(customerDB.getAtDate().equals(customer.getAtDate()))
-            ) 
-        {
-            customerDB.setAtDate(
-                customer.getAtDate());
-        }
-
-        return customerDB;
+    @Override
+    public List<AccountObject> customerFetchAccountList(Long customerNumber) {
+        List<Account> accounts = accountRepository.findByCustomerId(customerNumber);
+        return Arrays.asList(modelMapper.map(accounts, AccountObject[].class));
     }
-    
+
+    @Override
+    public AccountObject customerUpdateAccount(Long customerNumber, Long accNum, AccountObject accountObject) {
+        List<Account> accounts = accountRepository.findByCustomerId(customerNumber);
+
+        Account accDB = new Account();
+
+        for (Account accountAux : accounts) 
+        {
+            if(accountAux.getAccountNumber().equals(accNum))
+                accDB = accountAux;
+        }
+
+        if(accDB.getAccountNumber() == null)
+            return null;
+
+        Account account = modelMapper.map(accountObject, Account.class);
+        account.setCustomerId(customerNumber);
+        accountRepository.save(ServiceUtil.updateAccountFields(accDB,account));
+        
+        return modelMapper.map(account, AccountObject.class);
+    }
+
+    @Override
+    public AccountObject customerDeleteAccountById(Long customerNumber, Long accNum) {
+        List<Account> accounts = accountRepository.findByCustomerId(customerNumber);
+
+        Account account = new Account();
+
+        for (Account accountAux : accounts) {
+            if(accountAux.getAccountNumber().equals(accNum))
+                account = accountAux;
+        }
+
+        if(account.getAccountNumber() == null)
+            return null;
+        
+        if (Objects.nonNull(account.getAccountNumber())
+            && account.getAccountNumber().equals(account.getAccountNumber())) 
+        {
+            accountRepository.deleteById(account.getAccountNumber());
+        }  
+        
+        return modelMapper.map(account, AccountObject.class);
+    }
+
+    @Override
+    public AccountObject customerFetchAccountById(Long customerNumber, Long accNum) {
+        List<Account> accounts = accountRepository.findByCustomerId(customerNumber);
+
+        Account account = new Account();
+
+        for (Account accountAux : accounts) {
+            if(accountAux.getAccountNumber().equals(accNum))
+                account = accountAux;
+        }
+
+        if(account.getAccountNumber() == null)
+            return null;
+        
+        return modelMapper.map(account, AccountObject.class);
+    }
+
+    @Override
+    public AccountObject customerPartialUpdateAccount(Long customerNumber, Long accNum, AccountObject accountObject) {
+        List<Account> accounts = accountRepository.findByCustomerId(customerNumber);
+
+        Account accDB = new Account();
+
+        for (Account accountAux : accounts) 
+        {
+            if(accountAux.getAccountNumber().equals(accNum))
+                accDB = accountAux;
+        }
+
+        if(accDB.getAccountNumber() == null)
+            return null;
+
+        Account account = modelMapper.map(accountObject, Account.class);
+        account.setCustomerId(customerNumber);
+        accountRepository.save(ServiceUtil.updateAccountFields(accDB,account));
+        
+        return modelMapper.map(account, AccountObject.class);
+    }  
 }
