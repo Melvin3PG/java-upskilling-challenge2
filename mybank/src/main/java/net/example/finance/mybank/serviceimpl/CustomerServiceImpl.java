@@ -32,7 +32,7 @@ public class CustomerServiceImpl implements CustomerService {
         if(customer == null)
             return null;
 
-        List<Account> accounts = accountRepository.findByCustomerId(customerNumber);
+        List<Account> accounts = accountRepository.findByCustomerNumber(customerNumber);
         CustomerObject customerObject = modelMapper.map(customer, CustomerObject.class);
                 
         if (customer.getCustomerNumber().equals(customerNumber)) 
@@ -57,7 +57,7 @@ public class CustomerServiceImpl implements CustomerService {
         if(customer == null)
             return null;
 
-        List<Account> accounts = accountRepository.findByCustomerId(customerNumber);
+        List<Account> accounts = accountRepository.findByCustomerNumber(customerNumber);
         CustomerObject customerObject = modelMapper.map(customer, CustomerObject.class);
 
         if(accounts != null)
@@ -77,7 +77,7 @@ public class CustomerServiceImpl implements CustomerService {
 
         for (CustomerObject customer : ListCustomerObject) 
         {
-            List<Account> accounts = accountRepository.findByCustomerId(customer.getCustomerNumber());
+            List<Account> accounts = accountRepository.findByCustomerNumber(customer.getCustomerNumber());
             List<AccountObject> accountsObject = Arrays.asList(modelMapper.map(accounts, AccountObject[].class));
             customer.setAccounts(accountsObject);
         }
@@ -95,7 +95,7 @@ public class CustomerServiceImpl implements CustomerService {
         Customer customer = modelMapper.map(customerObject, Customer.class);
         Customer customerAux = customerRepository.save(ServiceUtil.updateCustomerFields(customerDB,customer));
 
-        List<Account> accounts = accountRepository.findByCustomerId(customerNumber);
+        List<Account> accounts = accountRepository.findByCustomerNumber(customerNumber);
 
         customerObject = modelMapper.map(customerAux, CustomerObject.class);
 
@@ -111,7 +111,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public CustomerObject saveCustomer(CustomerObject customerObject) {
         Customer customer = customerRepository.save(modelMapper.map(customerObject, Customer.class));
-        List<Account> accounts = accountRepository.findByCustomerId(customer.getCustomerNumber());
+        List<Account> accounts = accountRepository.findByCustomerNumber(customer.getCustomerNumber());
         customerObject = modelMapper.map(customer, CustomerObject.class);
 
         if(accounts != null)
@@ -133,7 +133,7 @@ public class CustomerServiceImpl implements CustomerService {
         Customer customer = modelMapper.map(customerObject, Customer.class);
         Customer customerAux = customerRepository.save(ServiceUtil.updateCustomerFields(customerDB,customer));
 
-        List<Account> accounts = accountRepository.findByCustomerId(customerNumber);
+        List<Account> accounts = accountRepository.findByCustomerNumber(customerNumber);
 
         customerObject = modelMapper.map(customerAux, CustomerObject.class);
 
@@ -148,13 +148,13 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public List<AccountObject> customerFetchAccountList(Long customerNumber) {
-        List<Account> accounts = accountRepository.findByCustomerId(customerNumber);
+        List<Account> accounts = accountRepository.findByCustomerNumber(customerNumber);
         return Arrays.asList(modelMapper.map(accounts, AccountObject[].class));
     }
 
     @Override
     public AccountObject customerUpdateAccount(Long customerNumber, Long accNum, AccountObject accountObject) {
-        List<Account> accounts = accountRepository.findByCustomerId(customerNumber);
+        List<Account> accounts = accountRepository.findByCustomerNumber(customerNumber);
 
         Account accDB = new Account();
 
@@ -168,7 +168,7 @@ public class CustomerServiceImpl implements CustomerService {
             return null;
 
         Account account = modelMapper.map(accountObject, Account.class);
-        account.setCustomerId(customerNumber);
+        account.setCustomerNumber(customerNumber);
         accountRepository.save(ServiceUtil.updateAccountFields(accDB,account));
         
         return modelMapper.map(account, AccountObject.class);
@@ -176,7 +176,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public AccountObject customerDeleteAccountById(Long customerNumber, Long accNum) {
-        List<Account> accounts = accountRepository.findByCustomerId(customerNumber);
+        List<Account> accounts = accountRepository.findByCustomerNumber(customerNumber);
 
         Account account = new Account();
 
@@ -199,7 +199,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public AccountObject customerFetchAccountById(Long customerNumber, Long accNum) {
-        List<Account> accounts = accountRepository.findByCustomerId(customerNumber);
+        List<Account> accounts = accountRepository.findByCustomerNumber(customerNumber);
 
         Account account = new Account();
 
@@ -216,7 +216,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public AccountObject customerPartialUpdateAccount(Long customerNumber, Long accNum, AccountObject accountObject) {
-        List<Account> accounts = accountRepository.findByCustomerId(customerNumber);
+        List<Account> accounts = accountRepository.findByCustomerNumber(customerNumber);
 
         Account accDB = new Account();
 
@@ -230,7 +230,7 @@ public class CustomerServiceImpl implements CustomerService {
             return null;
 
         Account account = modelMapper.map(accountObject, Account.class);
-        account.setCustomerId(customerNumber);
+        account.setCustomerNumber(customerNumber);
         accountRepository.save(ServiceUtil.updateAccountFields(accDB,account));
         
         return modelMapper.map(account, AccountObject.class);

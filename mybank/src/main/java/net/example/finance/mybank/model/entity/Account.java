@@ -27,6 +27,5 @@ public class Account {
     private Float balance;
     private Boolean overdraftAllowed;
     private Float overdraftAmount;
-    private Integer userId;
-    private Long customerId;
+    private Long customerNumber;
 }

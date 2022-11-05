@@ -91,20 +91,12 @@ public class ServiceUtil {
                 account.getOverdraftAllowed());
         }
 
-        if (Objects.nonNull(account.getCustomerId())
-        && accDB.getCustomerId() != 
-        account.getCustomerId()
-        && account.getCustomerId() != 0) {
-        accDB.setCustomerId(
-            account.getCustomerId());   
-        }
-
-        if (Objects.nonNull(account.getUserId())
-        && accDB.getUserId() != 
-        account.getUserId()
-        && account.getUserId() != 0) {
-            accDB.setUserId(
-                account.getUserId());
+        if (Objects.nonNull(account.getCustomerNumber())
+        && accDB.getCustomerNumber() != 
+        account.getCustomerNumber()
+        && account.getCustomerNumber() != 0) {
+        accDB.setCustomerNumber(
+            account.getCustomerNumber());   
         }
 
         return accDB;
