@@ -11,6 +11,11 @@ spring:
   jpa:
     spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
 
+  customers:
+    accounts:
+      host:
+        uri: http://localhost:/7081
+
 #management:
 #   security:
 #      enabled: false
