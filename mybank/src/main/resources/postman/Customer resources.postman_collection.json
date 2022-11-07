@@ -1,0 +1,525 @@
+{
+	"info": {
+		"_postman_id": "cb4649ef-6be6-40f5-ba5f-ac8ae93cb5cd",
+		"name": "Customer resources",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23562561"
+	},
+	"item": [
+		{
+			"name": "Create Customer - 200",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-channel-id",
+						"value": "Mobile",
+						"type": "text"
+					},
+					{
+						"key": "x-country-code",
+						"value": "CR",
+						"type": "text"
+					},
+					{
+						"key": "x-appl-code",
+						"value": "APP-Adroid-001",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"customer_type\": \"RETAIL\",\r\n  \"active\": true,\r\n  \"at_date\": true,\r\n  \"accounts\": [\r\n    {\r\n      \"account_type\": \"saving\",\r\n      \"balance\": 15300.25,\r\n      \"overdraft_allowed\": true,\r\n      \"overdraft_amount\": 5633.99\r\n    },\r\n    {\r\n      \"account_type\": \"checking\",\r\n      \"balance\": 8300.25,\r\n      \"overdraft_allowed\": false,\r\n      \"overdraft_amount\": 0.0\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:7080/customers",
+					"host": [
+						"localhost"
+					],
+					"port": "7080",
+					"path": [
+						"customers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Customer - 500",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-channel-id",
+						"value": "Mobile",
+						"type": "text"
+					},
+					{
+						"key": "x-country-code",
+						"value": "CR",
+						"type": "text"
+					},
+					{
+						"key": "x-appl-code",
+						"value": "APP-Adroid-001",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:7080/customers",
+					"host": [
+						"localhost"
+					],
+					"port": "7080",
+					"path": [
+						"customers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Customer  - 200",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-channel-id",
+						"value": "Mobile",
+						"type": "text"
+					},
+					{
+						"key": "x-country-code",
+						"value": "CR",
+						"type": "text"
+					},
+					{
+						"key": "x-appl-code",
+						"value": "APP-Adroid-001",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:7080/customers/10001",
+					"host": [
+						"localhost"
+					],
+					"port": "7080",
+					"path": [
+						"customers",
+						"10001"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Customer  - 400",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-channel-id",
+						"value": "Mobile",
+						"type": "text"
+					},
+					{
+						"key": "x-country-code",
+						"value": "CR",
+						"type": "text"
+					},
+					{
+						"key": "x-appl-code",
+						"value": "APP-Adroid-001",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "localhost:7080/customers",
+					"host": [
+						"localhost"
+					],
+					"port": "7080",
+					"path": [
+						"customers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Customers - 200",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-channel-id",
+						"value": "Mobile",
+						"type": "text"
+					},
+					{
+						"key": "x-country-code",
+						"value": "CR",
+						"type": "text"
+					},
+					{
+						"key": "x-appl-code",
+						"value": "APP-Adroid-001",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:7080/customers",
+					"host": [
+						"localhost"
+					],
+					"port": "7080",
+					"path": [
+						"customers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Put Customer - 200",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "x-channel-id",
+						"value": "Mobile",
+						"type": "text"
+					},
+					{
+						"key": "x-country-code",
+						"value": "CR",
+						"type": "text"
+					},
+					{
+						"key": "x-appl-code",
+						"value": "APP-Adroid-001",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"customer_type\": \"CORPORATE\",\r\n    \"active\": true,\r\n    \"at_date\": false\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:7080/customers/10002",
+					"host": [
+						"localhost"
+					],
+					"port": "7080",
+					"path": [
+						"customers",
+						"10002"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Partial Update Account - 200",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "x-channel-id",
+						"value": "Mobile",
+						"type": "text"
+					},
+					{
+						"key": "x-country-code",
+						"value": "CR",
+						"type": "text"
+					},
+					{
+						"key": "x-appl-code",
+						"value": "APP-Adroid-001",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"customer_type\": \"CORPORATE\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:7080/customers/10001",
+					"host": [
+						"localhost"
+					],
+					"port": "7080",
+					"path": [
+						"customers",
+						"10001"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Customer - 200",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "x-channel-id",
+						"value": "Mobile",
+						"type": "text"
+					},
+					{
+						"key": "x-country-code",
+						"value": "CR",
+						"type": "text"
+					},
+					{
+						"key": "x-appl-code",
+						"value": "APP-Adroid-001",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:7080/customers/10002",
+					"host": [
+						"localhost"
+					],
+					"port": "7080",
+					"path": [
+						"customers",
+						"10002"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get C-Accounts - 200",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-channel-id",
+						"value": "Mobile",
+						"type": "text"
+					},
+					{
+						"key": "x-country-code",
+						"value": "CR",
+						"type": "text"
+					},
+					{
+						"key": "x-appl-code",
+						"value": "APP-Adroid-001",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:7080/customers/10001/accounts",
+					"host": [
+						"localhost"
+					],
+					"port": "7080",
+					"path": [
+						"customers",
+						"10001",
+						"accounts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get C-Account By ID - 200",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-channel-id",
+						"value": "Mobile",
+						"type": "text"
+					},
+					{
+						"key": "x-country-code",
+						"value": "CR",
+						"type": "text"
+					},
+					{
+						"key": "x-appl-code",
+						"value": "APP-Adroid-001",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:7080/customers/10001/accounts/1000000002",
+					"host": [
+						"localhost"
+					],
+					"port": "7080",
+					"path": [
+						"customers",
+						"10001",
+						"accounts",
+						"1000000002"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Put C-Account By ID - 200 Copy",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "x-channel-id",
+						"value": "Mobile",
+						"type": "text"
+					},
+					{
+						"key": "x-country-code",
+						"value": "CR",
+						"type": "text"
+					},
+					{
+						"key": "x-appl-code",
+						"value": "APP-Adroid-001",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"account_type\": \"checking\",\r\n    \"balance\": 55.50,\r\n    \"overdraft_allowed\": true,\r\n    \"overdraft_amount\": 10.10\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:7080/customers/10001/accounts/1000000002",
+					"host": [
+						"localhost"
+					],
+					"port": "7080",
+					"path": [
+						"customers",
+						"10001",
+						"accounts",
+						"1000000002"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Partial C-Account By ID - 200",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "x-channel-id",
+						"value": "Mobile",
+						"type": "text"
+					},
+					{
+						"key": "x-country-code",
+						"value": "CR",
+						"type": "text"
+					},
+					{
+						"key": "x-appl-code",
+						"value": "APP-Adroid-001",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"balance\": 555555.50\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:7080/customers/10001/accounts/1000000003",
+					"host": [
+						"localhost"
+					],
+					"port": "7080",
+					"path": [
+						"customers",
+						"10001",
+						"accounts",
+						"1000000003"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete C-Account By ID - 200",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "x-channel-id",
+						"value": "Mobile",
+						"type": "text"
+					},
+					{
+						"key": "x-country-code",
+						"value": "CR",
+						"type": "text"
+					},
+					{
+						"key": "x-appl-code",
+						"value": "APP-Adroid-001",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:7080/customers/10001/accounts/1000000002",
+					"host": [
+						"localhost"
+					],
+					"port": "7080",
+					"path": [
+						"customers",
+						"10001",
+						"accounts",
+						"1000000002"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

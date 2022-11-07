@@ -1,0 +1,412 @@
+{
+	"info": {
+		"_postman_id": "01765cfa-30f0-463a-afc9-6df6165e7f47",
+		"name": "Account Resources WHeaders",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23562561"
+	},
+	"item": [
+		{
+			"name": "Create Account - 201",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-channel-id",
+						"value": "Mobile",
+						"type": "text"
+					},
+					{
+						"key": "x-country-code",
+						"value": "CR",
+						"type": "text"
+					},
+					{
+						"key": "x-appl-code",
+						"value": "APP-Adroid-001",
+						"type": "text"
+					},
+					{
+						"key": "x-b3-spanid",
+						"value": "41200de3d3e82a81",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "x-b3-traceid",
+						"value": "41200de3d3e82a81",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "x-user-context",
+						"value": "OrderedMap { \"sub-channel\": \"Mobile IOS\", \"officer-id\": \"456\", \"transit-id\": \"556\", \"teller-id\"\": \"7464\", \"language\": \"EN\", \" originating-ip-address\": \"122.122.12.11\" }",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "x-api-version",
+						"value": "x.1",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"account_type\": \"saving\",\r\n    \"balance\": 2005.65,\r\n    \"overdraft_allowed\": true,\r\n    \"overdraft_amount\": 285.36\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:7080/accounts",
+					"host": [
+						"localhost"
+					],
+					"port": "7080",
+					"path": [
+						"accounts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Account - 500",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "{{xchannelid}}",
+						"value": "Mobile",
+						"type": "text"
+					},
+					{
+						"key": "{{xcountrycode}}",
+						"value": "CR",
+						"type": "text"
+					},
+					{
+						"key": "{{xapplcode}}",
+						"value": "APP-Adroid-001",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:7080/accounts",
+					"host": [
+						"localhost"
+					],
+					"port": "7080",
+					"path": [
+						"accounts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Accounts - 200",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "{{xchannelid}}",
+						"value": "Mobile",
+						"type": "text"
+					},
+					{
+						"key": "{{xcountrycode}}",
+						"value": "CR",
+						"type": "text"
+					},
+					{
+						"key": "{{xapplcode}}",
+						"value": "APP-Adroid-001",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:7080/accounts",
+					"host": [
+						"localhost"
+					],
+					"port": "7080",
+					"path": [
+						"accounts"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "Mobile",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Account By ID - 200",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "{{xchannelid}}",
+						"value": "Mobile",
+						"type": "text"
+					},
+					{
+						"key": "{{xcountrycode}}",
+						"value": "CR",
+						"type": "text"
+					},
+					{
+						"key": "{{xapplcode}}",
+						"value": "APP-Adroid-001",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:7080/accounts/1000000001",
+					"host": [
+						"localhost"
+					],
+					"port": "7080",
+					"path": [
+						"accounts",
+						"1000000001"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Account - 200",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "{{xchannelid}}",
+						"value": "Mobile",
+						"type": "text"
+					},
+					{
+						"key": "{{xcountrycode}}",
+						"value": "CR",
+						"type": "text"
+					},
+					{
+						"key": "{{xapplcode}}",
+						"value": "APP-Adroid-001",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"accountType\": \"CHECKING\",\r\n    \"balance\": 8505.65,\r\n    \"overdraft\": 0,\r\n    \"overdraftAmount\": 0.0\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:7080/accounts/1000000001",
+					"host": [
+						"localhost"
+					],
+					"port": "7080",
+					"path": [
+						"accounts",
+						"1000000001"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Account - 500",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "{{xchannelid}}",
+						"value": "Mobile",
+						"type": "text"
+					},
+					{
+						"key": "{{xcountrycode}}",
+						"value": "CR",
+						"type": "text"
+					},
+					{
+						"key": "{{xapplcode}}",
+						"value": "APP-Adroid-001",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:7080/accounts/1000000001",
+					"host": [
+						"localhost"
+					],
+					"port": "7080",
+					"path": [
+						"accounts",
+						"1000000001"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Partial Update Account - 200",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "{{xchannelid}}",
+						"value": "Mobile",
+						"type": "text"
+					},
+					{
+						"key": "{{xcountrycode}}",
+						"value": "CR",
+						"type": "text"
+					},
+					{
+						"key": "{{xapplcode}}",
+						"value": "APP-Adroid-001",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"balance\": 1005.65,\r\n    \"overdraft_amount\": 285.36\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:7080/accounts/1000000001",
+					"host": [
+						"localhost"
+					],
+					"port": "7080",
+					"path": [
+						"accounts",
+						"1000000001"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Account - 200",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "{{xchannelid}}",
+						"value": "Mobile",
+						"type": "text"
+					},
+					{
+						"key": "{{xcountrycode}}",
+						"value": "CR",
+						"type": "text"
+					},
+					{
+						"key": "{{xapplcode}}",
+						"value": "APP-Adroid-001",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:7080/accounts/1000000001",
+					"host": [
+						"localhost"
+					],
+					"port": "7080",
+					"path": [
+						"accounts",
+						"1000000001"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Account - 400",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "{{xchannelid}}",
+						"value": "Mobile",
+						"type": "text"
+					},
+					{
+						"key": "{{xcountrycode}}",
+						"value": "CR",
+						"type": "text"
+					},
+					{
+						"key": "{{xapplcode}}",
+						"value": "APP-Adroid-001",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:7080/accounts/1w2",
+					"host": [
+						"localhost"
+					],
+					"port": "7080",
+					"path": [
+						"accounts",
+						"1w2"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "xchannelid",
+			"value": "x-channel-id"
+		},
+		{
+			"key": "xcountrycode",
+			"value": "x-country-code"
+		},
+		{
+			"key": "xapplcode",
+			"value": "x-appl-code"
+		}
+	]
+}

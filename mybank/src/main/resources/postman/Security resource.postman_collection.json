@@ -1,0 +1,187 @@
+{
+	"info": {
+		"_postman_id": "c9c67ae6-07a2-4a59-bc0d-8a531577c8f4",
+		"name": "Security resource",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23562561"
+	},
+	"item": [
+		{
+			"name": "Login - 200",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-channel-id",
+						"value": "Mobile",
+						"type": "text"
+					},
+					{
+						"key": "x-country-code",
+						"value": "CR",
+						"type": "text"
+					},
+					{
+						"key": "x-appl-code",
+						"value": "APP-Adroid-001",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"alineG1245\",\r\n    \"password\": \"w#CDfr546#@\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:7080/authentication/login",
+					"host": [
+						"localhost"
+					],
+					"port": "7080",
+					"path": [
+						"authentication",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login - 500",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-channel-id",
+						"value": "Mobile",
+						"type": "text"
+					},
+					{
+						"key": "x-country-code",
+						"value": "CR",
+						"type": "text"
+					},
+					{
+						"key": "x-appl-code",
+						"value": "APP-Adroid-001",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"alineG1245\",\r\n    \"password\": null\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:7080/authentication/login",
+					"host": [
+						"localhost"
+					],
+					"port": "7080",
+					"path": [
+						"authentication",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login - 401",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-channel-id",
+						"value": "Mobile",
+						"type": "text"
+					},
+					{
+						"key": "x-country-code",
+						"value": "CR",
+						"type": "text"
+					},
+					{
+						"key": "x-appl-code",
+						"value": "APP-Adroid-001",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"user3G1245\",\r\n    \"password\": \"w#CDfr546#@\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:7080/authentication/login",
+					"host": [
+						"localhost"
+					],
+					"port": "7080",
+					"path": [
+						"authentication",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login - 400",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-channel-id",
+						"value": "Mobile",
+						"type": "text"
+					},
+					{
+						"key": "x-country-code",
+						"value": "CR",
+						"type": "text"
+					},
+					{
+						"key": "x-appl-code",
+						"value": "APP-Adroid-001",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"alineG1245\",\r\n    \"password\": \"w#CDfr546#@\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:7080/authentication/login",
+					"host": [
+						"localhost"
+					],
+					"port": "7080",
+					"path": [
+						"authentication",
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
