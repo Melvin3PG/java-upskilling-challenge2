@@ -13,4 +13,7 @@ public interface IAccountService {
     Account updateAccount(Long id, Account accDetails);
 
     void deleteAccount(Long id);
+
+    /*OpenAPI*/
+    //AccountDetailResponse updateAccountObject(Long id, AccountObject accDetails);
 }

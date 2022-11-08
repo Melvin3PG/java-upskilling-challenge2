@@ -36,8 +36,29 @@ public class AccountController  implements AccountsApi {
 		return ResponseEntity.ok(account);
 	}
 
+	@Override
+	public ResponseEntity<AccountListResponse> getAllAccounts(String xChannelId, String xCountryCode, String xApplCode, String xB3Spanid, String xB3Traceid, String xUserContext, String xApiVersion) {
+		// Call service
+		return AccountsApi.super.getAllAccounts(xChannelId, xCountryCode, xApplCode, xB3Spanid, xB3Traceid, xUserContext, xApiVersion);
+	}
 
 	@Override
+	public ResponseEntity<AccountDetailResponse> updateAccount(Long accountId, AccountObject accountObject) {
+		AccountDetailResponse account = new AccountDetailResponse();
+		Account obj = new Account();
+		obj.setNumber(String.valueOf(accountObject.getAccountNumber()));
+		//obj.setType(AccountObject.AccountTypeEnum);
+		obj.setBalance(accountObject.getBalance());
+		obj.setAmount(accountObject.getOverdraftAmount());
+		obj.setOverdraft(accountObject.getOverdraftAllowed());
+		Account result = accountService.updateAccount(accountId, obj);
+		//Conversion
+		AccountObject conversion = new AccountObject();
+		conversion.setAccountNumber(Long.valueOf(String.valueOf(result.getNumber())));
+		account.data(conversion);
+		return ResponseEntity.ok(account);
+	}
+
 	public ResponseEntity<AccountListResponse> getAllAccounts() {
 		AccountDetailResponse account = new AccountDetailResponse();
 		AccountObject obj = new AccountObject();
