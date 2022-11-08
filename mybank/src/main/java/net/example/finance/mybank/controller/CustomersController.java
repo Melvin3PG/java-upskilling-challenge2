@@ -1,7 +1,5 @@
 package net.example.finance.mybank.controller;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +14,7 @@ import com.example.mvnprg.openapi.model.AccountObject;
 import com.example.mvnprg.openapi.model.CustomerDetailResponse;
 import com.example.mvnprg.openapi.model.CustomerListResponse;
 import com.example.mvnprg.openapi.model.CustomerObject;
-import net.example.finance.mybank.service.AccountService;
+
 import net.example.finance.mybank.service.CustomerService;
 
 @RestController
@@ -44,14 +42,8 @@ public class CustomersController implements CustomersApi{
     public ResponseEntity<CustomerDetailResponse> deleteCustomer(Long customerId) {
         CustomerDetailResponse response = new CustomerDetailResponse();
         try
-        {
-            CustomerObject customer = customerService.deleteCustomerById(customerId);
-            
-            if(customer == null)
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            
-            response.setData(customer);
-            
+        {          
+            response.setData(customerService.deleteCustomerById(customerId)); 
             return new ResponseEntity<>(response,HttpStatus.OK);
         }
         catch(Exception ex)
@@ -82,12 +74,7 @@ public class CustomersController implements CustomersApi{
         CustomerDetailResponse response = new CustomerDetailResponse();
         try
         {  	
-            CustomerObject customer = customerService.fetchCustomerById(customerId);
-            
-            if(customer == null)
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-
-            response.setData(customer);
+            response.setData(customerService.fetchCustomerById(customerId));
             return new ResponseEntity<>(response,HttpStatus.OK);
         }
         catch(Exception ex)

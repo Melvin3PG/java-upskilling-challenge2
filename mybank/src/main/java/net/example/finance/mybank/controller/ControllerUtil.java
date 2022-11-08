@@ -3,6 +3,7 @@ package net.example.finance.mybank.controller;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import com.example.mvnprg.openapi.model.AccountDetailResponse;
 import com.example.mvnprg.openapi.model.AccountListResponse;
@@ -40,6 +41,9 @@ public class ControllerUtil {
         Notification notification = new Notification();
         notification.setMessage(ex.getMessage());
         notification.setTimestamp(OffsetDateTime.now());
+        notification.setUuid(UUID.randomUUID().toString());
+        notification.setSeverity("Error");
+        notification.setFieldName("Query");
         List<Notification> notifications = new ArrayList<>();
         notifications.add(notification);
         return notifications;

@@ -27,7 +27,7 @@ public class AccountController implements AccountsApi {
 			String xApiVersion) {
 		AccountDetailResponse response = new AccountDetailResponse();
 		try
-		{
+		{ 
 			response.setData(accountService.saveAccount(accountObject));
 			return new ResponseEntity<>(response,HttpStatus.CREATED);
 		}

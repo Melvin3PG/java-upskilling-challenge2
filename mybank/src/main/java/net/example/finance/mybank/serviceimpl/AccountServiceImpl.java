@@ -36,12 +36,7 @@ public class AccountServiceImpl implements AccountService{
     @Override
     public AccountObject updateAccount(AccountObject accountObject, Long accountId) {
         Account accDB = accountRepository.findById(accountId).get();
-
-        if(accDB == null)
-            return null;
-
         Account account = modelMapper.map(accountObject, Account.class);
-  
         account = accountRepository.save(ServiceUtil.updateAccountFields(accDB,account));
 		return modelMapper.map(account, AccountObject.class);
     }
@@ -49,9 +44,6 @@ public class AccountServiceImpl implements AccountService{
     @Override
     public AccountObject deleteAccountById(Long accountId) {
         Account account = accountRepository.findById(accountId).get();
-
-        if(account == null)
-            return null;
         
         if (Objects.nonNull(account.getAccountNumber())
             && account.getAccountNumber().equals(accountId)) 
@@ -65,22 +57,13 @@ public class AccountServiceImpl implements AccountService{
     @Override
     public AccountObject fetchAccountById(Long accountId) {
         Account account = accountRepository.findById(accountId).get();
-
-        if(account == null)
-            return null;
-
         return modelMapper.map(account, AccountObject.class);
     }
 
     @Override
     public AccountObject partialUpdateAccount(AccountObject accountObject, Long accountId) {
         Account accDB = accountRepository.findById(accountId).get();
-
-        if(accDB == null)
-            return null;
-
         Account account = modelMapper.map(accountObject, Account.class);
-
         account = accountRepository.save(ServiceUtil.updateAccountFields(accDB,account));
 		return modelMapper.map(account, AccountObject.class);
     }
