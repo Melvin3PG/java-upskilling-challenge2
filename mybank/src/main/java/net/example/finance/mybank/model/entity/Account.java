@@ -1,7 +1,11 @@
 package net.example.finance.mybank.model.entity;
 
+import java.io.Serializable;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -28,26 +32,31 @@ import net.example.finance.mybank.model.enums.AccountTypeEnum;
 @NoArgsConstructor
 @Table( name = "accounts")
 @Entity
-public class Account {
+public class Account implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Account number
 	 */
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "account_number", unique = true)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@Column(name = "account_number")
 	private Long accountNumber;
 	
 	/**
 	 * Account Type -> SAVING, CHECKING 
 	 */
-	@Column(name = "account_type", nullable = false)
+	@Column(name = "account_type")
 	private AccountTypeEnum accountType;
 	
 	/**
 	 * Balance account
 	 */
-	@Column(name = "balance", nullable = false)
+	@Column(name = "balance")
 	private float balance;
 	
 	/**
@@ -65,7 +74,7 @@ public class Account {
 	/**
 	 * Foreign key relation with customer
 	 */
-	@ManyToOne
-	@JoinColumn(name = "customer_id")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "customer_id", nullable = false)
 	private Customer customer;
 }

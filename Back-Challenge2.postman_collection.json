@@ -7,13 +7,95 @@
 	},
 	"item": [
 		{
+			"name": "GET ALL ACCOUNTS",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-channel-id",
+						"value": "Web",
+						"type": "text"
+					},
+					{
+						"key": "x-country-code",
+						"value": "MX",
+						"type": "text"
+					},
+					{
+						"key": "x-appl-code",
+						"value": "3",
+						"type": "text"
+					},
+					{
+						"key": "x-b3-spanid",
+						"value": "",
+						"type": "text"
+					},
+					{
+						"key": "x-user-context",
+						"value": "eyAic3ViLWNoYW5uZWwiIDogIk1vYmlsZSBJT1MiLCAib2ZmaWNlci1pZCIgOiAiNDU2IiwgInRyYW5zaXQtaWQiIDogIjU1NiIsIHRlbGxlci1pZCIgOiAiNzQ2NCIsICJsYW5ndWFnZSIgOiAiRU4iLCAiIG9yaWdpbmF0aW5nLWlwLWFkZHJlc3MiOiIxMjIuMTIyLjEyLjExIn0",
+						"type": "text"
+					},
+					{
+						"key": "x-api-version",
+						"value": "1",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "http://localhost:7080/accounts",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7080",
+					"path": [
+						"accounts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "CREATE ACCOUNT",
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "x-channel-id",
+						"value": "Web",
+						"type": "text"
+					},
+					{
+						"key": "x-country-code",
+						"value": "MX",
+						"type": "text"
+					},
+					{
+						"key": "x-appl-code",
+						"value": "3",
+						"type": "text"
+					},
+					{
+						"key": "x-b3-spanid",
+						"value": "",
+						"type": "text"
+					},
+					{
+						"key": "x-user-context",
+						"value": "eyAic3ViLWNoYW5uZWwiIDogIk1vYmlsZSBJT1MiLCAib2ZmaWNlci1pZCIgOiAiNDU2IiwgInRyYW5zaXQtaWQiIDogIjU1NiIsIHRlbGxlci1pZCIgOiAiNzQ2NCIsICJsYW5ndWFnZSIgOiAiRU4iLCAiIG9yaWdpbmF0aW5nLWlwLWFkZHJlc3MiOiIxMjIuMTIyLjEyLjExIn0",
+						"type": "text"
+					},
+					{
+						"key": "x-api-version",
+						"value": "1",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"number\": \"000004000\",\r\n    \"type\": \"CHECKING\",\r\n    \"balance\": 1000.00,\r\n    \"overdraft\": false,\r\n    \"overdraftAmount\": 0.0\r\n}",
+					"raw": "{\r\n    \"account_type\": \"SAVING\",\r\n    \"balance\": 6000.00,\r\n    \"overdraft_allowed\": false,\r\n    \"overdraft_amount\": 0.0\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -35,37 +117,51 @@
 			"response": []
 		},
 		{
-			"name": "GET ALL ACCOUNTS",
+			"name": "GET ACCOUNT",
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "x-channel-id",
+						"value": "Web",
+						"type": "text"
+					},
+					{
+						"key": "x-country-code",
+						"value": "MX",
+						"type": "text"
+					},
+					{
+						"key": "x-appl-code",
+						"value": "3",
+						"type": "text"
+					},
+					{
+						"key": "x-b3-spanid",
+						"value": "",
+						"type": "text"
+					},
+					{
+						"key": "x-user-context",
+						"value": "eyAic3ViLWNoYW5uZWwiIDogIk1vYmlsZSBJT1MiLCAib2ZmaWNlci1pZCIgOiAiNDU2IiwgInRyYW5zaXQtaWQiIDogIjU1NiIsIHRlbGxlci1pZCIgOiAiNzQ2NCIsICJsYW5ndWFnZSIgOiAiRU4iLCAiIG9yaWdpbmF0aW5nLWlwLWFkZHJlc3MiOiIxMjIuMTIyLjEyLjExIn0",
+						"type": "text"
+					},
+					{
+						"key": "x-api-version",
+						"value": "1",
+						"type": "text"
+					}
+				],
 				"url": {
-					"raw": "http://localhost:7080/accounts?pageNo=0&pageSize=3&sortBy=id&sortDir=desc",
+					"raw": "http://localhost:7080/accounts/5",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "7080",
 					"path": [
-						"accounts"
-					],
-					"query": [
-						{
-							"key": "pageNo",
-							"value": "0"
-						},
-						{
-							"key": "pageSize",
-							"value": "3"
-						},
-						{
-							"key": "sortBy",
-							"value": "id"
-						},
-						{
-							"key": "sortDir",
-							"value": "desc"
-						}
+						"accounts",
+						"5"
 					]
 				}
 			},
@@ -78,7 +174,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"id\": 65,\r\n    \"number\": \"000003000\",\r\n    \"type\": \"CHECKING\",\r\n    \"balance\": 6000.0,\r\n    \"overdraftAmount\": 1000.0,\r\n    \"overdraft\": true\r\n}",
+					"raw": "{\r\n    \"account_number\": 5,\r\n    \"account_type\": \"SAVING\",\r\n    \"balance\": 3000.0,\r\n    \"overdraft_allowed\": false,\r\n    \"overdraft_amount\": 0.0\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -86,7 +182,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:7080/accounts/000003000",
+					"raw": "http://localhost:7080/accounts/5",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -94,7 +190,7 @@
 					"port": "7080",
 					"path": [
 						"accounts",
-						"000003000"
+						"5"
 					]
 				}
 			},
@@ -106,7 +202,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:7080/accounts/3",
+					"raw": "http://localhost:7080/accounts/8",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -114,27 +210,293 @@
 					"port": "7080",
 					"path": [
 						"accounts",
-						"3"
+						"8"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "GET ACCOUNT",
+			"name": "CREATE CUSTOMER",
 			"request": {
-				"method": "GET",
-				"header": [],
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-channel-id",
+						"value": "Web",
+						"type": "text"
+					},
+					{
+						"key": "x-country-code",
+						"value": "MX",
+						"type": "text"
+					},
+					{
+						"key": "x-appl-code",
+						"value": "3",
+						"type": "text"
+					},
+					{
+						"key": "x-b3-spanid",
+						"value": "",
+						"type": "text"
+					},
+					{
+						"key": "x-user-context",
+						"value": "eyAic3ViLWNoYW5uZWwiIDogIk1vYmlsZSBJT1MiLCAib2ZmaWNlci1pZCIgOiAiNDU2IiwgInRyYW5zaXQtaWQiIDogIjU1NiIsIHRlbGxlci1pZCIgOiAiNzQ2NCIsICJsYW5ndWFnZSIgOiAiRU4iLCAiIG9yaWdpbmF0aW5nLWlwLWFkZHJlc3MiOiIxMjIuMTIyLjEyLjExIn0",
+						"type": "text"
+					},
+					{
+						"key": "x-api-version",
+						"value": "1",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n      \"customer_number\": 0,\r\n      \"customer_type\": \"CORPORATE\",\r\n      \"active\": true,\r\n      \"at_date\": true,\r\n      \"accounts\": [\r\n        {\r\n          \"account_number\": 0,\r\n          \"account_type\": \"CHECKING\",\r\n          \"balance\": 1000000,\r\n          \"overdraft_allowed\": false,\r\n          \"overdraft_amount\": 0\r\n        },\r\n        {\r\n          \"account_number\": 0,\r\n          \"account_type\": \"CHECKING\",\r\n          \"balance\": 2000000,\r\n          \"overdraft_allowed\": true,\r\n          \"overdraft_amount\": 1000\r\n        }\r\n        ,\r\n        {\r\n          \"account_number\": 0,\r\n          \"account_type\": \"SAVING\",\r\n          \"balance\": 2500000,\r\n          \"overdraft_allowed\": true,\r\n          \"overdraft_amount\": 10000\r\n        }\r\n        ,\r\n        {\r\n          \"account_number\": 0,\r\n          \"account_type\": \"CHECKING\",\r\n          \"balance\": 3500000,\r\n          \"overdraft_allowed\": false,\r\n          \"overdraft_amount\": 0\r\n        }\r\n      ]\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
-					"raw": "http://localhost:7080/accounts/000000100",
+					"raw": "http://localhost:7080/customers",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "7080",
 					"path": [
+						"customers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET ALL CUSTOMERS",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-channel-id",
+						"value": "Web",
+						"type": "text"
+					},
+					{
+						"key": "x-country-code",
+						"value": "MX",
+						"type": "text"
+					},
+					{
+						"key": "x-appl-code",
+						"value": "3",
+						"type": "text"
+					},
+					{
+						"key": "x-b3-spanid",
+						"value": "",
+						"type": "text"
+					},
+					{
+						"key": "x-user-context",
+						"value": "eyAic3ViLWNoYW5uZWwiIDogIk1vYmlsZSBJT1MiLCAib2ZmaWNlci1pZCIgOiAiNDU2IiwgInRyYW5zaXQtaWQiIDogIjU1NiIsIHRlbGxlci1pZCIgOiAiNzQ2NCIsICJsYW5ndWFnZSIgOiAiRU4iLCAiIG9yaWdpbmF0aW5nLWlwLWFkZHJlc3MiOiIxMjIuMTIyLjEyLjExIn0",
+						"type": "text"
+					},
+					{
+						"key": "x-api-version",
+						"value": "1",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "http://localhost:7080/customers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7080",
+					"path": [
+						"customers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE CUSTOMER",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:7080/customers/102",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7080",
+					"path": [
+						"customers",
+						"102"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET A CUSTOMER",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-channel-id",
+						"value": "Web",
+						"type": "text"
+					},
+					{
+						"key": "x-country-code",
+						"value": "MX",
+						"type": "text"
+					},
+					{
+						"key": "x-appl-code",
+						"value": "3",
+						"type": "text"
+					},
+					{
+						"key": "x-b3-spanid",
+						"value": "",
+						"type": "text"
+					},
+					{
+						"key": "x-user-context",
+						"value": "eyAic3ViLWNoYW5uZWwiIDogIk1vYmlsZSBJT1MiLCAib2ZmaWNlci1pZCIgOiAiNDU2IiwgInRyYW5zaXQtaWQiIDogIjU1NiIsIHRlbGxlci1pZCIgOiAiNzQ2NCIsICJsYW5ndWFnZSIgOiAiRU4iLCAiIG9yaWdpbmF0aW5nLWlwLWFkZHJlc3MiOiIxMjIuMTIyLjEyLjExIn0",
+						"type": "text"
+					},
+					{
+						"key": "x-api-version",
+						"value": "1",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "http://localhost:7080/customers/149",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7080",
+					"path": [
+						"customers",
+						"149"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET ACCOUNTS OF CUSTOMER",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-channel-id",
+						"value": "Web",
+						"type": "text"
+					},
+					{
+						"key": "x-country-code",
+						"value": "MX",
+						"type": "text"
+					},
+					{
+						"key": "x-appl-code",
+						"value": "3",
+						"type": "text"
+					},
+					{
+						"key": "x-b3-spanid",
+						"value": "",
+						"type": "text"
+					},
+					{
+						"key": "x-user-context",
+						"value": "eyAic3ViLWNoYW5uZWwiIDogIk1vYmlsZSBJT1MiLCAib2ZmaWNlci1pZCIgOiAiNDU2IiwgInRyYW5zaXQtaWQiIDogIjU1NiIsIHRlbGxlci1pZCIgOiAiNzQ2NCIsICJsYW5ndWFnZSIgOiAiRU4iLCAiIG9yaWdpbmF0aW5nLWlwLWFkZHJlc3MiOiIxMjIuMTIyLjEyLjExIn0",
+						"type": "text"
+					},
+					{
+						"key": "x-api-version",
+						"value": "1",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "http://localhost:7080/customers/149/accounts",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7080",
+					"path": [
+						"customers",
+						"149",
+						"accounts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UPDATE ACCOUNT OF CUSTOMER",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"account_type\": \"CHECKING\",\r\n    \"balance\": 15500000.0,\r\n    \"overdraft_allowed\": false,\r\n    \"overdraft_amount\": 0.0\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:7080/customers/149/accounts/150",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7080",
+					"path": [
+						"customers",
+						"149",
 						"accounts",
-						"000000100"
+						"150"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE ACCOUNT OF CUSTOMER",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:7080/customers/102",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7080",
+					"path": [
+						"customers",
+						"102"
 					]
 				}
 			},
