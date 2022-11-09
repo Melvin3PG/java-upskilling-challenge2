@@ -1,5 +1,6 @@
 package net.example.finance.mybank.model.entity;
 
+import com.example.mvnprg.openapi.model.AccountObject;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -28,6 +29,9 @@ public class Account {
     private boolean overdraft;
     @Column(nullable = false)
     private float amount;
+
+    public void setTypeAccount(AccountObject.AccountTypeEnum accountType) {
+    }
 
     public enum AccountType {
         SAVING,

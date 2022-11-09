@@ -26,12 +26,7 @@ public class AccountController  implements AccountsApi {
                                                                            String xApiVersion) {
 		AccountDetailResponse account = new AccountDetailResponse();
 		Account acc = accountService.findById(accountId);
-		AccountObject paramAccount = new AccountObject();
-		paramAccount.setAccountNumber(Long.parseLong(acc.getNumber()));
-		paramAccount.setAccountType(AccountObject.AccountTypeEnum.valueOf(String.valueOf(acc.getType())));
-		paramAccount.setBalance(acc.getBalance());
-		paramAccount.setOverdraftAmount(acc.getAmount());
-		paramAccount.setOverdraftAllowed(acc.isOverdraft());
+		AccountObject paramAccount = convertAccountToResponseObject(acc);
 		account.data(paramAccount);
 		return ResponseEntity.ok(account);
 	}
@@ -40,16 +35,10 @@ public class AccountController  implements AccountsApi {
 	public ResponseEntity<AccountListResponse> getAllAccounts(String xChannelId, String xCountryCode, String xApplCode, String xB3Spanid, String xB3Traceid, String xUserContext, String xApiVersion) {
 		AccountListResponse accountListResponse = new AccountListResponse();
 		List<AccountObject> listAccountObject = new ArrayList<>();
-		// Call service
 		List<Account> allAccounts = accountService.findAll();
 		// Convert all entities
 		allAccounts.forEach(account -> {
-			AccountObject object = new AccountObject();
-			object.setAccountNumber(Long.parseLong(account.getNumber()));
-			object.setAccountType(AccountObject.AccountTypeEnum.valueOf(String.valueOf(account.getType())));
-			object.setBalance(account.getBalance());
-			object.setOverdraftAmount(account.getAmount());
-			object.setOverdraftAllowed(account.isOverdraft());
+			AccountObject object = convertAccountToResponseObject(account);
 			listAccountObject.add(object);
 		});
 		accountListResponse.data(listAccountObject);
@@ -59,19 +48,52 @@ public class AccountController  implements AccountsApi {
 	@Override
 	public ResponseEntity<AccountDetailResponse> updateAccount(Long accountId, AccountObject accountObject) {
 		AccountDetailResponse account = new AccountDetailResponse();
-		Account obj = new Account();
-		obj.setNumber(String.valueOf(accountObject.getAccountNumber()));
-		//obj.setType(AccountObject.AccountTypeEnum);
-		obj.setBalance(accountObject.getBalance());
-		obj.setAmount(accountObject.getOverdraftAmount());
-		obj.setOverdraft(accountObject.getOverdraftAllowed());
-		Account result = accountService.updateAccount(accountId, obj);
-		//Conversion
-		AccountObject conversion = new AccountObject();
-		conversion.setAccountNumber(Long.valueOf(String.valueOf(result.getNumber())));
+		Account result = accountService.updateAccount(accountId, convertResponseObjectToAccount(accountObject));
+		AccountObject conversion = convertAccountToResponseObject(result);
 		account.data(conversion);
 		return ResponseEntity.ok(account);
 	}
 
+	@Override
+	public ResponseEntity<AccountDetailResponse> createAccount(String xChannelId, String xCountryCode, String xApplCode, AccountObject accountObject, String xB3Spanid, String xB3Traceid, String xUserContext, String xApiVersion) {
+		AccountDetailResponse account = new AccountDetailResponse();
+		Account result = accountService.createAccountOpenAPI(accountObject.getAccountNumber().toString(), accountObject.getAccountType(), accountObject.getBalance(), accountObject.getOverdraftAllowed(), accountObject.getOverdraftAmount());
+		AccountObject conversion = convertAccountToResponseObject(result);
+		account.data(conversion);
+		return ResponseEntity.ok(account);
+	}
 
+	@Override
+	public ResponseEntity<AccountDetailResponse> deleteAccount(Long accountId) {
+		AccountDetailResponse response = new AccountDetailResponse();
+		AccountObject object = new AccountObject();
+		try{
+			accountService.deleteAccount(accountId);
+		}
+		catch (Exception ex){
+			object.setAccountNumber(123L);
+			response.data(object);
+		}
+		return ResponseEntity.ok(response);
+	}
+
+	private AccountObject convertAccountToResponseObject(Account account){
+		AccountObject object = new AccountObject();
+		object.setAccountNumber(Long.parseLong(account.getNumber()));
+		object.setAccountType(AccountObject.AccountTypeEnum.valueOf(String.valueOf(account.getType())));
+		object.setBalance(account.getBalance());
+		object.setOverdraftAmount(account.getAmount());
+		object.setOverdraftAllowed(account.isOverdraft());
+		return object;
+	}
+
+	private Account convertResponseObjectToAccount(AccountObject obj){
+		Account account = new Account();
+		account.setNumber(obj.getAccountNumber().toString());
+		account.setTypeAccount(obj.getAccountType());
+		account.setBalance(account.getBalance());
+		account.setAmount(account.getAmount());
+		account.setOverdraft(obj.getOverdraftAllowed());
+		return account;
+	}
 }

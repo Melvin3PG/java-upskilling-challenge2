@@ -1,5 +1,6 @@
 package net.example.finance.mybank.serviceimpl;
 
+import com.example.mvnprg.openapi.model.AccountObject;
 import net.example.finance.mybank.model.entity.Account;
 import net.example.finance.mybank.model.repository.RepositoryExample;
 import net.example.finance.mybank.service.IAccountService;
@@ -31,6 +32,17 @@ public class AccountServiceImpl implements IAccountService {
         Account account = new Account();
         account.setNumber(accountNumber);
         account.setType(accountType);
+        account.setBalance(balance);
+        account.setOverdraft(isOverdraft);
+        account.setAmount(overdraftAmount);
+        return accountRepository.save(account);
+    }
+
+    @Override
+    public Account createAccountOpenAPI(String accountNumber, AccountObject.AccountTypeEnum accountType, float balance, boolean isOverdraft, float overdraftAmount) {
+        Account account = new Account();
+        account.setNumber(accountNumber);
+        account.setTypeAccount(accountType);
         account.setBalance(balance);
         account.setOverdraft(isOverdraft);
         account.setAmount(overdraftAmount);

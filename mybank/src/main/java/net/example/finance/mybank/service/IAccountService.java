@@ -1,5 +1,6 @@
 package net.example.finance.mybank.service;
 
+import com.example.mvnprg.openapi.model.AccountObject;
 import net.example.finance.mybank.model.entity.Account;
 import java.util.List;
 
@@ -16,4 +17,5 @@ public interface IAccountService {
 
     /*OpenAPI*/
     //AccountDetailResponse updateAccountObject(Long id, AccountObject accDetails);
+    Account createAccountOpenAPI(String accountNumber, AccountObject.AccountTypeEnum accountType, float balance, boolean isOverdraft, float overdraftAmount);
 }
