@@ -38,8 +38,22 @@ public class AccountController  implements AccountsApi {
 
 	@Override
 	public ResponseEntity<AccountListResponse> getAllAccounts(String xChannelId, String xCountryCode, String xApplCode, String xB3Spanid, String xB3Traceid, String xUserContext, String xApiVersion) {
+		AccountListResponse accountListResponse = new AccountListResponse();
+		List<AccountObject> listAccountObject = new ArrayList<>();
 		// Call service
-		return AccountsApi.super.getAllAccounts(xChannelId, xCountryCode, xApplCode, xB3Spanid, xB3Traceid, xUserContext, xApiVersion);
+		List<Account> allAccounts = accountService.findAll();
+		// Convert all entities
+		allAccounts.forEach(account -> {
+			AccountObject object = new AccountObject();
+			object.setAccountNumber(Long.parseLong(account.getNumber()));
+			object.setAccountType(AccountObject.AccountTypeEnum.valueOf(String.valueOf(account.getType())));
+			object.setBalance(account.getBalance());
+			object.setOverdraftAmount(account.getAmount());
+			object.setOverdraftAllowed(account.isOverdraft());
+			listAccountObject.add(object);
+		});
+		accountListResponse.data(listAccountObject);
+		return ResponseEntity.ok(accountListResponse);
 	}
 
 	@Override
@@ -59,20 +73,5 @@ public class AccountController  implements AccountsApi {
 		return ResponseEntity.ok(account);
 	}
 
-	public ResponseEntity<AccountListResponse> getAllAccounts() {
-		AccountDetailResponse account = new AccountDetailResponse();
-		AccountObject obj = new AccountObject();
-		obj.setAccountNumber(1234L);
-		obj.setAccountType(AccountObject.AccountTypeEnum.SAVING);
-		obj.setBalance((float) 234.4);
-		obj.setOverdraftAmount((float) 234.4);
-		obj.setOverdraftAllowed(true);
-		account.data(obj);
-		List<AccountDetailResponse> list = new ArrayList<>();
-		list.add(account);
-		AccountListResponse jio = new AccountListResponse();
-		jio.addDataItem(obj);
-		return ResponseEntity.ok(jio);
-	}
-	
+
 }
