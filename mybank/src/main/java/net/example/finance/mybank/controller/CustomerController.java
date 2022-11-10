@@ -17,6 +17,12 @@ import net.example.finance.mybank.openapi.model.CustomerListResponseDto;
 import net.example.finance.mybank.openapi.model.CustomerObjectDto;
 import net.example.finance.mybank.service.CustomerService;
 
+/**
+ * REST API to manage the customers.
+ * 
+ * @author jesus.quintero
+ *
+ */
 @RestController
 @Log4j2
 public class CustomerController implements CustomersApi {

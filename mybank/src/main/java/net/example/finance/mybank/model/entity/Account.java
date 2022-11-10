@@ -2,7 +2,6 @@ package net.example.finance.mybank.model.entity;
 
 import java.io.Serializable;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -32,12 +31,8 @@ import net.example.finance.mybank.model.enums.AccountTypeEnum;
 @NoArgsConstructor
 @Table( name = "accounts")
 @Entity
-public class Account implements Serializable {
+public class Account {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Account number

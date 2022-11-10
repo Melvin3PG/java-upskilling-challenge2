@@ -21,7 +21,12 @@ logging:
     org.springframework.web: ERROR
     net.example.finance.mybank:  DEBUG
     org.hibernate: ERROR
-   
+    
+jwt:
+  clientId: mybank
+  client-secret: secret
+  accessTokenValidititySeconds: 100
+  refreshTokenValiditySeconds: 1000
 #management:
 #   security:
 #      enabled: false

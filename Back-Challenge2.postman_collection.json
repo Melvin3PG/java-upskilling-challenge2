@@ -254,7 +254,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n      \"customer_number\": 0,\r\n      \"customer_type\": \"CORPORATE\",\r\n      \"active\": true,\r\n      \"at_date\": true,\r\n      \"accounts\": [\r\n        {\r\n          \"account_number\": 0,\r\n          \"account_type\": \"CHECKING\",\r\n          \"balance\": 1000000,\r\n          \"overdraft_allowed\": false,\r\n          \"overdraft_amount\": 0\r\n        },\r\n        {\r\n          \"account_number\": 0,\r\n          \"account_type\": \"CHECKING\",\r\n          \"balance\": 2000000,\r\n          \"overdraft_allowed\": true,\r\n          \"overdraft_amount\": 1000\r\n        }\r\n        ,\r\n        {\r\n          \"account_number\": 0,\r\n          \"account_type\": \"SAVING\",\r\n          \"balance\": 2500000,\r\n          \"overdraft_allowed\": true,\r\n          \"overdraft_amount\": 10000\r\n        }\r\n        ,\r\n        {\r\n          \"account_number\": 0,\r\n          \"account_type\": \"CHECKING\",\r\n          \"balance\": 3500000,\r\n          \"overdraft_allowed\": false,\r\n          \"overdraft_amount\": 0\r\n        }\r\n      ]\r\n    }",
+					"raw": "{\r\n      \"customer_number\": 0,\r\n      \"customer_type\": \"CORPORATE\",\r\n      \"active\": true,\r\n      \"at_date\": true,\r\n      \"accounts\": [\r\n        {\r\n          \"account_number\": 0,\r\n          \"account_type\": \"CHECKING\",\r\n          \"balance\": 100000,\r\n          \"overdraft_allowed\": false,\r\n          \"overdraft_amount\": 0\r\n        },\r\n        {\r\n          \"account_number\": 0,\r\n          \"account_type\": \"CHECKING\",\r\n          \"balance\": 200000,\r\n          \"overdraft_allowed\": true,\r\n          \"overdraft_amount\": 1000\r\n        }\r\n        ,\r\n        {\r\n          \"account_number\": 0,\r\n          \"account_type\": \"SAVING\",\r\n          \"balance\": 250000,\r\n          \"overdraft_allowed\": true,\r\n          \"overdraft_amount\": 10000\r\n        }\r\n        ,\r\n        {\r\n          \"account_number\": 0,\r\n          \"account_type\": \"CHECKING\",\r\n          \"balance\": 3500000,\r\n          \"overdraft_allowed\": false,\r\n          \"overdraft_amount\": 0\r\n        }\r\n      ]\r\n    }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -384,7 +384,7 @@
 					}
 				],
 				"url": {
-					"raw": "http://localhost:7080/customers/149",
+					"raw": "http://localhost:7080/customers/181",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -392,7 +392,7 @@
 					"port": "7080",
 					"path": [
 						"customers",
-						"149"
+						"181"
 					]
 				}
 			},
@@ -488,7 +488,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:7080/customers/102",
+					"raw": "http://localhost:7080/customers/181/accounts/182",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -496,7 +496,64 @@
 					"port": "7080",
 					"path": [
 						"customers",
-						"102"
+						"181",
+						"accounts",
+						"182"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AUTHENTICATION",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "frontendapp",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "12345",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "octavio",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "123456",
+							"type": "text"
+						},
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:7080/oauth/token",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7080",
+					"path": [
+						"oauth",
+						"token"
 					]
 				}
 			},

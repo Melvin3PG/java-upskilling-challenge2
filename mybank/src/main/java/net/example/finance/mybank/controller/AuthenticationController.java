@@ -9,6 +9,12 @@ import net.example.finance.mybank.openapi.api.AuthenticationApi;
 import net.example.finance.mybank.openapi.model.LoginObjectDto;
 import net.example.finance.mybank.openapi.model.UserDetailResponseDto;
 
+/**
+ * REST API to manage the authentication
+ * .
+ * @author jesus.quintero
+ *
+ */
 @RestController
 public class AuthenticationController implements AuthenticationApi {
 

@@ -4,8 +4,6 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +16,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import lombok.extern.log4j.Log4j2;
 import net.example.finance.mybank.constants.TransactionCodes;
-import net.example.finance.mybank.controller.AccountController;
 import net.example.finance.mybank.model.dto.BaseResponseDto;
 
 /**
