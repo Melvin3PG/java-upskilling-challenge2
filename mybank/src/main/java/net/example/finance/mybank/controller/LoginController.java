@@ -1,18 +1,11 @@
 package net.example.finance.mybank.controller;
 
-import com.example.mvnprg.openapi.api.AccountsApi;
 import com.example.mvnprg.openapi.api.AuthenticationApi;
 import com.example.mvnprg.openapi.model.*;
-import net.example.finance.mybank.model.entity.Account;
-import net.example.finance.mybank.serviceimpl.AccountServiceImpl;
 import net.example.finance.mybank.serviceimpl.LoginServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.ArrayList;
-import java.util.List;
-
 
 @RestController
 public class LoginController implements AuthenticationApi {
