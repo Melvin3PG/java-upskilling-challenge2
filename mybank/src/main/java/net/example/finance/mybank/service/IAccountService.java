@@ -16,6 +16,5 @@ public interface IAccountService {
     void deleteAccount(Long id);
 
     /*OpenAPI*/
-    //AccountDetailResponse updateAccountObject(Long id, AccountObject accDetails);
     Account createAccountOpenAPI(String accountNumber, AccountObject.AccountTypeEnum accountType, float balance, boolean isOverdraft, float overdraftAmount);
 }
