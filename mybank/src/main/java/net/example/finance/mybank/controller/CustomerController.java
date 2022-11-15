@@ -529,6 +529,55 @@ public class CustomerController implements CustomersApi {
 	}
 
 	/**
+	 * Create an account for a specified customer
+	 * @param customerId customer identifier
+	 * @param accountObject account DTO
+	 * @return  Response Entity with code, message and Account
+	 * 
+	 */
+	@Override
+	public ResponseEntity<AccountDetailResponse> addAccountToCustomer(Long customerId,
+			@Valid AccountObject accountObject) {
+		Notification notification = null;
+		AccountDetailResponse response = new AccountDetailResponse();
+		try {
+			LOGGER.info("Trying to create a new account for customer {}", customerId);
+			//call to customer service to validate if customer exists
+			customerService.getcustomerById(customerId);
+			Account account = modelMapper.map(accountObject, Account.class);
+			account.setCustomerId(customerId);
+			Account accountCreated = accountService.createAccount(account);
+			AccountObject data = modelMapper.map(accountCreated, AccountObject.class);
+			response.setData(data);
+			notification = buildNotification(ResponseCodes.IA01.name(), ResponseCodes.IA01.getValue(), "Customer", Severity.INFO.name());
+			response.addNotificationsItem(notification);
+			LOGGER.info("The customer's account was created successfully");
+			return  ResponseEntity.status(HttpStatus.CREATED).body(response);
+		} catch (Exception e) {
+			LOGGER.error("Error while trying to create new customer's account {}", e.getMessage());
+			response.setData(null);
+			if(e.getCause() instanceof HttpMessageNotReadableException || e instanceof MissingRequestHeaderException) {
+				LOGGER.error("The request body is malformed");
+				notification = buildNotification(ResponseCodes.EA06.name(), ResponseCodes.EA06.getValue(), "Customer", Severity.ERROR.name());
+				response.addNotificationsItem(notification);
+				return ResponseEntity.badRequest().body(response);
+			} else if(e.getCause() instanceof NotFoundException) {
+				LOGGER.error("Error while trying to create customer's account, customer does not exist", e.getMessage());
+				notification = buildNotification(ResponseCodes.EC05.name(), ResponseCodes.EC05.getValue(), "Customer", Severity.ERROR.name());
+				response.addNotificationsItem(notification);
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+			}  else {
+				LOGGER.error("Error while trying to create new customer's account", e.getMessage());
+				notification = buildNotification(ResponseCodes.EA04.name(), ResponseCodes.EA04.getValue(), "Customer", Severity.ERROR.name());
+				response.addNotificationsItem(notification);
+				return ResponseEntity.internalServerError().body(response);
+			}
+		}
+	}
+	
+	
+	
+	/**
 	 * Notification builder method
 	 * @param code Notification code
 	 * @param message Description of the response.
@@ -547,5 +596,8 @@ public class CustomerController implements CustomersApi {
 		
 		return notification;
 	}
+
+
+
 	
 }
