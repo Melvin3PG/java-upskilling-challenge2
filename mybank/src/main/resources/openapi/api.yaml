@@ -451,6 +451,36 @@ paths:
           $ref: '#/components/responses/401Unauthorized'
         '500':
           $ref: '#/components/responses/500InternalServerError'
+    # Add an account to a customer 
+    post:
+      tags:
+        - Customer Domain
+      summary: Resource that create/add an account to a specified customer 
+      description: Add an account to a specified customer
+      operationId: addAccountToCustomer
+      parameters:
+        - $ref: '#/components/parameters/CustomerId'
+      requestBody:
+        description: Create a new banking account
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountObject'
+      responses:
+        '200':
+          description: Account was created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountDetailResponse'
+        '400':
+          $ref: '#/components/responses/400BadRequest'
+        '401':
+          $ref: '#/components/responses/401Unauthorized'
+        '404':
+          $ref: '#/components/responses/404NotFound'
+        '500':
+          $ref: '#/components/responses/500InternalServerError'
   # Retreives an account by aacount number
   /customers/{customer-id}/accounts/{account-id}:
     get:
