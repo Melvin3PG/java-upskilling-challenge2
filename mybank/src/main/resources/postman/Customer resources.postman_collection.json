@@ -439,6 +439,51 @@
 			"response": []
 		},
 		{
+			"name": "Create Customer's account - 200",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-channel-id",
+						"value": "Mobile",
+						"type": "text"
+					},
+					{
+						"key": "x-country-code",
+						"value": "CR",
+						"type": "text"
+					},
+					{
+						"key": "x-appl-code",
+						"value": "APP-Adroid-001",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"account_type\": \"saving\",\r\n    \"balance\": 2005.65,\r\n    \"overdraft_allowed\": true,\r\n    \"overdraft_amount\": 285.36\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:7080/customers/10001/accounts",
+					"host": [
+						"localhost"
+					],
+					"port": "7080",
+					"path": [
+						"customers",
+						"10001",
+						"accounts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Partial C-Account By ID - 200",
 			"request": {
 				"method": "PATCH",
