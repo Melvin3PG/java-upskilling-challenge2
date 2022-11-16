@@ -420,6 +420,7 @@ paths:
           $ref: '#/components/responses/500InternalServerError'
   # Retreives accounts of customer
   /customers/{customer-id}/accounts:
+  
   # Retreives all account elemnents list
     get:
       tags:
@@ -445,6 +446,34 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AccountListResponse'
+        '400':
+          $ref: '#/components/responses/400BadRequest'
+        '401':
+          $ref: '#/components/responses/401Unauthorized'
+        '500':
+          $ref: '#/components/responses/500InternalServerError'
+    # Create an account
+    post:
+      tags:
+        - Customer Domain
+      summary: Resource that create an account
+      description: Create an account
+      operationId: createAccountOfCustomer
+      parameters:
+        - $ref: '#/components/parameters/CustomerId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountObject'
+        required: true
+      responses:
+        '201':
+          description: Account was created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountDetailResponse'
         '400':
           $ref: '#/components/responses/400BadRequest'
         '401':
@@ -484,6 +513,7 @@ paths:
           $ref: '#/components/responses/401Unauthorized'
         '500':
           $ref: '#/components/responses/500InternalServerError'
+  
   # Modify an account
     put:
       tags: 
@@ -513,6 +543,7 @@ paths:
           $ref: '#/components/responses/401Unauthorized'
         '500':
           $ref: '#/components/responses/500InternalServerError'
+  
   # Modify partially an account
     patch:
       tags: 

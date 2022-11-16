@@ -20,4 +20,5 @@ public interface CustomerService {
     AccountObject customerDeleteAccountById(Long customerNumber, Long accNum);
     AccountObject customerFetchAccountById(Long customerNumber, Long accNum);
     AccountObject customerPartialUpdateAccount(Long customerNumber, Long accNum, AccountObject accountObject);
+    AccountObject customerCreateAccount(Long customerNumber, AccountObject accountObject);
 }

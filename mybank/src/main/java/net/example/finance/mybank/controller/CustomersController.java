@@ -188,4 +188,19 @@ public class CustomersController implements CustomersApi{
             return new ResponseEntity<>(ControllerUtil.CatchAccountNotification(ex, response),HttpStatus.BAD_REQUEST);
         } 
     }
+
+    @Override
+    public ResponseEntity<AccountDetailResponse> createAccountOfCustomer(Long customerId,
+            @Valid AccountObject accountObject) {
+        AccountDetailResponse response = new AccountDetailResponse();
+        try
+        {
+            response.setData(customerService.customerCreateAccount(customerId, accountObject));
+            return new ResponseEntity<>(response, HttpStatus.CREATED);
+        }
+        catch(Exception ex)
+        {        
+            return new ResponseEntity<>(ControllerUtil.CatchAccountNotification(ex, response),HttpStatus.BAD_REQUEST);
+        } 
+    }
 }

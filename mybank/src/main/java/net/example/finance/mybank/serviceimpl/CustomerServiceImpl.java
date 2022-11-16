@@ -234,5 +234,15 @@ public class CustomerServiceImpl implements CustomerService {
         accountRepository.save(ServiceUtil.updateAccountFields(accDB,account));
         
         return modelMapper.map(account, AccountObject.class);
+    }
+
+    @Override
+    public AccountObject customerCreateAccount(Long customerNumber, AccountObject accountObject) {
+        Customer customerDB = customerRepository.findById(customerNumber).get();
+        Account account = modelMapper.map(accountObject, Account.class);
+        account.setCustomerNumber(customerDB.getCustomerNumber());
+        accountRepository.save(account);
+        
+        return modelMapper.map(account, AccountObject.class);
     }  
 }
