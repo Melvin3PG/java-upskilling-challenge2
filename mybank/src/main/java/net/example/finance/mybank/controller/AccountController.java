@@ -126,8 +126,18 @@ public class AccountController implements AccountsApi {
 	@Override
 	public ResponseEntity<AccountDetailResponseDto> partialUpdateAccount(Long accountId,
 			AccountObjectDto accountObjectDto) {
-		System.out.println("Entro a partialUpdateAccount");
-		return null;
+		log.debug(String.format("Start updating account : ", accountObjectDto.toString()));
+		
+		AccountDetailResponseDto accountDetailResponse = null;
+		
+		AccountObjectDto accountUpdated = service.updateAccount(accountId, accountObjectDto);
+		
+		if(null != accountUpdated) {
+			accountDetailResponse = new AccountDetailResponseDto();
+			accountDetailResponse.setData(accountUpdated);
+		}
+		
+		return ResponseEntity.ok(accountDetailResponse);
 	}
 	
 	

@@ -1,5 +1,8 @@
 package net.example.finance.mybank.auth;
 
+import java.util.Arrays;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,9 +29,15 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 public class OAuthConfiguration extends AuthorizationServerConfigurerAdapter 
 {
 	
-	   private final AuthenticationManager authenticationManager;
+	
+	   @Autowired
+	   private AuthenticationManager authenticationManager;
 
-	   private final BCryptPasswordEncoder passwordEncoder;
+	   @Autowired
+	   private BCryptPasswordEncoder passwordEncoder;
+	   
+	   @Autowired
+	   private AditionalDataToken aditionalDataToken;
 
 	   /**
 	    * Client ID valid to accept requests from clients
@@ -42,7 +51,7 @@ public class OAuthConfiguration extends AuthorizationServerConfigurerAdapter
 	   @Value("${jwt.client-secret:secret}")
 	   private String clientSecret;	
 
-	   @Value("${jwt.signing-key:123}")
+	   @Value("${jwt.signing-key:123456}")
 	   private String jwtSigningKey;
 
 	   /**
@@ -57,11 +66,6 @@ public class OAuthConfiguration extends AuthorizationServerConfigurerAdapter
 	   @Value("${jwt.authorizedGrantTypes:password,authorization_code,refresh_token}")
 	   private String[] authorizedGrantTypes;
 
-	   public OAuthConfiguration(AuthenticationManager authenticationManager, 
-			   BCryptPasswordEncoder passwordEncoder) {
-	       this.authenticationManager = authenticationManager;
-	       this.passwordEncoder = passwordEncoder;
-	   }
 	   
 	   /**
 	    * Configure the /oauth/token endpoint to generate the token, 
@@ -81,10 +85,11 @@ public class OAuthConfiguration extends AuthorizationServerConfigurerAdapter
 		   clients.inMemory()
 	               .withClient(clientId)
 	               .secret(passwordEncoder.encode(clientSecret))
-	               .accessTokenValiditySeconds(accessTokenValiditySeconds)
+	               .scopes("read", "write")
 	               .authorizedGrantTypes(authorizedGrantTypes)
-	               .scopes("read", "write");
-	              // .resourceIds("api");
+	               .accessTokenValiditySeconds(accessTokenValiditySeconds)
+	               .refreshTokenValiditySeconds(3600)
+	               ;
 	   }
 	   
 
@@ -95,17 +100,17 @@ public class OAuthConfiguration extends AuthorizationServerConfigurerAdapter
 	    * to grant access to APIs.
 	    **/
 	   @Override
-	   public void configure(final AuthorizationServerEndpointsConfigurer endpoints) throws Exception  {
+	   public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception  {
 		   TokenEnhancerChain tokenEnhancer = new TokenEnhancerChain();
-			//tokenEnhancer.setTokenEnhancers(Arrays.asList(aditionalDataToken, getAccessTokenConverter()));
-			
-	       endpoints
-	       		   //.pathMapping("/oauth/token", "/authentication/login")
-	       			.authenticationManager(authenticationManager)
+		   tokenEnhancer.setTokenEnhancers(Arrays.asList(aditionalDataToken, accessTokenConverter()));
+		
+
+   		   //.pathMapping("/oauth/token", "/authentication/login")
+	       endpoints.authenticationManager(authenticationManager)
 	       			.tokenStore(getTokenStore())
-	               //.userDetailsService(userService)
-	               
-	       		   .accessTokenConverter(accessTokenConverter());
+	       			.accessTokenConverter(accessTokenConverter())
+	       			.tokenEnhancer(tokenEnhancer)
+	       		   ;
 	   }
 	   
 	   /**
@@ -124,7 +129,7 @@ public class OAuthConfiguration extends AuthorizationServerConfigurerAdapter
 	   @Bean
 	   JwtAccessTokenConverter accessTokenConverter() {
 	       JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-	       //converter.setSigningKey(jwtSigningKey);
+	       converter.setSigningKey(jwtSigningKey);
 	       return converter;
 	   }
 

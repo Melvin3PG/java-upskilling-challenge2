@@ -11,7 +11,7 @@ public interface AccountService {
 	 * 
 	 * @param accountDto		DTO Object for account
 	 * 
-	 * @return	{@code AccountObjectDto}	DTO Object with new account saved	
+	 * @return	{@link AccountObjectDto}	DTO Object with new account saved	
 	 */
 	AccountObjectDto createAccount(AccountObjectDto accountDto);
 	
@@ -22,7 +22,7 @@ public interface AccountService {
 	 * 
 	 * @param accountDto		DTO Object with information to update			
 	 * 
-	 * @return {@code AccountObjectDto}	DTO Object with account updated
+	 * @return {@link AccountObjectDto}	DTO Object with account updated
 	 */
 	AccountObjectDto updateAccount(long accountNumber, AccountObjectDto accountDto);
 	
@@ -31,7 +31,7 @@ public interface AccountService {
 	 * 
 	 * @param accountNumber		Account number.
 	 * 
-	 * @return	{@code AccountObjectDto}	DTO Object with account information
+	 * @return	{@link AccountObjectDto}	DTO Object with account information
 	 */
 	AccountObjectDto getAccountByNumber(long accountNumber);
 	
@@ -45,7 +45,7 @@ public interface AccountService {
 	/**
 	 * Returns all accounts
 	 * 
-	 * @return {@code List<AccountObjectDto>}	 List of DTO objects with all accounts
+	 * @return {@link List<AccountObjectDto>}	 List of DTO objects with all accounts
 	 */
 	PaginatedDataDto<AccountObjectDto> getAll(int pageNo, int pageSize, String sortBy, String sortDir);
 	

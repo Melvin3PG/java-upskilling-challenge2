@@ -1,5 +1,7 @@
 package net.example.finance.mybank.auth;
 
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -11,6 +13,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 /**
  * This class is used to create the configuration for the spring security server.
@@ -22,7 +27,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class ServerSecurityConfig extends WebSecurityConfigurerAdapter
 {
 	@Autowired
-	@Qualifier("userService")
 	private UserDetailsService userService;
 	
 	@Autowired
@@ -52,16 +56,17 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable()
-		        .authorizeRequests()
-		        .antMatchers("/customers/**").hasAuthority("USER")
-		        .antMatchers("/accounts/**").hasAuthority("USER")
-		        .antMatchers("/oauth/token").permitAll()
-		        .antMatchers("/login").permitAll()
-		        .antMatchers("/h2-console/**").permitAll()
-		        .antMatchers("/h2-console/login.do?**").permitAll()
-		        .anyRequest().authenticated()
-		        .and().headers().frameOptions().sameOrigin()
+			.authorizeRequests()
+			.antMatchers("/oauth/token").permitAll()
+	        .antMatchers("/login").permitAll()
+	        .antMatchers("/h2-console/**").permitAll()
+	        .antMatchers("/h2-console/login.do?**").permitAll()
+	        .antMatchers("/customers/**").permitAll()//.access("hasRole('USER')")
+	        .antMatchers("/accounts/**").permitAll()//.access("hasRole('USER')")
+		    //.and().cors().configurationSource(getCorsConfigurationSource())//.anyRequest().authenticated()
+		        //.and().headers().frameOptions().sameOrigin()
 		        ;
+		
 	}
 
 	/**
@@ -75,4 +80,17 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter
 		return super.authenticationManager();
 	}
 
+	
+	/*@Bean
+	public CorsConfigurationSource getCorsConfigurationSource() {
+		CorsConfiguration corsConfig = new CorsConfiguration();
+		corsConfig.setAllowedOrigins(Arrays.asList("*"));
+		corsConfig.setAllowedMethods(Arrays.asList("POST","GET","PUT","DELETE","OPTIONS"));
+		corsConfig.setAllowCredentials(true);
+		corsConfig.setAllowedHeaders(Arrays.asList("Authorization","Content-Type"));
+		
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource ();
+		source.registerCorsConfiguration("/**", corsConfig);
+		return source;
+	}*/
 }

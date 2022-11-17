@@ -2,9 +2,9 @@ package net.example.finance.mybank.constants;
 
 public enum TransactionCodes {
 
-	SUCCESSFUL("00"),
-	ERROR("-01"),
-	NOT_VALID("01");
+	SUCCESSFUL("I00"),
+	ERROR("E01"),
+	NOT_VALID("W01");
 	
 	private final String code;
 	

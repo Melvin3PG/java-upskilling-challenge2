@@ -25,7 +25,7 @@ logging:
 jwt:
   clientId: mybank
   client-secret: secret
-  accessTokenValidititySeconds: 100
+  accessTokenValidititySeconds: 10000
   refreshTokenValiditySeconds: 1000
 #management:
 #   security:

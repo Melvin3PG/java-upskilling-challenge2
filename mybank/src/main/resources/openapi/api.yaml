@@ -451,8 +451,46 @@ paths:
           $ref: "#/components/responses/401Unauthorized"
         "500":
           $ref: "#/components/responses/500InternalServerError"
-  # Retreives an account by aacount number
+    # Create an account for specific customer
+    post:
+      tags:
+        - Customer Domain
+      summary: Resource that creates an account for a customer
+      description: Creates an account by customer
+      operationId: createAccountByCustomer
+      parameters:
+        - $ref: "#/components/parameters/CustomerId"
+        #- $ref: '#/components/parameters/Authorization'
+        - $ref: "#/components/parameters/ChannelId"
+        - $ref: "#/components/parameters/CountryCode"
+        - $ref: "#/components/parameters/ApplicationCode"
+        - $ref: "#/components/parameters/SpanId"
+        - $ref: "#/components/parameters/TraceId"
+        - $ref: "#/components/parameters/UserContext"
+        - $ref: "#/components/parameters/ApiVersion"
+        #- $ref: '#/components/parameters/SubChannelId'
+      requestBody:
+        description: Create a new banking account
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AccountObject"
+      responses:
+        "200":
+          description: Account was created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccountDetailResponse"
+        "400":
+          $ref: "#/components/responses/400BadRequest"
+        "401":
+          $ref: "#/components/responses/401Unauthorized"
+        "500":
+          $ref: "#/components/responses/500InternalServerError"
+
   /customers/{customer-id}/accounts/{account-id}:
+    # Retreives an account by account number
     get:
       tags:
         - Customer Domain

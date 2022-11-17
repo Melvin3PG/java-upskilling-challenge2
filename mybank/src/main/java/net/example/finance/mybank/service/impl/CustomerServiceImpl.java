@@ -125,7 +125,7 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 	
 	
-	@Override
+	/*@Override
 	@Transactional
     (rollbackFor = Exception.class, 
      noRollbackFor = ResourceNotFoundException.class)
@@ -156,7 +156,7 @@ public class CustomerServiceImpl implements CustomerService {
 		}
 		
 		return mapCustomerToDTO(customerUpdated);
-	}
+	}*/
 
 	@Override
 	@Transactional
@@ -306,6 +306,33 @@ public class CustomerServiceImpl implements CustomerService {
 		return customerDto;
 	}
 	
+	@Override
+	public AccountObjectDto createAccountByCustomer(long customerId, AccountObjectDto accountDto) {
+		log.debug(String.format("Service creating account by customer in database. Customer number %s - %s",
+				customerId,
+				accountDto.toString()));
+
+		Account accountUpdated = null;
+		
+		//retrieve customer by customer number
+		Customer customer = customerRepository.findById(customerId)
+							.orElseThrow(() -> new ResourceNotFoundException("Customer", "customer number", String.valueOf(customerId)) );
+		
+		try {
+			
+			Account account = mapAccountToEntity(accountDto);
+			account.setCustomer(customer);
+			
+			accountUpdated = accountRepository.save(account);
+			
+		}catch(Exception ex) {
+			log.error(String.format("Error creating the account with customer number: %s. \n Error: %s", 
+					customerId, ex.getMessage()));
+		throw ex;
+		}
+		
+		return mapAccountToDTO(accountUpdated);
+	}
 	
 	private Customer mapCustomerToEntity(CustomerObjectDto customerDto) {
 		Customer customer = new Customer();
@@ -359,6 +386,8 @@ public class CustomerServiceImpl implements CustomerService {
 		
 		return account;
 	}
+
+	
 
 	
 

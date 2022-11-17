@@ -278,6 +278,16 @@
 		{
 			"name": "GET ALL CUSTOMERS",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJvY3RhdmlvIiwic2NvcGUiOlsicmVhZCIsIndyaXRlIl0sImV4cCI6MTY2ODQ2NjIyMSwiYXV0aG9yaXRpZXMiOlsiUk9MRV9VU0VSIl0sImp0aSI6IjkxYWNiNWY3LWIyNjktNGFhMi1hYmJlLTUzN2JlZGY2YzM4MyIsImNsaWVudF9pZCI6Im15YmFuayIsInVzZXJuYW1lIjoib2N0YXZpbyJ9.PmQ4HXldMSoyoXBZCgpKtLDtUCVAVeWR1foGJ8GoOsQ",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [
 					{
@@ -308,6 +318,17 @@
 					{
 						"key": "x-api-version",
 						"value": "1",
+						"type": "text"
+					},
+					{
+						"key": "token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjgxMjIyNTksInVzZXJfbmFtZSI6Im9jdGF2aW8iLCJhdXRob3JpdGllcyI6WyJVU0VSIl0sImp0aSI6IjJhMTM0NTQ5LWNkZDktNDJhMS1hY2YwLTMzZDJmNjBmYTcxNyIsImNsaWVudF9pZCI6Im15YmFuayIsInNjb3BlIjpbInJlYWQiLCJ3cml0ZSJdfQ.zT0UpYBU0S-ONYoi_2RtnKR5SZGR6nieFA7DjEufVfo",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjgxODQ5MDEsInVzZXJfbmFtZSI6Im9jdGF2aW8iLCJhdXRob3JpdGllcyI6WyJVU0VSIl0sImp0aSI6IjQ2YjUxNTc5LTg0NDQtNDA3Zi05YWExLWFmMzkxZDU0ZWIzZSIsImNsaWVudF9pZCI6Im15YmFuayIsInNjb3BlIjpbInJlYWQiLCJ3cml0ZSJdfQ.oiftcyaYz6pACrhmh3xEi9s76F60HdOo61jdvpK31W8",
 						"type": "text",
 						"disabled": true
 					}
@@ -505,19 +526,81 @@
 			"response": []
 		},
 		{
+			"name": "CREATE ACCOUNT BY CUSTOMER",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-channel-id",
+						"value": "Web",
+						"type": "text"
+					},
+					{
+						"key": "x-country-code",
+						"value": "MX",
+						"type": "text"
+					},
+					{
+						"key": "x-appl-code",
+						"value": "3",
+						"type": "text"
+					},
+					{
+						"key": "x-b3-spanid",
+						"value": "",
+						"type": "text"
+					},
+					{
+						"key": "x-user-context",
+						"value": "eyAic3ViLWNoYW5uZWwiIDogIk1vYmlsZSBJT1MiLCAib2ZmaWNlci1pZCIgOiAiNDU2IiwgInRyYW5zaXQtaWQiIDogIjU1NiIsIHRlbGxlci1pZCIgOiAiNzQ2NCIsICJsYW5ndWFnZSIgOiAiRU4iLCAiIG9yaWdpbmF0aW5nLWlwLWFkZHJlc3MiOiIxMjIuMTIyLjEyLjExIn0",
+						"type": "text"
+					},
+					{
+						"key": "x-api-version",
+						"value": "1",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"account_type\": \"CHECKING\",\r\n    \"balance\": 5555.00,\r\n    \"overdraft_allowed\": false,\r\n    \"overdraft_amount\": 0.0\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:7080/customers/186/accounts/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7080",
+					"path": [
+						"customers",
+						"186",
+						"accounts",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "AUTHENTICATION",
 			"request": {
 				"auth": {
 					"type": "basic",
 					"basic": [
 						{
-							"key": "username",
-							"value": "frontendapp",
+							"key": "password",
+							"value": "secret",
 							"type": "string"
 						},
 						{
-							"key": "password",
-							"value": "12345",
+							"key": "username",
+							"value": "mybank",
 							"type": "string"
 						}
 					]

@@ -1,6 +1,7 @@
 package net.example.finance.mybank.exceptions;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,6 +18,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import lombok.extern.log4j.Log4j2;
 import net.example.finance.mybank.constants.TransactionCodes;
 import net.example.finance.mybank.model.dto.BaseResponseDto;
+import net.example.finance.mybank.openapi.model.NotificationDto;
 
 /**
  * This class is used to handle the different exceptions during execution.
@@ -39,16 +41,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 	 * @return
 	 */
 	@ExceptionHandler(Exception.class)
-	public ResponseEntity<BaseResponseDto> handleGlobalException(Exception exception,
+	public ResponseEntity<NotificationDto> handleGlobalException(Exception exception,
 													WebRequest webRequest){
-		
-		BaseResponseDto response = new BaseResponseDto(LocalDateTime.now(),
-										webRequest.getHeader("TRX-ID"), 
-										//HttpStatus.INTERNAL_SERVER_ERROR.name(),
-										TransactionCodes.ERROR.getCode(),
-										exception.getMessage(), null);
+		NotificationDto notification = new NotificationDto();
+		notification.setCode(TransactionCodes.ERROR.getCode());
+		notification.setUuid(webRequest.getHeader("TRX-ID"));
+		notification.setMessage(exception.getMessage());
+		notification.setTimestamp(LocalDateTime.now().atOffset(ZoneOffset.UTC));
+		notification.setSeverity("ERROR");
 		log.error(String.format("Error occurring during transaction. Error: %s.", exception.getMessage()));
-		return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		return new ResponseEntity<>(notification, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
 	//handling request parameters validation
@@ -87,15 +89,17 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 	 * @return
 	 */
 	@ExceptionHandler(ResourceNotFoundException.class)
-	public ResponseEntity<BaseResponseDto> handleResourceNotFoundException(ResourceNotFoundException exception,
+	public ResponseEntity<NotificationDto> handleResourceNotFoundException(ResourceNotFoundException exception,
 												WebRequest webRequest){
-		BaseResponseDto response = new BaseResponseDto(LocalDateTime.now(),
-										webRequest.getHeader("TRX-ID"), 
-										//HttpStatus.NOT_FOUND.name(),
-										TransactionCodes.NOT_VALID.getCode(),
-										exception.getMessage(), null);
+		
+		NotificationDto notification = new NotificationDto();
+		notification.setCode(TransactionCodes.NOT_VALID.getCode());
+		notification.setUuid(webRequest.getHeader("TRX-ID"));
+		notification.setMessage(exception.getMessage());
+		notification.setTimestamp(LocalDateTime.now().atOffset(ZoneOffset.UTC));
+		notification.setSeverity("WARNING");
 		
 		log.error(String.format("Error occurring during transaction. Error: %s.", exception.getMessage()));
-		return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(notification, HttpStatus.NOT_FOUND);
 	}
 }

@@ -5,6 +5,8 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.extern.log4j.Log4j2;
@@ -77,7 +79,7 @@ public class CustomerController implements CustomersApi {
 	public ResponseEntity<AccountDetailResponseDto> getAccountByCustomerAndAccountNumber(Long customerId,
 			Long accountId, String xChannelId, String xCountryCode, String xApplCode, String xB3Spanid,
 			String xB3Traceid, String xUserContext, String xApiVersion) {
-		// TODO Auto-generated method stub
+	
 		AccountDetailResponseDto response = new AccountDetailResponseDto();
 
 		AccountObjectDto accountDto = service.getAccountByCustomerAndAccountNumber(customerId, accountId);
@@ -189,6 +191,22 @@ public class CustomerController implements CustomersApi {
 
 		if (null != customerDto) {
 			response.setData(customerDto);
+		}
+
+		return ResponseEntity.ok(response);
+	}
+	
+	
+	@Override
+	public ResponseEntity<AccountDetailResponseDto> createAccountByCustomer(Long customerId, String xChannelId,
+			String xCountryCode, String xApplCode, String xB3Spanid, String xB3Traceid, String xUserContext,
+			String xApiVersion, @Valid AccountObjectDto accountObjectDto) {
+		AccountDetailResponseDto response = new AccountDetailResponseDto();
+
+		AccountObjectDto accountDto = service.createAccountByCustomer(customerId, accountObjectDto);
+
+		if (null != accountDto) {
+			response.setData(accountDto);
 		}
 
 		return ResponseEntity.ok(response);
